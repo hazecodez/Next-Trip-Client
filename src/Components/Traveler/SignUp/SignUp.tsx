@@ -1,11 +1,19 @@
-import Footer from "../Footer/Footer";
-import Navbar from "../NavBar/Navbar";
+import Navbar from "../../Common/NavBar/Navbar";
+import Footer from "../../Common/Footer/Footer";
 import AccountTab from "../../Common/AccountTab";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp() {
+  const navigate = useNavigate();
   return (
     <>
-      <Navbar />
+      <Navbar
+        Class={
+          "border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
+        }
+        logo="../Traveler/Logo.png"
+        Tabs={["Home", "Blogs", "Packages"]}
+      />
       <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
           <div className="md:w-1/2 px-5">
@@ -91,7 +99,7 @@ export default function SignUp() {
             <div className="text-sm flex justify-between items-center mt-3">
               <p>If you already have an account...</p>
               <a
-                href="#"
+                onClick={() => navigate("/login")}
                 className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
               >
                 Login
@@ -117,7 +125,7 @@ export default function SignUp() {
           </div>
         </div>
       </section>
-      <Footer />
+      <Footer Class="dark:bg-gray-800" />
     </>
   );
 }

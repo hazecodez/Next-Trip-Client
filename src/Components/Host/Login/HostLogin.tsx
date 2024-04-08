@@ -3,16 +3,14 @@ import Footer from "../../Common/Footer/Footer";
 import AccountTab from "../../Common/AccountTab";
 import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function HostLogin() {
   const navigate = useNavigate();
   return (
     <>
       <Navbar
-        Class={
-          "border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-        }
-        logo="../Traveler/Logo.png"
-        Tabs={["Home", "Blogs", "Packages"]}
+        Class="border-red-700 bg-red-800 dark:bg-red-800 dark:border-red-800"
+        logo="../Host/HostLogo.png"
+        Tabs={["Dashboard", "My Packages", "Schedules", "Profile"]}
       />
       <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
@@ -54,7 +52,7 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="w-full block dark:bg-gray-800 hover:dark:bg-gray-700 focus:bg-blue-400 text-white font-semibold rounded-lg
+                className="w-full block dark:bg-red-800 hover:dark:bg-red-700 focus:bg-blue-400 text-white font-semibold rounded-lg
                 px-4 py-3 mt-6"
               >
                 Log In
@@ -75,7 +73,7 @@ export default function Login() {
             <div className="text-sm flex justify-between items-center mt-3">
               <p>If you don't have an account...</p>
               <a
-                onClick={() => navigate("/signup")}
+                onClick={() => navigate("/host/signup")}
                 className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
               >
                 Register
@@ -95,7 +93,7 @@ export default function Login() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-gray-800" />
+      <Footer Class="dark:bg-red-800" />
     </>
   );
 }

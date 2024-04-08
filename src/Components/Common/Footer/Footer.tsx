@@ -1,7 +1,11 @@
-export default function Footer() {
+type PropsType = {
+  Class : string
+}
+
+export default function Footer({Class}:PropsType) {
   return (
     <>
-      <footer className=" dark:bg-gray-900 ">
+      <footer className={Class}>
         <div className="max-w-screen-xl mx-auto p-4 md:py-8">
           <div className="sm:flex sm:items-center sm:justify-between">
             <a
