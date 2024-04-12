@@ -1,6 +1,6 @@
-import Navbar from "../../Common/NavBar/Navbar";
-import Footer from "../../Common/Footer/Footer";
-import AccountTab from "../../Common/AccountTab";
+import Navbar from "../../Components/Common/Navbar";
+import Footer from "../../Components/Common/Footer";
+import AccountTab from "../../Components/Common/AccountTab";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -8,21 +8,21 @@ export default function Login() {
   return (
     <>
       <Navbar
-        Class={
-          "border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-        }
-        logo="../Traveler/Logo.png"
-        Tabs={["Home", "Blogs", "Packages"]}
+        Class="border-red-700 bg-red-800 dark:bg-red-800 dark:border-red-800"
+        logo="../Host/HostLogo.png"
+        Tabs={["Dashboard", "My Packages", "Schedules", "Profile"]}
       />
       <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
           <div className="md:w-1/2 px-3">
-          <AccountTab tabNumber="1"/>
-            
-        {/* <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
+          <AccountTab tabNumber="2" />
+           
+            {/* <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
             <form className="mt-6" action="#" method="POST">
               <div>
-                <label className="block text-gray-700">Email Address</label>
+                <label className="block text-gray-700">
+                  Work Email Address
+                </label>
                 <input
                   type="email"
                   name=""
@@ -55,7 +55,7 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="w-full block dark:bg-gray-800 hover:dark:bg-gray-700 focus:bg-blue-400 text-white font-semibold rounded-lg
+                className="w-full block dark:bg-red-800 hover:dark:bg-red-700 focus:bg-blue-400 text-white font-semibold rounded-lg
                 px-4 py-3 mt-6"
               >
                 Log In
@@ -76,8 +76,8 @@ export default function Login() {
             <div className="text-sm flex justify-between items-center mt-3">
               <p>If you don't have an account...</p>
               <a
-                onClick={() => navigate("/signup")}
-                className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
+                onClick={() => navigate("/host/signup")}
+                className="text-sm font-semibold text-red-700 hover:text-red-900 focus:text-red-700"
               >
                 Register
               </a>
@@ -86,7 +86,9 @@ export default function Login() {
 
           <div className="w-1/2 md:block hidden ">
             <br />
-            <h2 className="text-2xl font-bold text-[#092635]">Login Your Personal Account</h2>
+            <h2 className="text-2xl font-bold text-[#C63D2F]">
+              Login Your MyBiz Account
+            </h2>
             <br />
             <img
               src="../Traveler/LoginPage.png"
@@ -96,7 +98,7 @@ export default function Login() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-gray-800" Logo="../Traveler/Logo.png"/>
+      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png"/>
     </>
   );
 }
