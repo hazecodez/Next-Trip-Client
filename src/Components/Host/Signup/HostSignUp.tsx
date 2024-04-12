@@ -1,6 +1,6 @@
 import Navbar from "../../Common/NavBar/Navbar";
 import Footer from "../../Common/Footer/Footer";
-import AccountTab from "../../Common/AccountTab";
+
 import { useNavigate } from "react-router-dom";
 
 export default function HostSignUp() {
@@ -14,7 +14,7 @@ export default function HostSignUp() {
       />
       <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
-          <div className="md:w-1/2 px-5">
+          <div className="md:w-1/2 px-3">
             {/* <h2 className="text-2xl font-bold text-[#002D74]">Login</h2>
         <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
             <form className="mt-6" action="#" method="POST">
@@ -23,17 +23,19 @@ export default function HostSignUp() {
                 <input
                   type="text"
                   name=""
-                  id=""
+                  id="1"
                   placeholder="Enter Full Name"
                   className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 />
               </div>
               <div>
-                <label className="block text-gray-700">Email Address</label>
+                <label className="block text-gray-700">
+                  Work Email Address
+                </label>
                 <input
                   type="email"
                   name=""
-                  id=""
+                  id="2"
                   placeholder="Enter Email Address"
                   className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 />
@@ -43,7 +45,7 @@ export default function HostSignUp() {
                 <input
                   type="number"
                   name=""
-                  id=""
+                  id="3"
                   placeholder="Enter Mobile Number"
                   className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 />
@@ -54,7 +56,7 @@ export default function HostSignUp() {
                 <input
                   type="password"
                   name=""
-                  id=""
+                  id="4"
                   placeholder="Enter Password"
                   className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                   focus:bg-white focus:outline-none"
@@ -67,7 +69,7 @@ export default function HostSignUp() {
                 <input
                   type="password"
                   name=""
-                  id=""
+                  id="5"
                   placeholder="Confirm Password"
                   className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                   focus:bg-white focus:outline-none"
@@ -98,7 +100,7 @@ export default function HostSignUp() {
               <p>If you already have an account...</p>
               <a
                 onClick={() => navigate("/host/login")}
-                className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
+                className="text-sm font-semibold text-red-700 hover:text-red-900 focus:text-red-700"
               >
                 Login
               </a>
@@ -107,7 +109,9 @@ export default function HostSignUp() {
 
           <div className="w-1/2 md:block hidden ">
             <br />
-            <AccountTab />
+            <h2 className="text-2xl font-bold text-[#C63D2F]">
+              Register Your MyBiz Account
+            </h2>
 
             <br />
             <img
@@ -123,7 +127,7 @@ export default function HostSignUp() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-red-800" />
+      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png"/>
     </>
   );
 }

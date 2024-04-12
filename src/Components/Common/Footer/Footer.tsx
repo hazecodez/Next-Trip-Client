@@ -1,8 +1,9 @@
 type PropsType = {
-  Class : string
+  Class : string;
+  Logo :string;
 }
 
-export default function Footer({Class}:PropsType) {
+export default function Footer({Class,Logo}:PropsType) {
   return (
     <>
       <footer className={Class}>
@@ -13,7 +14,7 @@ export default function Footer({Class}:PropsType) {
               className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
             >
               <img
-                src="../Traveler/Logo.png"
+                src={Logo}
                 className="h-auto w-36"
                 alt="Flowbite Logo"
               />
@@ -45,7 +46,7 @@ export default function Footer({Class}:PropsType) {
           <hr className="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
           <span className="block text-sm text-gray-500 sm:text-center dark:text-gray-400">
             © 2024{" "}
-            <a href="https://flowbite.com/" className="hover:underline">
+            <a href="#" className="hover:underline">
               Next Trip™
             </a>
             . All Rights Reserved.

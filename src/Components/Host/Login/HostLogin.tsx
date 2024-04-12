@@ -14,16 +14,19 @@ export default function HostLogin() {
       />
       <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
-          <div className="md:w-1/2 px-5">
-            {/* <h2 className="text-2xl font-bold text-[#002D74]">Login</h2>
-        <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
+          <div className="md:w-1/2 px-3">
+          <AccountTab tabNumber="2" />
+           
+            {/* <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
             <form className="mt-6" action="#" method="POST">
               <div>
-                <label className="block text-gray-700">Email Address</label>
+                <label className="block text-gray-700">
+                  Work Email Address
+                </label>
                 <input
                   type="email"
                   name=""
-                  id=""
+                  id="1"
                   placeholder="Enter Email Address"
                   className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 />
@@ -34,7 +37,7 @@ export default function HostLogin() {
                 <input
                   type="password"
                   name=""
-                  id=""
+                  id="2"
                   placeholder="Enter Password"
                   className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
                   focus:bg-white focus:outline-none"
@@ -74,7 +77,7 @@ export default function HostLogin() {
               <p>If you don't have an account...</p>
               <a
                 onClick={() => navigate("/host/signup")}
-                className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
+                className="text-sm font-semibold text-red-700 hover:text-red-900 focus:text-red-700"
               >
                 Register
               </a>
@@ -83,7 +86,9 @@ export default function HostLogin() {
 
           <div className="w-1/2 md:block hidden ">
             <br />
-            <AccountTab />
+            <h2 className="text-2xl font-bold text-[#C63D2F]">
+              Login Your MyBiz Account
+            </h2>
             <br />
             <img
               src="../Traveler/LoginPage.png"
@@ -93,7 +98,7 @@ export default function HostLogin() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-red-800" />
+      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png"/>
     </>
   );
 }

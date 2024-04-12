@@ -1,28 +1,43 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+type propTypes = {
+  tabNumber: string;
+};
 
-export default function AccountTab() {
+export default function AccountTab({ tabNumber }: propTypes) {
   const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState<string>(tabNumber);
 
   return (
     <>
       <div className="flex">
-        <div className="flex bg-gray-200 hover:bg-gray-200 rounded-lg transition p-1 bg-white-700">
+        <div className="flex bg-gray-200 hover:bg-gray-200 rounded-full transition p-2 bg-gray shadow-lg">
           <nav className="flex space-x-1" aria-label="Tabs" role="tablist">
             <button
               type="button"
-              className={`hs-tab-active:bg-gray-200 hs-tab-active:text-gray-800 hs-tab-active:hover:text-gray-800 dark:hs-tab-active:bg-gray-700 dark:hs-tab-active:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 rounded-lg hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:hover:text-gray-400 active`}
+              className={`bg-gray-200 text-gray-800 hover:text-gray-800 dark:bg-${
+                activeTab === "1" ? "gray" : ""
+              }-800 dark:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 rounded-full hover:text-gray-600 disabled:opacity-50 disabled:pointer-events-none dark:hover:text-dark-400 `}
               role="tab"
-              onClick={() => navigate("/login")}
+              onClick={() => {
+                navigate("/login");
+                setActiveTab("1");
+              }}
             >
-              &nbsp;&nbsp;PERSONAL ACCOUNT&nbsp;&nbsp;
+              PERSONAL ACCOUNT
             </button>
             <button
               type="button"
-              className={` hs-tab-active:bg-gray-200 hs-tab-active:text-gray-800 hs-tab-active:hover:text-gray-800 dark:hs-tab-active:bg-gray-700 dark:hs-tab-active:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 rounded-lg hover:text-blue-600 disabled:opacity-50 disabled:pointer-events-none dark:hover:text-gray-400 `}
+              className={`bg-gray-200 text-gray-800 hover:text-gray-800 dark:bg-${
+                activeTab === "2" ? "red" : ""
+              }-800 dark:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 rounded-full hover:text-gray-600 disabled:opacity-50 disabled:pointer-events-none dark:hover:text-gray-800 `}
               role="tab"
-              onClick={() => navigate("/host/login")}
+              onClick={() => {
+                navigate("/host/login");
+                setActiveTab("2");
+              }}
             >
-              &nbsp;&nbsp;MYBIZ ACCOUNT &nbsp;&nbsp;&nbsp;
+             MYBIZ ACCOUNT
             </button>
           </nav>
         </div>
