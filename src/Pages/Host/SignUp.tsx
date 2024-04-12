@@ -1,12 +1,37 @@
 import Navbar from "../../Components/Common/Navbar";
 import Footer from "../../Components/Common/Footer";
-
+import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
+import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
+import { toast, Toaster } from "sonner";
 
+interface formdata {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 export default function SignUp() {
   const navigate = useNavigate();
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: {
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      },
+      validationSchema: SignUpSchema,
+      onSubmit: Submission,
+    });
+  async function Submission(FormData: formdata) {
+    console.log(FormData);
+    toast.success("hehe");
+  }
   return (
     <>
+      <Toaster richColors expand={true} position="top-right" />
       <Navbar
         Class="border-red-700 bg-red-800 dark:bg-red-800 dark:border-red-800"
         logo="../Host/HostLogo.png"
@@ -17,68 +42,96 @@ export default function SignUp() {
           <div className="md:w-1/2 px-3">
             {/* <h2 className="text-2xl font-bold text-[#002D74]">Login</h2>
         <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
-            <form className="mt-6" action="#" method="POST">
+            <form className="mt-6" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-gray-700">Full Name</label>
                 <input
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.name}
                   type="text"
-                  name=""
-                  id="1"
+                  name="name"
+                  id="name"
                   placeholder="Enter Full Name"
-                  className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                  className={`w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 ${
+                    errors.name && touched.name
+                      ? "border focus:border-red-500 focus:bg-red-100"
+                      : "border focus:border-red-800 focus:bg-white"
+                  } focus:outline-none`}
                 />
+                {errors.name && touched.name && (
+                  <p className="text-red-500 text-xs">{errors.name}</p>
+                )}
               </div>
               <div>
                 <label className="block text-gray-700">
                   Work Email Address
                 </label>
                 <input
+                  onBlur={handleBlur}
+                  onChange={handleChange}
+                  value={values.email}
                   type="email"
-                  name=""
-                  id="2"
+                  name="email"
+                  id="email"
                   placeholder="Enter Email Address"
-                  className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                  className={`w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 ${
+                    errors.email && touched.email
+                      ? "border focus:border-red-500 focus:bg-red-100"
+                      : "border focus:border-red-800 focus:bg-white"
+                  } focus:outline-none`}
                 />
-              </div>
-              <div>
-                <label className="block text-gray-700">Mobile Number</label>
-                <input
-                  type="number"
-                  name=""
-                  id="3"
-                  placeholder="Enter Mobile Number"
-                  className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
-                />
+                {errors.email && touched.email && (
+                  <p className="text-red-500 text-xs">{errors.email}</p>
+                )}
               </div>
 
               <div className="mt-4">
                 <label className="block text-gray-700">Password</label>
                 <input
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
                   type="password"
-                  name=""
-                  id="4"
+                  name="password"
+                  id="password"
                   placeholder="Enter Password"
-                  className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
-                  focus:bg-white focus:outline-none"
+                  className={`w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 ${
+                    errors.password && touched.password
+                      ? "border focus:border-red-500 focus:bg-red-100"
+                      : "border focus:border-red-800 focus:bg-white"
+                  } focus:outline-none`}
                 />
+                {errors.password && touched.password && (
+                  <p className="text-red-500 text-xs">{errors.password}</p>
+                )}
               </div>
               <div className="mt-4">
-                <label className="block text-gray-700">
-                  Confirm strong Password
-                </label>
+                <label className="block text-gray-700">Confirm Password</label>
                 <input
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.confirmPassword}
                   type="password"
-                  name=""
-                  id="5"
+                  name="confirmPassword"
+                  id="confirmPassword"
                   placeholder="Confirm Password"
-                  className="w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
-                  focus:bg-white focus:outline-none"
+                  className={`w-full px-4 py-1 rounded-lg bg-gray-200 mt-2 ${
+                    errors.confirmPassword && touched.confirmPassword
+                      ? "border focus:border-red-500 focus:bg-red-100"
+                      : "border focus:border-red-800 focus:bg-white"
+                  } focus:outline-none`}
                 />
+                {errors.confirmPassword && touched.confirmPassword && (
+                  <p className="text-red-500 text-xs">
+                    {errors.confirmPassword}
+                  </p>
+                )}
               </div>
 
               <button
                 type="submit"
-                className="w-full block dark:bg-red-800 hover:dark:bg-red-700 focus:bg-blue-400 text-white font-semibold rounded-lg
+                className="w-full block dark:bg-red-800 hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
                 px-4 py-2 mt-6"
               >
                 Create Account
@@ -127,7 +180,7 @@ export default function SignUp() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png"/>
+      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png" />
     </>
   );
 }

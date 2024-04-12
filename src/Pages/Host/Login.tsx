@@ -2,9 +2,29 @@ import Navbar from "../../Components/Common/Navbar";
 import Footer from "../../Components/Common/Footer";
 import AccountTab from "../../Components/Common/AccountTab";
 import { useNavigate } from "react-router-dom";
+import LoginSchema from "../../Validations/Traveler/LoginSchema";
+import { useFormik } from "formik";
+
+interface formData {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
   const navigate = useNavigate();
+
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: {
+        email: "",
+        password: "",
+      },
+      validationSchema: LoginSchema,
+      onSubmit: Submission,
+    });
+  async function Submission(loginData: formData) {
+    console.log(loginData);
+  }
   return (
     <>
       <Navbar
@@ -15,33 +35,52 @@ export default function Login() {
       <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
           <div className="md:w-1/2 px-3">
-          <AccountTab tabNumber="2" />
-           
+            <AccountTab tabNumber="2" />
+
             {/* <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
-            <form className="mt-6" action="#" method="POST">
+            <form className="mt-6" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-gray-700">
                   Work Email Address
                 </label>
                 <input
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.email}
                   type="email"
-                  name=""
-                  id="1"
+                  name="email"
+                  id="email"
                   placeholder="Enter Email Address"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
+                  className={`w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 ${
+                    errors.email && touched.email
+                      ? "border focus:border-red-500 focus:bg-red-100"
+                      : "border focus:border-red-800 focus:bg-white"
+                  } focus:outline-none`}
                 />
+                {errors.email && touched.email && (
+                  <p className="text-red-500 text-xs">{errors.email}</p>
+                )}
               </div>
 
               <div className="mt-4">
                 <label className="block text-gray-700">Password</label>
                 <input
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.password}
                   type="password"
-                  name=""
-                  id="2"
+                  name="password"
+                  id="password"
                   placeholder="Enter Password"
-                  className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500
-                  focus:bg-white focus:outline-none"
+                  className={`w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 ${
+                    errors.password && touched.password
+                      ? "border focus:border-red-500 focus:bg-red-100"
+                      : "border focus:border-red-800 focus:bg-white"
+                  } focus:outline-none`}
                 />
+                {errors.password && touched.password && (
+                  <p className="text-red-500 text-xs">{errors.password}</p>
+                )}
               </div>
 
               <div className="text-right mt-2">
@@ -55,7 +94,7 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="w-full block dark:bg-red-800 hover:dark:bg-red-700 focus:bg-blue-400 text-white font-semibold rounded-lg
+                className="w-full block dark:bg-red-800 hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
                 px-4 py-3 mt-6"
               >
                 Log In
@@ -98,7 +137,7 @@ export default function Login() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png"/>
+      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png" />
     </>
   );
 }

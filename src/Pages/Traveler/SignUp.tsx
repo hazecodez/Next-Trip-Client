@@ -3,7 +3,7 @@ import Footer from "../../Components/Common/Footer";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
-// import { toast } from "sonner";
+import { toast, Toaster } from "sonner";
 
 interface FormValues {
   name: string;
@@ -28,10 +28,12 @@ export default function SignUp() {
 
   async function Submission(formdata: FormValues) {
     console.log(formdata);
+    toast.success("hhehhee")
   }
 
   return (
     <>
+    <Toaster richColors expand={true} position="top-right" />
       <Navbar
         Class={
           "border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
