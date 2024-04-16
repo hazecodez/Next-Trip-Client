@@ -3,7 +3,7 @@ import Footer from "../../Components/Common/Footer";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
-// import { toast, Toaster } from "sonner";
+import { toast, Toaster } from "sonner";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
 
 interface FormValues {
@@ -31,7 +31,10 @@ export default function SignUp() {
   async function Submission(formdata: FormValues) {
     try {
       await TravelerAPIs.signup(formdata);
-      navigate("/otp");
+      toast.success(`otp sent to ${formdata.email}`)
+      setTimeout(()=> {
+        navigate("/otp");
+      },3000)
     } catch (error) {
       console.log("Traveler signup error :", error);
     }
@@ -39,7 +42,7 @@ export default function SignUp() {
 
   return (
     <>
-      {/* <Toaster richColors expand={true} position="top-right" /> */}
+      <Toaster richColors expand={true} position="top-right" />
       <Navbar
         Class={
           "border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"

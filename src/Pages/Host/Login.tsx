@@ -4,6 +4,10 @@ import AccountTab from "../../Components/Common/AccountTab";
 import { useNavigate } from "react-router-dom";
 import LoginSchema from "../../Validations/Traveler/LoginSchema";
 import { useFormik } from "formik";
+import { hostLogin } from "../../Redux/Slices/Host";
+import { useDispatch } from "react-redux";
+import HostAPIs from "../../APIs/HostAPIs";
+import { toast, Toaster } from "sonner";
 
 interface formData {
   email: string;
@@ -12,6 +16,7 @@ interface formData {
 
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -23,10 +28,29 @@ export default function Login() {
       onSubmit: Submission,
     });
   async function Submission(loginData: formData) {
-    console.log(loginData);
+    try {
+      const loginResponse = await HostAPIs.login(loginData);
+
+      if (loginResponse?.data.verifiedHost.status) {
+        toast.success(loginResponse.data.verifiedHost.message);
+        dispatch(
+          hostLogin({
+            host: loginResponse.data.verifiedHost.host,
+          })
+        );
+        setTimeout(() => {
+          navigate("/host/");
+        }, 4000);
+      } else {
+        toast.error(loginResponse?.data.verifiedHost.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <>
+      <Toaster richColors expand={true} position="top-right" />
       <Navbar
         Class="border-red-700 bg-red-800 dark:bg-red-800 dark:border-red-800"
         logo="../Host/HostLogo.png"

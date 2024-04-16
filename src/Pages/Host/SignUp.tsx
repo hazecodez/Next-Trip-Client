@@ -4,6 +4,7 @@ import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { toast, Toaster } from "sonner";
+import HostAPIs from "../../APIs/HostAPIs";
 
 interface formdata {
   name: string;
@@ -26,8 +27,17 @@ export default function SignUp() {
       onSubmit: Submission,
     });
   async function Submission(FormData: formdata) {
-    console.log(FormData);
-    toast.success("hehe");
+    try {
+      const signUpResponse = await HostAPIs.signup(FormData);
+      if (signUpResponse?.data.status) {
+        toast.success(`otp send to ${FormData.email}`)
+        setTimeout(()=>{
+          navigate("/host/otp");
+        },3000)
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <>
