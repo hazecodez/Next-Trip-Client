@@ -4,7 +4,10 @@ import AccountTab from "../../Components/Common/AccountTab";
 import { useNavigate } from "react-router-dom";
 import LoginSchema from "../../Validations/Traveler/LoginSchema";
 import { useFormik } from "formik";
-import {toast,Toaster} from "sonner"
+import { toast, Toaster } from "sonner";
+import TravelerAPIs from "../../APIs/TravelerAPIs";
+import { TravelerLogin } from "../../Redux/Slices/Traveler";
+import { useDispatch } from "react-redux";
 
 interface LoginType {
   email: string;
@@ -12,6 +15,7 @@ interface LoginType {
 }
 export default function Login() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const { errors, handleBlur, handleChange, handleSubmit, touched, values } =
     useFormik({
@@ -23,12 +27,29 @@ export default function Login() {
       onSubmit: Submission,
     });
   async function Submission(LoginData: LoginType) {
-    console.log(LoginData);
-    toast.success("hhehhe")
+    try {
+      const loginResponse = await TravelerAPIs.login(LoginData);
+
+      if (loginResponse?.data.verifiedTraveler.status) {
+        toast.success(loginResponse.data.verifiedTraveler.message);
+        dispatch(
+          TravelerLogin({
+            traveler: loginResponse.data.verifiedTraveler.traveler,
+          })
+        );
+        setTimeout(()=>{
+          navigate("/");
+        },4000)
+      } else {
+        toast.error(loginResponse?.data.verifiedTraveler.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   return (
     <>
-    <Toaster richColors expand={true} position="top-right" />
+      <Toaster richColors expand={true} position="top-right" />
       <Navbar
         Class={
           "border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"

@@ -9,7 +9,7 @@ export default function HostRouter() {
       <Routes>
         <Route path="/login" element={<HostLoginPage />} />
         <Route path="/signup" element={<HostSignupPage />} />
-        <Route path="/otp" element={<Otp/>} />
+        <Route path="/otp" element={<Otp who="host" />} />
       </Routes>
     </>
   );

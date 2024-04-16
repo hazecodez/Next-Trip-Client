@@ -10,7 +10,7 @@ export default function TravelerRoute() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignUp />} />
-      <Route path="/otp" element={<Otp/>} />
+      <Route path="/otp" element={<Otp who="traveler" />} />
     </Routes>
   );
 }
