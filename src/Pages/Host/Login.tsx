@@ -7,7 +7,8 @@ import { useFormik } from "formik";
 import { hostLogin } from "../../Redux/Slices/Host";
 import { useDispatch } from "react-redux";
 import HostAPIs from "../../APIs/HostAPIs";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
+import useGoogleLoginHook from "../../Utils/Common/useGoogleAuth";
 
 interface formData {
   email: string;
@@ -17,6 +18,8 @@ interface formData {
 export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const GoogleLogin = useGoogleLoginHook({ who: "host" });
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -38,9 +41,7 @@ export default function Login() {
             host: loginResponse.data.verifiedHost.host,
           })
         );
-        setTimeout(() => {
-          navigate("/host/");
-        }, 4000);
+        navigate("/host/");
       } else {
         toast.error(loginResponse?.data.verifiedHost.message);
       }
@@ -50,9 +51,8 @@ export default function Login() {
   }
   return (
     <>
-      <Toaster richColors expand={true} position="top-right" />
       <Navbar
-        Class="border-red-700 bg-red-800 dark:bg-red-800 dark:border-red-800"
+      bgColor="bg-red-900"
         logo="../Host/HostLogo.png"
         Tabs={["Dashboard", "My Packages", "Schedules", "Profile"]}
       />
@@ -118,7 +118,7 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="w-full block dark:bg-red-800 hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
+                className="w-full block bg-red-900 hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
                 px-4 py-3 mt-6"
               >
                 Log In
@@ -131,12 +131,17 @@ export default function Login() {
               <hr className="border-gray-500" />
             </div>
 
-            <button className="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 ">
+            <button
+              onClick={() => {
+                GoogleLogin();
+              }}
+              className="bg-white border shadow py-2 w-full rounded-xl mt-5 flex justify-center text-gray-800 items-center text-sm hover:scale-105 duration-300 "
+            >
               <i className="fa-brands fa-google"></i>
               <span className="ml-4">Login with Google</span>
             </button>
 
-            <div className="text-sm flex justify-between items-center mt-3">
+            <div className="text-sm text-base-100 flex  justify-between items-center mt-3">
               <p>If you don't have an account...</p>
               <a
                 onClick={() => navigate("/host/signup")}
@@ -149,7 +154,7 @@ export default function Login() {
 
           <div className="w-1/2 md:block hidden ">
             <br />
-            <h2 className="text-2xl font-bold text-[#C63D2F]">
+            <h2 className="text-2xl font-bold text-red-900">
               Login Your MyBiz Account
             </h2>
             <br />
@@ -161,7 +166,7 @@ export default function Login() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png" />
+      <Footer bgColor="bg-red-900" Logo="../Host/HostLogo.png" />
     </>
   );
 }

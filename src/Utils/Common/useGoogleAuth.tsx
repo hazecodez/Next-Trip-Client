@@ -1,0 +1,57 @@
+import axios from "axios";
+import { useGoogleLogin } from "@react-oauth/google";
+import { toast } from "sonner";
+import TravelerAPIs from "../../APIs/TravelerAPIs";
+import { TravelerLogin } from "../../Redux/Slices/Traveler";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import HostAPIs from "../../APIs/HostAPIs";
+import { hostLogin } from "../../Redux/Slices/Host";
+
+const useGoogleLoginHook = ({
+  who,
+}: {
+  who: "traveler" | "host" | "admin";
+}) => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const GoogleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      const userInfo = await axios
+        .get("https://www.googleapis.com/oauth2/v3/userinfo", {
+          headers: { Authorization: `Bearer ${tokenResponse.access_token}` },
+        })
+        .then((res) => res.data);
+      try {
+        if (who === "traveler") {
+          const googleResponse = await TravelerAPIs.google_Auth(userInfo);
+          if (googleResponse?.data.status) {
+            toast.success(googleResponse.data.message);
+            dispatch(
+              TravelerLogin({ traveler: googleResponse.data.travelerData })
+            );
+            navigate("/");
+          } else {
+            toast.error(googleResponse?.data.message);
+          }
+        } else if (who === "host") {
+          const googleResponse = await HostAPIs.google_Auth(userInfo);
+          if (googleResponse?.data.status) {
+            toast.success(googleResponse.data.message);
+            dispatch(hostLogin({ host: googleResponse.data.hostData }));
+            navigate("/host/");
+          } else {
+            toast.error(googleResponse?.data.message);
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    },
+  });
+
+  return GoogleLogin;
+};
+
+export default useGoogleLoginHook;

@@ -3,8 +3,9 @@ import Footer from "../../Components/Common/Footer";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
+import useGoogleLoginHook from "../../Utils/Common/useGoogleAuth";
 
 interface FormValues {
   name: string;
@@ -15,6 +16,8 @@ interface FormValues {
 
 export default function SignUp() {
   const navigate = useNavigate();
+
+  const GoogleLogin = useGoogleLoginHook({ who: "traveler" });
 
   const { errors, handleBlur, handleChange, handleSubmit, values, touched } =
     useFormik({
@@ -31,10 +34,8 @@ export default function SignUp() {
   async function Submission(formdata: FormValues) {
     try {
       await TravelerAPIs.signup(formdata);
-      toast.success(`otp sent to ${formdata.email}`)
-      setTimeout(()=> {
-        navigate("/otp");
-      },3000)
+      toast.success(`otp sent to ${formdata.email}`);
+      navigate("/otp");
     } catch (error) {
       console.log("Traveler signup error :", error);
     }
@@ -42,11 +43,8 @@ export default function SignUp() {
 
   return (
     <>
-      <Toaster richColors expand={true} position="top-right" />
       <Navbar
-        Class={
-          "border-gray-200 bg-gray-50 dark:bg-gray-800 dark:border-gray-700"
-        }
+        bgColor="bg-base-100"
         logo="../Traveler/Logo.png"
         Tabs={["Home", "Blogs", "Packages"]}
       />
@@ -141,7 +139,7 @@ export default function SignUp() {
 
               <button
                 type="submit"
-                className="w-full block dark:bg-gray-800 hover:dark:bg-gray-700 focus:bg-gray-800 text-white font-semibold rounded-lg
+                className="w-full block bg-base-100 hover:dark:bg-gray-700 focus:bg-gray-800 text-white font-semibold rounded-lg
                 px-4 py-2 mt-6"
               >
                 Create Account
@@ -154,12 +152,17 @@ export default function SignUp() {
               <hr className="border-gray-500" />
             </div>
 
-            <button className="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 ">
+            <button
+              onClick={() => {
+                GoogleLogin();
+              }}
+              className="bg-white border shadow py-2 w-full rounded-xl mt-5 flex justify-center text-gray-800 items-center text-sm hover:scale-105 duration-300 "
+            >
               <i className="fa-brands fa-google"></i>
-              <span className="ml-4">Sign Up with Google</span>
+              <span className="ml-4">Login with Google</span>
             </button>
 
-            <div className="text-sm flex justify-between items-center mt-3">
+            <div className="text-sm text-base-100 flex justify-between items-center mt-3">
               <p>If you already have an account...</p>
               <a
                 onClick={() => navigate("/login")}
@@ -190,7 +193,7 @@ export default function SignUp() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-gray-800" Logo="../Traveler/Logo.png" />
+      <Footer bgColor="bg-base-100" Logo="../Traveler/Logo.png" />
     </>
   );
 }

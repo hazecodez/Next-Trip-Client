@@ -3,8 +3,9 @@ import Footer from "../../Components/Common/Footer";
 import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 import HostAPIs from "../../APIs/HostAPIs";
+import useGoogleLoginHook from "../../Utils/Common/useGoogleAuth";
 
 interface formdata {
   name: string;
@@ -14,6 +15,8 @@ interface formdata {
 }
 export default function SignUp() {
   const navigate = useNavigate();
+
+  const GoogleLogin = useGoogleLoginHook({ who: "host" });
 
   const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
@@ -30,10 +33,8 @@ export default function SignUp() {
     try {
       const signUpResponse = await HostAPIs.signup(FormData);
       if (signUpResponse?.data.status) {
-        toast.success(`otp send to ${FormData.email}`)
-        setTimeout(()=>{
-          navigate("/host/otp");
-        },3000)
+        toast.success(`otp send to ${FormData.email}`);
+        navigate("/host/otp");
       }
     } catch (error) {
       console.log(error);
@@ -41,9 +42,8 @@ export default function SignUp() {
   }
   return (
     <>
-      <Toaster richColors expand={true} position="top-right" />
       <Navbar
-        Class="border-red-700 bg-red-800 dark:bg-red-800 dark:border-red-800"
+        bgColor="bg-red-900"
         logo="../Host/HostLogo.png"
         Tabs={["Dashboard", "My Packages", "Schedules", "Profile"]}
       />
@@ -141,7 +141,7 @@ export default function SignUp() {
 
               <button
                 type="submit"
-                className="w-full block dark:bg-red-800 hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
+                className="w-full block bg-red-900 hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
                 px-4 py-2 mt-6"
               >
                 Create Account
@@ -154,12 +154,17 @@ export default function SignUp() {
               <hr className="border-gray-500" />
             </div>
 
-            <button className="bg-white border py-2 w-full rounded-xl mt-5 flex justify-center items-center text-sm hover:scale-105 duration-300 ">
+            <button
+              onClick={() => {
+                GoogleLogin();
+              }}
+              className="bg-white border shadow py-2 w-full rounded-xl mt-5 flex justify-center text-gray-800 items-center text-sm hover:scale-105 duration-300 "
+            >
               <i className="fa-brands fa-google"></i>
-              <span className="ml-4">Sign Up with Google</span>
+              <span className="ml-4">Login with Google</span>
             </button>
 
-            <div className="text-sm flex justify-between items-center mt-3">
+            <div className="text-sm text-base-100 flex justify-between items-center mt-3">
               <p>If you already have an account...</p>
               <a
                 onClick={() => navigate("/host/login")}
@@ -190,7 +195,7 @@ export default function SignUp() {
           </div>
         </div>
       </section>
-      <Footer Class="dark:bg-red-800" Logo="../Host/HostLogo.png" />
+      <Footer bgColor="bg-red-900" Logo="../Host/HostLogo.png" />
     </>
   );
 }

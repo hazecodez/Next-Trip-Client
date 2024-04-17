@@ -15,9 +15,9 @@ export default function AccountTab({ tabNumber }: propTypes) {
           <nav className="flex space-x-1" aria-label="Tabs" role="tablist">
             <button
               type="button"
-              className={`bg-gray-200 text-gray-800 hover:text-gray-800 dark:bg-${
-                activeTab === "1" ? "gray" : ""
-              }-800 dark:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 rounded-full hover:text-gray-600 disabled:opacity-50 disabled:pointer-events-none dark:hover:text-dark-400 `}
+              className={`bg-gray-200 ${
+                activeTab === "1" ? "bg-base-100 text-white" : ""
+              } hover:text-gray-800 dark:bg-gray-800 dark:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-800  rounded-full hover:text-neutral-content disabled:opacity-50 disabled:pointer-events-none dark:hover:text-dark-800 `}
               role="tab"
               onClick={() => {
                 navigate("/login");
@@ -28,16 +28,16 @@ export default function AccountTab({ tabNumber }: propTypes) {
             </button>
             <button
               type="button"
-              className={`bg-gray-200 text-gray-800 hover:text-gray-800 dark:bg-${
-                activeTab === "2" ? "red" : ""
-              }-800 dark:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-500 rounded-full hover:text-gray-600 disabled:opacity-50 disabled:pointer-events-none dark:hover:text-gray-800 `}
+              className={`bg-gray-200 text-gray-800 hover:text-gray-800 ${
+                activeTab === "2" ? "bg-red-900 text-white" : ""
+              } dark:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center  rounded-full hover:text-neutral-content disabled:opacity-50 disabled:pointer-events-none dark:hover:text-gray-800 `}
               role="tab"
               onClick={() => {
                 navigate("/host/login");
                 setActiveTab("2");
               }}
             >
-             MYBIZ ACCOUNT
+              MYBIZ ACCOUNT
             </button>
           </nav>
         </div>

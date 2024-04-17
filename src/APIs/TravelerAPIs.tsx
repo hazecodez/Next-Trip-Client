@@ -1,17 +1,14 @@
 import axiosInstance from "./AxiosInstance";
+
 interface LoginType {
-  email: string;
-  password: string;
-}
-interface FormValues {
-  name: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
+  email?: string;
+  password?: string;
+  sub?: string;
+  name?: string;
 }
 
 const TravelerAPIs = {
-  signup: async (formData: FormValues) => {
+  signup: async (formData: LoginType) => {
     try {
       const signUpResponse = await axiosInstance.post("/signup", formData);
       return signUpResponse;
@@ -33,6 +30,17 @@ const TravelerAPIs = {
       return loginResponse;
     } catch (error) {
       console.log("Didn't get response from traveler login API", error);
+    }
+  },
+  google_Auth: async (userInfo: LoginType) => {
+    try {
+      const googleResponse = await axiosInstance.post(
+        "/google_login",
+        userInfo
+      );
+      return googleResponse;
+    } catch (error) {
+      console.log("Didn't get response from traveler google-login API", error);
     }
   },
 };

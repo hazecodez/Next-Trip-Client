@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import { TravelerLogin } from "../../Redux/Slices/Traveler";
 import { hostLogin } from "../../Redux/Slices/Host";
 import HostAPIs from "../../APIs/HostAPIs";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
 
 export default function Otp({ who }: { who: "host" | "traveler" }) {
   const dispatch = useDispatch();
@@ -83,9 +83,7 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
           );
           Cookies.remove("travelerOtp");
           toast.success(OtpResponse.data.message);
-          setTimeout(() => {
-            navigate("/");
-          }, 3000);
+          navigate("/");
         }
       } else if (who === "host") {
         const otpResponse = await HostAPIs.verifyOTP(fullOTP);
@@ -96,9 +94,7 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
             })
           );
           toast.success(otpResponse.data.message);
-          setTimeout(() => {
-            navigate("/host/");
-          }, 3000);
+          navigate("/host/");
         }
       }
     } catch (error) {
@@ -107,7 +103,6 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
   }
   return (
     <>
-    <Toaster richColors expand={true} position="top-right" />
       <div className="relative flex min-h-screen flex-col justify-center overflow-hidden bg-gray-50 py-12">
         <div className="relative bg-white px-6 pt-10 pb-9 shadow-xl mx-auto w-full max-w-lg rounded-2xl">
           <div className="mx-auto flex w-full max-w-md flex-col space-y-16">
