@@ -1,4 +1,4 @@
-import Navbar from "../../Components/Common/Navbar";
+import Navbar from "../../Components/Host/Navbar";
 import Footer from "../../Components/Common/Footer";
 import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
 import { useFormik } from "formik";
@@ -42,11 +42,7 @@ export default function SignUp() {
   }
   return (
     <>
-      <Navbar
-        bgColor="bg-red-900"
-        logo="../Host/HostLogo.png"
-        Tabs={["Dashboard", "My Packages", "Schedules", "Profile"]}
-      />
+      <Navbar />
       <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
           <div className="md:w-1/2 px-3">

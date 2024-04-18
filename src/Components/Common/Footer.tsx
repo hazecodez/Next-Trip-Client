@@ -7,7 +7,7 @@ export default function Footer({ bgColor, Logo }: PropsType) {
   return (
     <>
       <footer
-        className={`footer footer-center p-10 ${bgColor} text-white-content `}
+        className={`footer footer-center p-10 ${bgColor} text-white-content  `}
       >
         <aside>
           <img src={Logo} className="h-auto w-36" alt="Flowbite Logo" />

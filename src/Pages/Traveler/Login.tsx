@@ -1,4 +1,4 @@
-import Navbar from "../../Components/Common/Navbar";
+import Navbar from "../../Components/Traveler/Navbar";
 import Footer from "../../Components/Common/Footer";
 import AccountTab from "../../Components/Common/AccountTab";
 import { useNavigate } from "react-router-dom";
@@ -51,11 +51,7 @@ export default function Login() {
 
   return (
     <>
-      <Navbar
-        bgColor="bg-base-100"
-        logo="../Traveler/Logo.png"
-        Tabs={["Home", "Blogs", "Packages"]}
-      />
+      <Navbar />
       <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
         <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
           <div className="md:w-1/2 px-3">

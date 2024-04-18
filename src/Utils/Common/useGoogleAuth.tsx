@@ -7,6 +7,8 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import HostAPIs from "../../APIs/HostAPIs";
 import { hostLogin } from "../../Redux/Slices/Host";
+import { adminLogin } from "../../Redux/Slices/Admin";
+import AdminAPI from "../../APIs/AdminAPIs";
 
 const useGoogleLoginHook = ({
   who,
@@ -43,6 +45,15 @@ const useGoogleLoginHook = ({
             navigate("/host/");
           } else {
             toast.error(googleResponse?.data.message);
+          }
+        } else if (who === "admin") {
+          const googleResponse = await AdminAPI.google_Auth(userInfo);
+          if (googleResponse?.data.status) {
+            toast.success(googleResponse.data.message);
+            dispatch(adminLogin({ admin: googleResponse.data.adminData }));
+            navigate("/admin/travelers");
+          }else {
+            toast.error(googleResponse?.data.message)
           }
         }
       } catch (error) {

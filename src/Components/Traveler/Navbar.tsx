@@ -1,13 +1,33 @@
-type ClassType = {
-  bgColor: string;
-  logo: string;
-  Tabs: string[];
-};
+import NavLinks from "../Common/NavLinks";
+import LogoutCard from "../Common/LogoutCard";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { TravelerLogout } from "../../Redux/Slices/Traveler";
+import Cookies from "js-cookie";
+import { toast } from "sonner";
 
-export default function Navbar({ bgColor, logo, Tabs }: ClassType) {
+export default function Navbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const logoutModal = () => {
+    const modal = document.getElementById(
+      "my_modal_6"
+    ) as HTMLDialogElement | null;
+    if (modal) {
+      modal.showModal();
+    }
+  };
+
+  function logout() {
+    dispatch(TravelerLogout());
+    Cookies.remove("travelerToken");
+    toast.success("You have been logged out successfully.");
+    navigate("/login");
+  }
+
   return (
     <>
-      <div className={`navbar ${bgColor}`}>
+      <div className={`navbar bg-base-100`}>
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -30,26 +50,29 @@ export default function Navbar({ bgColor, logo, Tabs }: ClassType) {
               tabIndex={0}
               className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-              {Tabs.map((tab) => (
-                <li>
-                  <a>{tab}</a>
-                </li>
-              ))}
+              <NavLinks name="Home" link="/" />
+              <NavLinks name="Blogs" link="/blogs" />
+              <NavLinks name="Stays" link="/stays" />
+              <NavLinks name="Flights" link="/flights" />
+              <NavLinks name="Packages" link="/packages" />
             </ul>
           </div>
-          <img src={logo} className="h-auto w-28" alt="Flowbite Logo" />
+          <img
+            src="../Traveler/Logo.png"
+            className="h-auto w-28"
+            alt="Flowbite Logo"
+          />
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            {Tabs.map((tab) => (
-              <li>
-                <a>{tab}</a>
-              </li>
-            ))}
+            <NavLinks name="Home" link="/" />
+            <NavLinks name="Blogs" link="/blogs" />
+            <NavLinks name="Stays" link="/stays" />
+            <NavLinks name="Flights" link="/flights" />
+            <NavLinks name="Packages" link="/packages" />
           </ul>
         </div>
         <div className="navbar-end">
-          
           <button className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -109,14 +132,15 @@ export default function Navbar({ bgColor, logo, Tabs }: ClassType) {
                 </a>
               </li>
               <li>
-                <a>Settings</a>
+                <a>Chats</a>
               </li>
               <li>
-                <a>Logout</a>
+                <a onClick={logoutModal}>Logout</a>
               </li>
             </ul>
           </div>
         </div>
+        <LogoutCard action={logout} />
       </div>
     </>
   );
