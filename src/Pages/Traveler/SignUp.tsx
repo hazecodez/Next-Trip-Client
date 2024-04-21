@@ -1,5 +1,3 @@
-import Navbar from "../../Components/Traveler/Navbar";
-import Footer from "../../Components/Common/Footer";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
@@ -43,14 +41,13 @@ export default function SignUp() {
 
   return (
     <>
-      <Navbar />
-      <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
-        <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
+      <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center" style={{ backgroundImage: "url('../Admin/LoginBg.jpg')" }}>
+        <div className=" p-5 flex rounded-2xl shadow-lg max-w-3xl glass">
           <div className="md:w-1/2 px-3">
             {/* <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
             <form className="mt-6" onSubmit={handleSubmit}>
               <div>
-                <label className="block text-gray-700">Full Name</label>
+                <label className="block text-base-100 font-bold">Full Name</label>
                 <input
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -70,7 +67,7 @@ export default function SignUp() {
                 )}
               </div>
               <div>
-                <label className="block text-gray-700">Email Address</label>
+                <label className="block text-base-100 font-bold">Email Address</label>
                 <input
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -91,7 +88,7 @@ export default function SignUp() {
               </div>
 
               <div className="mt-4">
-                <label className="block text-gray-700">Password</label>
+                <label className="block text-base-100 font-bold">Password</label>
                 <input
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -111,7 +108,7 @@ export default function SignUp() {
                 )}
               </div>
               <div className="mt-4">
-                <label className="block text-gray-700">Confirm Password</label>
+                <label className="block text-base-100 font-bold">Confirm Password</label>
                 <input
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -152,13 +149,13 @@ export default function SignUp() {
               onClick={() => {
                 GoogleLogin();
               }}
-              className="bg-white border shadow py-2 w-full rounded-xl mt-5 flex justify-center text-gray-800 items-center text-sm hover:scale-105 duration-300 "
+              className="bg-white border shadow py-2 w-full rounded-xl mt-5 flex justify-center text-base-100  items-center text-sm hover:scale-105 duration-300 "
             >
               <i className="fa-brands fa-google"></i>
               <span className="ml-4">Login with Google</span>
             </button>
 
-            <div className="text-sm text-base-100 flex justify-between items-center mt-3">
+            <div className="text-sm text-base-100  flex justify-between items-center mt-3">
               <p>If you already have an account...</p>
               <a
                 onClick={() => navigate("/login")}
@@ -181,15 +178,14 @@ export default function SignUp() {
               className="rounded-2xl"
               alt="page img"
             />
-            <img
+            {/* <img
               src="../Traveler/SignUpLogo.png"
               className="rounded-2xl"
               alt="page img"
-            />
+            /> */}
           </div>
         </div>
       </section>
-      <Footer bgColor="bg-base-100" Logo="../Traveler/Logo.png" />
     </>
   );
 }

@@ -25,7 +25,7 @@ export default function Navbar() {
   }
   return (
     <>
-      <div className="navbar bg-gray glass relative z-10">
+      <div className="navbar bg-[#24263A] glass relative z-10">
         <div className="navbar-start">
           <div className="dropdown">
             <div className="drawer">
@@ -61,14 +61,14 @@ export default function Navbar() {
                   aria-label="close sidebar"
                   className="drawer-overlay"
                 ></label>
-                <ul className="menu p-8 w-80 min-h-full bg-base-200 text-2xl font-mono font-bold text-base-content">
-                  <NavLinks link="/admin/dashboard" name="Dashboard" />
-                  <NavLinks link="/admin/travelers" name="Travelers" />
-                  <NavLinks name="Travel Hosts" link="/admin/hosts" />
-                  <NavLinks link="/admin/packages" name="Packages" />
-                  <NavLinks link="/admin/blogs" name="Blogs" />
+                <ul className="menu p-8 w-80 min-h-full bg-[#24263A] text-2xl font-mono font-bold text-base-content">
+                  <NavLinks color="[#DBDFEA" link="/admin/" name="Dashboard" />
+                  <NavLinks color="[#DBDFEA" link="/admin/travelers" name="Travelers" />
+                  <NavLinks color="[#DBDFEA" name="Travel Hosts" link="/admin/hosts" />
+                  <NavLinks color="[#DBDFEA" link="/admin/packages" name="Packages" />
+                  <NavLinks color="[#DBDFEA" link="/admin/blogs" name="Blogs" />
                   <li onClick={logoutModal} className="mt-auto">
-                    <NavLinks link="" name="Logout" />
+                    <NavLinks color="[#DBDFEA" link="" name="Logout" />
                   </li>
                 </ul>
               </div>
@@ -116,7 +116,7 @@ export default function Navbar() {
           </button>
         </div>
       </div>
-      <LogoutCard action={logout} />
+      <LogoutCard color="[#24263A]" action={logout} />
     </>
   );
 }

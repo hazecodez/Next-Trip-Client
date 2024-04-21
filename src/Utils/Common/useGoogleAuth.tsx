@@ -51,7 +51,7 @@ const useGoogleLoginHook = ({
           if (googleResponse?.data.status) {
             toast.success(googleResponse.data.message);
             dispatch(adminLogin({ admin: googleResponse.data.adminData }));
-            navigate("/admin/travelers");
+            navigate("/admin/");
           }else {
             toast.error(googleResponse?.data.message)
           }

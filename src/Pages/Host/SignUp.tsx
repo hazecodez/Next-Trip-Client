@@ -1,5 +1,3 @@
-import Navbar from "../../Components/Host/Navbar";
-import Footer from "../../Components/Common/Footer";
 import SignUpSchema from "../../Validations/Traveler/SignUpSchema";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
@@ -42,9 +40,11 @@ export default function SignUp() {
   }
   return (
     <>
-      <Navbar />
-      <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
-        <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
+      <section
+        className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center"
+        style={{ backgroundImage: "url('../Admin/LoginBg.jpg')" }}
+      >
+        <div className=" p-5 flex rounded-2xl shadow-lg max-w-3xl glass">
           <div className="md:w-1/2 px-3">
             {/* <h2 className="text-2xl font-bold text-[#002D74]">Login</h2>
         <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
@@ -137,7 +137,7 @@ export default function SignUp() {
 
               <button
                 type="submit"
-                className="w-full block bg-red-900 hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
+                className="w-full block bg-[#C63D2F] hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
                 px-4 py-2 mt-6"
               >
                 Create Account
@@ -191,7 +191,6 @@ export default function SignUp() {
           </div>
         </div>
       </section>
-      <Footer bgColor="bg-red-900" Logo="../Host/HostLogo.png" />
     </>
   );
 }

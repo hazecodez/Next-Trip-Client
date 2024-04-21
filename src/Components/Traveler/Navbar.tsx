@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className={`navbar bg-base-100`}>
+      <div className={`navbar bg-base-100 z-10`}>
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -48,13 +48,13 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
-              <NavLinks name="Home" link="/" />
-              <NavLinks name="Blogs" link="/blogs" />
-              <NavLinks name="Stays" link="/stays" />
-              <NavLinks name="Flights" link="/flights" />
-              <NavLinks name="Packages" link="/packages" />
+              <NavLinks color="[#9EC8B9]" name="Home" link="/" />
+              <NavLinks color="[#9EC8B9]" name="Blogs" link="/blogs" />
+              <NavLinks color="[#9EC8B9]" name="Stays" link="/stays" />
+              <NavLinks color="[#9EC8B9]" name="Flights" link="/flights" />
+              <NavLinks color="[#9EC8B9]" name="Packages" link="/packages" />
             </ul>
           </div>
           <img
@@ -65,11 +65,11 @@ export default function Navbar() {
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            <NavLinks name="Home" link="/" />
-            <NavLinks name="Blogs" link="/blogs" />
-            <NavLinks name="Stays" link="/stays" />
-            <NavLinks name="Flights" link="/flights" />
-            <NavLinks name="Packages" link="/packages" />
+            <NavLinks color="[#9EC8B9]" name="Home" link="/" />
+            <NavLinks color="[#9EC8B9]" name="Blogs" link="/blogs" />
+            <NavLinks color="[#9EC8B9]" name="Stays" link="/stays" />
+            <NavLinks color="[#9EC8B9]" name="Flights" link="/flights" />
+            <NavLinks color="[#9EC8B9]" name="Packages" link="/packages" />
           </ul>
         </div>
         <div className="navbar-end">
@@ -123,12 +123,12 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
                 <a className="justify-between">
                   Profile
-                  <span className="badge">New</span>
+                  <span className="badge bg-[#9EC8B9] text-base-100">New</span>
                 </a>
               </li>
               <li>
@@ -140,7 +140,7 @@ export default function Navbar() {
             </ul>
           </div>
         </div>
-        <LogoutCard action={logout} />
+        <LogoutCard action={logout} color="base-100" />
       </div>
     </>
   );

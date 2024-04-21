@@ -1,5 +1,3 @@
-import Navbar from "../../Components/Traveler/Navbar";
-import Footer from "../../Components/Common/Footer";
 import AccountTab from "../../Components/Common/AccountTab";
 import { useNavigate } from "react-router-dom";
 import LoginSchema from "../../Validations/Traveler/LoginSchema";
@@ -51,16 +49,15 @@ export default function Login() {
 
   return (
     <>
-      <Navbar />
-      <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
-        <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
+      <section className="border-red-500  min-h-screen flex items-center justify-center" style={{ backgroundImage: "url('../Admin/LoginBg.jpg')" }}>
+        <div className="p-5 flex rounded-2xl shadow-lg max-w-3xl glass">
           <div className="md:w-1/2 px-3">
             <AccountTab tabNumber="1" />
 
             {/* <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
             <form className="mt-6" onSubmit={handleSubmit}>
               <div>
-                <label className="block text-gray-700">Email Address</label>
+                <label className="block text-base-100 font-bold">Email Address</label>
                 <input
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -81,7 +78,7 @@ export default function Login() {
               </div>
 
               <div className="mt-4">
-                <label className="block text-gray-700">Password</label>
+                <label className="block text-base-100 font-bold">Password</label>
                 <input
                   onChange={handleChange}
                   onBlur={handleBlur}
@@ -104,7 +101,7 @@ export default function Login() {
               <div className="text-right mt-2">
                 <a
                   href="#"
-                  className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
+                  className="text-sm font-semibold text-base-100 hover:text-blue-700 focus:text-blue-700"
                 >
                   Forgot Password?
                 </a>
@@ -119,7 +116,7 @@ export default function Login() {
               </button>
             </form>
 
-            <div className="mt-7 grid grid-cols-3 items-center text-gray-500">
+            <div className="mt-7 grid grid-cols-3 items-center text-base-100">
               <hr className="border-gray-500" />
               <p className="text-center text-sm">OR</p>
               <hr className="border-gray-500" />
@@ -129,7 +126,7 @@ export default function Login() {
               onClick={() => {
                 GoogleLogin();
               }}
-              className="bg-white border shadow py-2 w-full rounded-xl mt-5 flex justify-center text-gray-800 items-center text-sm hover:scale-105 duration-300 "
+              className="bg-white border shadow py-2 w-full rounded-xl mt-5 flex justify-center text-base-100 items-center text-sm hover:scale-105 duration-300 "
             >
               <i className="fa-brands fa-google"></i>
               <span className="ml-4">Login with Google</span>
@@ -160,7 +157,6 @@ export default function Login() {
           </div>
         </div>
       </section>
-      <Footer bgColor="bg-base-100" Logo="../Traveler/Logo.png" />
     </>
   );
 }

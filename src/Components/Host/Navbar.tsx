@@ -26,13 +26,13 @@ export default function Navbar() {
   }
   return (
     <>
-      <div className={`navbar bg-red-900`}>
+      <div className={`navbar bg-[#C63D2F] sticky top-0 z-10`}>
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 text-[#FFBB5C]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -47,12 +47,11 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu  menu-lg font-bold dropdown-content mt-3 z-[1] p-2 shadow bg-[#C63D2F] rounded-box w-52"
             >
-              <NavLinks name="Dashboard" link="/host/dashboard" />
-              <NavLinks name="My Packages" link="/host/my_packages" />
-              <NavLinks name="Schedules" link="/host/schedules" />
-              <NavLinks name="Profile" link="/host/profile" />
+              <NavLinks color="[#FFBB5C]" name="Dashboard" link="/host/" />
+              <NavLinks color="[#FFBB5C]"  name="My Packages" link="/host/my_packages" />
+              <NavLinks color="[#FFBB5C]"  name="Schedules" link="/host/schedules" />
             </ul>
           </div>
           <img
@@ -63,17 +62,17 @@ export default function Navbar() {
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
-            <NavLinks name="Dashboard" link="/host/dashboard" />
-            <NavLinks name="My Packages" link="/host/my_packages" />
-            <NavLinks name="Schedules" link="/host/schedules" />
-            <NavLinks name="Profile" link="/host/profile" />
+            <NavLinks color="[#FFBB5C]" name="Dashboard" link="/host/" />
+            <NavLinks  color="[#FFBB5C]" name="My Packages" link="/host/my_packages" />
+            <NavLinks color="[#FFBB5C]" name="Schedules" link="/host/schedules" />
+            
           </ul>
         </div>
         <div className="navbar-end">
           <button className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
+              className="h-5 w-5 text-[#FFBB5C]"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -90,7 +89,7 @@ export default function Navbar() {
             <div className="indicator">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
+                className="h-5 w-5 text-[#FFBB5C]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -120,16 +119,20 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu font-bold menu-lg text-[#FFBB5C] dropdown-content mt-3 z-[1] p-2 shadow bg-[#C63D2F] rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
+                <a
+                  className="justify-between"
+                  onClick={() => navigate("/host/profile")}
+                >
                   Profile
-                  <span className="badge">New</span>
+                  
                 </a>
               </li>
               <li>
-                <a>Chats</a>
+                <a>
+                  Chats <span className="badge bg-[#FFBB5C] border-none text-black">New</span></a>
               </li>
               <li>
                 <a onClick={logoutModal}>Logout</a>
@@ -137,7 +140,7 @@ export default function Navbar() {
             </ul>
           </div>
         </div>
-        <LogoutCard action={logout} />
+        <LogoutCard color="[#C63D2F]" action={logout} />
       </div>
     </>
   );

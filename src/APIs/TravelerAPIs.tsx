@@ -24,6 +24,14 @@ const TravelerAPIs = {
       console.log("Didn't get response from travler confirmOTP API", error);
     }
   },
+  resendOtp: async () => {
+    try {
+      const response = await axiosInstance.get("/resend_otp");
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from resend otp API", error);
+    }
+  },
   login: async (formData: LoginType) => {
     try {
       const loginResponse = await axiosInstance.post("/login", formData);

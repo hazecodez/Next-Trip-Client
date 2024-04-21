@@ -15,7 +15,7 @@ export default function AdminRoute() {
         <Route path="/hosts" element={<HostsList/>} />
         <Route path="/blogs" element={<Blogs/>} />
         <Route path="/packages" element={<Packages/>} />
-        <Route path="/dashboard" element={<Dashboard/>} />
+        <Route path="/" element={<Dashboard/>} />
       </Routes>
     </>
   );

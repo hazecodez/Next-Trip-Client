@@ -1,12 +1,13 @@
 interface LogoutCardProps {
   action: () => void;
+  color:string;
 }
 
-const LogoutCard: React.FC<LogoutCardProps> = ({ action }) => {
+const LogoutCard: React.FC<LogoutCardProps> = ({ action,color }: LogoutCardProps) => {
   return (
     <>
       <dialog id="my_modal_6" className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box">
+        <div className={`modal-box bg-${color}`}>
           <h3 className="font-bold text-lg">Are you sure ?</h3>
           <p className="py-4">You want to log out?</p>
           <div className="modal-action">

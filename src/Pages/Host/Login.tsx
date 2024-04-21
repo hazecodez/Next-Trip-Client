@@ -1,5 +1,3 @@
-import Navbar from "../../Components/Host/Navbar";
-import Footer from "../../Components/Common/Footer";
 import AccountTab from "../../Components/Common/AccountTab";
 import { useNavigate } from "react-router-dom";
 import LoginSchema from "../../Validations/Traveler/LoginSchema";
@@ -51,9 +49,11 @@ export default function Login() {
   }
   return (
     <>
-      <Navbar />
-      <section className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center">
-        <div className="bg-gray-100 p-5 flex rounded-2xl shadow-lg max-w-3xl">
+      <section
+        className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center  "
+        style={{ backgroundImage: "url('../Host/loginBg.jpg')" }}
+      >
+        <div className=" p-5 flex rounded-2xl shadow-lg max-w-3xl glass">
           <div className="md:w-1/2 px-3">
             <AccountTab tabNumber="2" />
 
@@ -114,7 +114,7 @@ export default function Login() {
 
               <button
                 type="submit"
-                className="w-full block bg-red-900 hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
+                className="w-full block bg-[#C63D2F] hover:dark:bg-red-700 focus:bg-red-400 text-white font-semibold rounded-lg
                 px-4 py-3 mt-6"
               >
                 Log In
@@ -162,7 +162,6 @@ export default function Login() {
           </div>
         </div>
       </section>
-      <Footer bgColor="bg-red-900" Logo="../Host/HostLogo.png" />
     </>
   );
 }
