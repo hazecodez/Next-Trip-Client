@@ -37,7 +37,7 @@ export default function CreatePackage() {
       const response = await HostAPIs.create_package(formData, previewSources);
       if(response?.data.status) {
         toast.success(response.data.message);
-        
+        navigate("/host/my_packages");
       }else {
         toast.error(response?.data.message)
       }
