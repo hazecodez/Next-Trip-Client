@@ -1,18 +1,13 @@
 import axiosInstance from "./AxiosInstance";
+import Package from "../Interfaces/common/Package";
+import LoginType from "../Interfaces/common/LoginType";
 
-interface LoginType {
-  email?: string;
-  password?: string;
-  name?: string;
-  sub?:string;
-}
 const HostAPIs = {
   signup: async (formData: LoginType) => {
     try {
       console.log(formData);
       const signUpResponse = await axiosInstance.post("/host/signup", formData);
-      
-      
+
       return signUpResponse;
     } catch (error) {
       console.log("Didn't get response from Host signup API", error);
@@ -43,6 +38,17 @@ const HostAPIs = {
       return googleResponse;
     } catch (error) {
       console.log("Didn't get response from host google-login API", error);
+    }
+  },
+  create_package: async (form: Package, images: never[]) => {
+    try {
+      const response = await axiosInstance.post("/host/create_package", {
+        images,
+        form,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from host create_package API", error);
     }
   },
 };
