@@ -51,7 +51,7 @@ export default function Login() {
     <>
       <section
         className="border-red-500 bg-gray-200 min-h-screen flex items-center justify-center  "
-        style={{ backgroundImage: "url('../Host/loginBg.jpg')" }}
+        style={{ backgroundImage: "url('../Admin/LoginBg.jpg')" }}
       >
         <div className=" p-5 flex rounded-2xl shadow-lg max-w-3xl glass">
           <div className="md:w-1/2 px-3">
@@ -105,7 +105,7 @@ export default function Login() {
 
               <div className="text-right mt-2">
                 <a
-                  href="#"
+                  onClick={()=> navigate("/host/forget_pass")}
                   className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
                 >
                   Forgot Password?

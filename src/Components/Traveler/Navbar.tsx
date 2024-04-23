@@ -21,6 +21,7 @@ export default function Navbar() {
   function logout() {
     dispatch(TravelerLogout());
     Cookies.remove("travelerToken");
+    Cookies.remove("traveler")
     toast.success("You have been logged out successfully.");
     navigate("/login");
   }

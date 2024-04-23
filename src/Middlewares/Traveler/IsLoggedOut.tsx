@@ -2,18 +2,14 @@ import React from "react";
 import Cookies from "js-cookie";
 import { Navigate } from "react-router-dom";
 
-interface MiddlewareProps {
-  children: React.ReactNode;
-}
-
-const IsLogged: React.FC<MiddlewareProps> = ({ children }) => {
+const IsLoggedOut: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const logged = Cookies.get("travelerToken");
   const signed = Cookies.get("traveler");
-  if (logged || signed) {
+
+  if (!logged && !signed) {
     return <>{children}</>;
   } else {
-    return <Navigate to="/login" />;
+    return <Navigate to={"/"} />;
   }
 };
-
-export default IsLogged;
+export default IsLoggedOut;

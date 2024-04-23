@@ -51,6 +51,41 @@ const TravelerAPIs = {
       console.log("Didn't get response from traveler google-login API", error);
     }
   },
+  package_list: async () => {
+    try {
+      const response = await axiosInstance.get("/package_list");
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler package_list API", error);
+    }
+  },
+  forget_pass: async (email: string) => {
+    try {
+      const response = await axiosInstance.patch("/forget_pass", {email:email});
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler forget_pass API", error);
+    }
+  },
+  confirm_forget_otp: async(otp:string) => {
+    try {
+      const response = await axiosInstance.post("/confirm_forget_otp",{otp});
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler confirm_forget_otp API",error);
+      
+    }
+  },
+  new_password: async (password: string) => {
+    try {
+      const response = await axiosInstance.post("/new_password", {
+        password,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler new_password API", error);
+    }
+  },
 };
 
 export default TravelerAPIs;

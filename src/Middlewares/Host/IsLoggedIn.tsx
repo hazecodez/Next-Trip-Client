@@ -6,14 +6,14 @@ interface MiddlewareProps {
   children: React.ReactNode;
 }
 
-const IsLogged: React.FC<MiddlewareProps> = ({ children }) => {
-  const logged = Cookies.get("travelerToken");
-  const signed = Cookies.get("traveler");
+const IsLoggedIn: React.FC<MiddlewareProps> = ({ children }) => {
+  const logged = Cookies.get("hostToken");
+  const signed = Cookies.get("host");
   if (logged || signed) {
     return <>{children}</>;
   } else {
-    return <Navigate to="/login" />;
+    return <Navigate to="/host/login" />;
   }
 };
 
-export default IsLogged;
+export default IsLoggedIn;

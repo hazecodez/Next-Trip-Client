@@ -1,6 +1,7 @@
 import * as Yup from "yup";
 
 const PackageSchema = Yup.object().shape({
+  _id: Yup.string(),
   name: Yup.string().required("Package Name is required."),
   capacity: Yup.string().required("Maximum capacity required."),
   destination: Yup.string().required("Destination is required."),

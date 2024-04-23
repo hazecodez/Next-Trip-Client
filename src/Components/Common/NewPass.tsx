@@ -1,37 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
-
-import LoginType from "../../Interfaces/common/LoginType";
-import ForgetSchema from "../../Validations/Traveler/ForgetSchema";
-import TravelerAPIs from "../../APIs/TravelerAPIs";
-import { toast } from "sonner";
+import NewPassSchema from "../../Validations/Traveler/NewPassSchema";
 import HostAPIs from "../../APIs/HostAPIs";
+import { toast } from "sonner";
+import TravelerAPIs from "../../APIs/TravelerAPIs";
 
-export default function ForgetPass({ who }: { who: "traveler" | "host" }) {
+interface newPassType {
+  password: string;
+  con_password: string;
+}
+
+export default function NewPass({ who }: { who: "host" | "traveler" }) {
   const navigate = useNavigate();
-  const { errors, touched, values, handleBlur, handleChange, handleSubmit } =
+  const { values, errors, touched, handleBlur, handleChange, handleSubmit } =
     useFormik({
       initialValues: {
-        email: "",
+        password: "",
+        con_password: "",
       },
-      validationSchema: ForgetSchema,
-      onSubmit: submit,
+      validationSchema: NewPassSchema,
+      onSubmit: Submission,
     });
-  async function submit(form: LoginType) {
+
+  async function Submission(newPass: newPassType) {
     try {
-      if (who === "traveler") {
-        const response = await TravelerAPIs.forget_pass(form.email as string);
+      const password = newPass.password;
+      if (who === "host") {
+        const response = await HostAPIs.new_password(password);
+
         if (response?.data.status) {
           toast.success(response.data.message);
-          navigate("/otp");
+          navigate("/host/login");
         } else {
           toast.error(response?.data.message);
         }
-      } else {
-        const response = await HostAPIs.forget_pass(form.email as string);
+      } else if (who === "traveler") {
+        const response = await TravelerAPIs.new_password(password);
         if (response?.data.status) {
           toast.success(response.data.message);
-          navigate("/host/otp");
+          navigate("/login");
         } else {
           toast.error(response?.data.message);
         }
@@ -57,20 +64,42 @@ export default function ForgetPass({ who }: { who: "traveler" | "host" }) {
                     who === "host" ? "text-red-900" : "text-base-100"
                   } font-bold`}
                 >
-                  Email Address
+                  New Password
                 </label>
                 <input
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.email}
-                  type="email"
-                  name="email"
-                  id="email"
+                  value={values.password}
+                  type="password"
+                  name="password"
+                  id="password"
                   placeholder="Enter Email Address"
                   className={`w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-gray-800 focus:bg-white focus:outline-none`}
                 />
-                {errors.email && touched.email && (
-                  <p className="text-red-500 text-xs">{errors.email}</p>
+                {errors.password && touched.password && (
+                  <p className="text-red-500 text-xs">{errors.password}</p>
+                )}
+              </div>
+              <div className="mt-4">
+                <label
+                  className={`block ${
+                    who === "host" ? "text-red-900" : "text-base-100"
+                  } font-bold`}
+                >
+                  Confirm New Password
+                </label>
+                <input
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  value={values.con_password}
+                  type="password"
+                  name="con_password"
+                  id="con_password"
+                  placeholder="Enter Password"
+                  className={`w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-gray-800 focus:bg-white focus:outline-none`}
+                />
+                {errors.con_password && touched.con_password && (
+                  <p className="text-red-500 text-xs">{errors.con_password}</p>
                 )}
               </div>
 
@@ -81,35 +110,15 @@ export default function ForgetPass({ who }: { who: "traveler" | "host" }) {
                 } hover:dark:bg-red-500 focus:bg-gray-400 text-white font-semibold rounded-lg
                 px-4 py-3 mt-6`}
               >
-                Forget Password
+                New Password
               </button>
             </form>
-
-            <div className="mt-7 grid grid-cols-3 items-center text-base-100">
-              <hr className="border-gray-500" />
-              <p className="text-center text-sm">OR</p>
-              <hr className="border-gray-500" />
-            </div>
-
-            <div className="text-sm flex text-base-100 justify-between items-center mt-3">
-              <p>If you don't have an account...</p>
-              <a
-                onClick={() =>
-                  who === "host"
-                    ? navigate("/host/signup")
-                    : navigate("/signup")
-                }
-                className="text-sm font-semibold text-gray-700 hover:text-blue-700 focus:text-blue-700"
-              >
-                Register
-              </a>
-            </div>
           </div>
 
           <div className="w-1/2 md:block hidden ">
             <br />
             <h2 className="text-2xl font-bold text-base-100">
-              Enter Your Email Address to Recover your password
+              Enter New Password
             </h2>
             <br />
             <img

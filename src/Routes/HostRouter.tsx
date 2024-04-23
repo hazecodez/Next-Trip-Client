@@ -6,18 +6,96 @@ import Dashboard from "../Pages/Host/Dashboard";
 import MyPackages from "../Pages/Host/MyPackages";
 import Schedules from "../Pages/Host/Schedules";
 import CreatePackage from "../Components/Host/CreatePackage";
+import EditPackage from "../Components/Host/EditPackage";
+import ForgetPass from "../Components/Common/ForgetPass";
+import NewPass from "../Components/Common/NewPass";
+import IsLoggedIn from "../Middlewares/Host/IsLoggedIn";
+import IsLoggedOut from "../Middlewares/Host/IsLoggedOut";
 
 export default function HostRouter() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Dashboard />} />
-        <Route path="/login" element={<HostLoginPage />} />
-        <Route path="/signup" element={<HostSignupPage />} />
-        <Route path="/otp" element={<Otp who="host" />} />
-        <Route path="/my_packages" element={<MyPackages />} />
-        <Route path="/create_package" element={<CreatePackage />} />
-        <Route path="/schedules" element={<Schedules />} />
+        <Route
+          path="/"
+          element={
+            <IsLoggedIn>
+              <Dashboard />
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <IsLoggedOut>
+              <HostLoginPage />
+            </IsLoggedOut>
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            <IsLoggedOut>
+              <HostSignupPage />
+            </IsLoggedOut>
+          }
+        />
+        <Route
+          path="/otp"
+          element={
+            <IsLoggedOut>
+              <Otp who="host" />
+            </IsLoggedOut>
+          }
+        />
+        <Route
+          path="/forget_pass"
+          element={
+            <IsLoggedOut>
+              <ForgetPass who="host" />
+            </IsLoggedOut>
+          }
+        />
+        <Route
+          path="/new_pass"
+          element={
+            <IsLoggedOut>
+              <NewPass who="host" />
+            </IsLoggedOut>
+          }
+        />
+        <Route
+          path="/my_packages"
+          element={
+            <IsLoggedIn>
+              <MyPackages />
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="/create_package"
+          element={
+            <IsLoggedIn>
+              <CreatePackage />
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="/edit_package/:id"
+          element={
+            <IsLoggedIn>
+              <EditPackage />
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="/schedules"
+          element={
+            <IsLoggedIn>
+              <Schedules />
+            </IsLoggedIn>
+          }
+        />
       </Routes>
     </>
   );

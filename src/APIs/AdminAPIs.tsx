@@ -41,7 +41,7 @@ const AdminAPI = {
   travelerAction: async (id: string) => {
     try {
       const response = await axiosInstance.patch("/admin/traveler_action", {
-        id
+        id,
       });
       return response;
     } catch (error) {
@@ -62,6 +62,27 @@ const AdminAPI = {
       return response;
     } catch (error) {
       console.log("Didn't get response from admin host action  API", error);
+    }
+  },
+  packages: async () => {
+    try {
+      const response = await axiosInstance.get("/admin/packages");
+      return response;
+    } catch (error) {
+      console.log(
+        "Didn't get response from admin get packages list API",
+        error
+      );
+    }
+  },
+  package_Actions: async (id: string | undefined) => {
+    try {
+      const response = await axiosInstance.patch("/admin/package_action", {
+        id,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from admin package_Actions API", error);
     }
   },
 };

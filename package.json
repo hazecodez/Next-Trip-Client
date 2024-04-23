@@ -17,6 +17,7 @@
     "@reduxjs/toolkit": "^2.2.3",
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.6.8",
+    "cloudinary-react": "^1.8.1",
     "flowbite": "^2.3.0",
     "formik": "^2.4.5",
     "js-cookie": "^3.0.5",

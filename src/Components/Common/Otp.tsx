@@ -74,31 +74,50 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
     event.preventDefault();
     try {
       if (who === "traveler") {
-        const OtpResponse = await TravelerAPIs.confirmOTP(fullOTP);
-        if (OtpResponse?.data.status) {
-          dispatch(
-            TravelerLogin({
-              traveler: OtpResponse.data.travelerData,
-            })
-          );
-          Cookies.remove("travelerOtp");
-          toast.success(OtpResponse.data.message);
-          navigate("/");
-        }else {
-          toast.warning(OtpResponse?.data.message)
+        const cookies = Cookies.get("forget");
+        if (cookies) {
+          const response = await TravelerAPIs.confirm_forget_otp(fullOTP);
+          if (response?.data.status) {
+            navigate("/new_pass");
+          }
+        } else {
+          const OtpResponse = await TravelerAPIs.confirmOTP(fullOTP);
+          if (OtpResponse?.data.status) {
+            dispatch(
+              TravelerLogin({
+                traveler: OtpResponse.data.travelerData,
+              })
+            );
+            Cookies.remove("travelerOtp");
+            toast.success(`Your account is verified.`);
+            navigate("/");
+          } else {
+            toast.warning(OtpResponse?.data.message);
+          }
         }
       } else if (who === "host") {
-        const otpResponse = await HostAPIs.verifyOTP(fullOTP);
-        if (otpResponse?.data.status) {
-          dispatch(
-            hostLogin({
-              host: otpResponse.data.hostData,
-            })
-          );
-          toast.success(otpResponse.data.message);
-          navigate("/host/");
-        }else {
-          toast.warning(otpResponse?.data.message);
+        const cookie = Cookies.get("forget");
+
+
+        if (cookie) {
+          const response = await HostAPIs.confirm_forget_otp(fullOTP);
+          if (response?.data.status) {
+            navigate("/host/new_pass");
+          }
+        } else {
+          const otpResponse = await HostAPIs.verifyOTP(fullOTP);
+          if (otpResponse?.data.status) {
+            dispatch(
+              hostLogin({
+                host: otpResponse.data.hostData,
+              })
+            );
+            Cookies.remove("hostOtp");
+            toast.success(`Your account is verified`);
+            navigate("/host/");
+          } else {
+            toast.warning(otpResponse?.data.message);
+          }
         }
       }
     } catch (error) {
@@ -111,7 +130,7 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
       if (who === "traveler") {
         const response = await TravelerAPIs.resendOtp();
         if (response?.data.status) {
-          toast.success(response.data.message)
+          toast.success(response.data.message);
           navigate("/otp");
         } else {
           toast.error(response?.data.message);

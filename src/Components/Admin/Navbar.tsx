@@ -63,9 +63,21 @@ export default function Navbar() {
                 ></label>
                 <ul className="menu p-8 w-80 min-h-full bg-[#24263A] text-2xl font-mono font-bold text-base-content">
                   <NavLinks color="[#DBDFEA" link="/admin/" name="Dashboard" />
-                  <NavLinks color="[#DBDFEA" link="/admin/travelers" name="Travelers" />
-                  <NavLinks color="[#DBDFEA" name="Travel Hosts" link="/admin/hosts" />
-                  <NavLinks color="[#DBDFEA" link="/admin/packages" name="Packages" />
+                  <NavLinks
+                    color="[#DBDFEA"
+                    link="/admin/travelers"
+                    name="Travelers"
+                  />
+                  <NavLinks
+                    color="[#DBDFEA"
+                    name="Travel Hosts"
+                    link="/admin/hosts"
+                  />
+                  <NavLinks
+                    color="[#DBDFEA"
+                    link="/admin/packages"
+                    name="Packages"
+                  />
                   <NavLinks color="[#DBDFEA" link="/admin/blogs" name="Blogs" />
                   <li onClick={logoutModal} className="mt-auto">
                     <NavLinks color="[#DBDFEA" link="" name="Logout" />

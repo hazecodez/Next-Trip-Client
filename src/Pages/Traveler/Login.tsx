@@ -100,7 +100,7 @@ export default function Login() {
 
               <div className="text-right mt-2">
                 <a
-                  href="#"
+                  onClick={()=> navigate("/forget_pass")}
                   className="text-sm font-semibold text-base-100 hover:text-blue-700 focus:text-blue-700"
                 >
                   Forgot Password?

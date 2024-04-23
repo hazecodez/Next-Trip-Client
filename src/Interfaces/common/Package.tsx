@@ -1,4 +1,5 @@
 interface Package {
+  _id?:string|undefined;
   name: string;
   capacity: string;
   destination: string;
@@ -17,6 +18,9 @@ interface Package {
   activities: string;
   price: string;
   itinerary: string;
+  host?:string;
+  is_verified?:boolean;
+  images?: string[];
 }
 
 export default Package;

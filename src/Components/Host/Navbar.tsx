@@ -21,6 +21,7 @@ export default function Navbar() {
   function logout() {
     dispatch(hostLogout());
     Cookies.remove("hostToken");
+    Cookies.remove("host");
     toast.success("You have been logged out successfully.");
     navigate("/host/login");
   }
@@ -50,22 +51,37 @@ export default function Navbar() {
               className="menu  menu-lg font-bold dropdown-content mt-3 z-[1] p-2 shadow bg-[#C63D2F] rounded-box w-52"
             >
               <NavLinks color="[#FFBB5C]" name="Dashboard" link="/host/" />
-              <NavLinks color="[#FFBB5C]"  name="My Packages" link="/host/my_packages" />
-              <NavLinks color="[#FFBB5C]"  name="Schedules" link="/host/schedules" />
+              <NavLinks
+                color="[#FFBB5C]"
+                name="My Packages"
+                link="/host/my_packages"
+              />
+              <NavLinks
+                color="[#FFBB5C]"
+                name="Schedules"
+                link="/host/schedules"
+              />
             </ul>
           </div>
           <img
             src="../Host/HostLogo.png"
             className="h-auto w-28"
-            alt="Flowbite Logo"
+            alt="Next-Trip Logo"
           />
         </div>
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <NavLinks color="[#FFBB5C]" name="Dashboard" link="/host/" />
-            <NavLinks  color="[#FFBB5C]" name="My Packages" link="/host/my_packages" />
-            <NavLinks color="[#FFBB5C]" name="Schedules" link="/host/schedules" />
-            
+            <NavLinks
+              color="[#FFBB5C]"
+              name="My Packages"
+              link="/host/my_packages"
+            />
+            <NavLinks
+              color="[#FFBB5C]"
+              name="Schedules"
+              link="/host/schedules"
+            />
           </ul>
         </div>
         <div className="navbar-end">
@@ -127,12 +143,15 @@ export default function Navbar() {
                   onClick={() => navigate("/host/profile")}
                 >
                   Profile
-                  
                 </a>
               </li>
               <li>
                 <a>
-                  Chats <span className="badge bg-[#FFBB5C] border-none text-black">New</span></a>
+                  Chats{" "}
+                  <span className="badge bg-[#FFBB5C] border-none text-black">
+                    New
+                  </span>
+                </a>
               </li>
               <li>
                 <a onClick={logoutModal}>Logout</a>

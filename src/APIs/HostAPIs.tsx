@@ -51,6 +51,69 @@ const HostAPIs = {
       console.log("Didn't get response from host create_package API", error);
     }
   },
+  update_package: async (form: Package, images: never[]) => {
+    try {
+      const response = await axiosInstance.patch("/host/update_package", {
+        form,
+        images,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  package_list: async () => {
+    try {
+      const response = await axiosInstance.get("/host/package_list");
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from host package_list API", error);
+    }
+  },
+  package_details: async (id: string) => {
+    try {
+      const response = await axiosInstance.patch("/host/package_details", {
+        id,
+      });
+
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from host package_details API", error);
+    }
+  },
+  forget_pass: async (email: string) => {
+    try {
+      const response = await axiosInstance.patch("/host/forget_pass", {
+        email: email,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from host forget_pass API", error);
+    }
+  },
+  confirm_forget_otp: async (otp: string) => {
+    try {
+      const response = await axiosInstance.post("/host/confirm_forget_otp", {
+        otp,
+      });
+      return response;
+    } catch (error) {
+      console.log(
+        "Didn't get response from host confirm_forget_otp API",
+        error
+      );
+    }
+  },
+  new_password: async (password: string) => {
+    try {
+      const response = await axiosInstance.post("/host/new_password", {
+        password,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from host new_password API", error);
+    }
+  },
 };
 
 export default HostAPIs;

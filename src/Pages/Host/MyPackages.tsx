@@ -16,7 +16,7 @@ export default function MyPackages() {
           Create Package
         </button>
       </div>
-      <PackageCard />
+      <PackageCard who="host" />
       <Footer bgColor="bg-[#C63D2F]" Logo="../Host/HostLogo.png" />
     </>
   );
