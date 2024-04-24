@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
@@ -16,6 +16,15 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
     three: "",
     four: "",
   });
+  const [timer, setTimer] = useState<number>(59);
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimer((prev) => prev - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   const [fullOTP, setFullOTP] = useState("");
   const ref = useRef<HTMLInputElement[]>([]);
   const navigate = useNavigate();
@@ -98,13 +107,14 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
       } else if (who === "host") {
         const cookie = Cookies.get("forget");
 
-
         if (cookie) {
           const response = await HostAPIs.confirm_forget_otp(fullOTP);
           if (response?.data.status) {
             navigate("/host/new_pass");
           }
         } else {
+          
+          
           const otpResponse = await HostAPIs.verifyOTP(fullOTP);
           if (otpResponse?.data.status) {
             dispatch(
@@ -183,21 +193,24 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
                         Verify Account
                       </button>
                     </div>
-                    <div className="flex justify-evenly">
-                      <span className="countdown font-mono text-2xl">
-                        <span>00</span>:<span>59</span>
-                      </span>
-                    </div>
 
-                    <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
-                      <p>Didn't recieve code?</p>{" "}
-                      <a
-                        className="flex flex-row items-center text-gray-800"
-                        onClick={resendOtp}
-                      >
-                        Resend
-                      </a>
-                    </div>
+                    {timer < 0 ? (
+                      <div className="flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500">
+                        <p>Didn't recieve code?</p>{" "}
+                        <a
+                          className="flex flex-row items-center text-gray-800"
+                          onClick={resendOtp}
+                        >
+                          Resend
+                        </a>
+                      </div>
+                    ) : (
+                      <div className="flex justify-evenly">
+                        <span className="countdown font-mono text-2xl">
+                          <span>00</span>:{timer}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
               </form>

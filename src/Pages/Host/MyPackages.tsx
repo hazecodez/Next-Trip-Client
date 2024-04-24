@@ -11,7 +11,7 @@ export default function MyPackages() {
       <div className="bg-[#F2F2F2] py-4 px-14 flex justify-end ">
         <button
           onClick={() => navigate("/host/create_package")}
-          className="btn btn-wide bg-[#C63D2F] hover:bg-[#E25E3E] border-none text-white text-xl"
+          className="btn btn-wide bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F] text-xl"
         >
           Create Package
         </button>

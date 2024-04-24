@@ -5,7 +5,7 @@ import LoginType from "../Interfaces/common/LoginType";
 const HostAPIs = {
   signup: async (formData: LoginType) => {
     try {
-      console.log(formData);
+      
       const signUpResponse = await axiosInstance.post("/host/signup", formData);
 
       return signUpResponse;
@@ -15,6 +15,8 @@ const HostAPIs = {
   },
   verifyOTP: async (otp: string) => {
     try {
+      console.log("ethi");
+      
       const otpResponse = await axiosInstance.post("/host/verify_otp", { otp });
       return otpResponse;
     } catch (error) {

@@ -29,17 +29,10 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
     fetchPackages();
   }, []);
   return (
-    <div className="flex flex-wrap items-center justify-evenly bg-[#F2F2F2] py-10 px-12 grid grid-cols-4">
+    <div className="flex flex-wrap items-center justify-evenly bg-[#F2F2F2] py-10 px-12 ">
       {packages.map((data: Package, index) => (
-        <div className="card-wrapper mb-4 " key={index}>
-          {
-            who === "host" ? <button
-            onClick={() => navigate(`/host/edit_package/${data._id}`)}
-            className="btn"
-          >
-            hel
-          </button> : ""
-          }
+        <div className="card-wrapper mb-4 text-end" key={index}>
+          
           <div
             className={`card  glass w-80 h-80 ${
               who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
@@ -55,8 +48,19 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
             </figure>
             <div className="card-body" key={index}>
               <h2 className="card-title text-black">{data.name}</h2>
-              <p className="text-black">How to park your car at your garage?</p>
+              <p className="text-black">{data.destination}</p>
+              <p className="text-black">{data.dur_start} to {data.dur_end}</p>
+              <p className="text-black">{data.itinerary}</p>
+              <p className="text-black font-bold text-end"> ₹ {data.price}</p>
               <div className="card-actions items-center"></div>
+              {
+            who === "host" ? <button
+            onClick={() => navigate(`/host/edit_package/${data._id}`)}
+            className="btn bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F]"
+          >
+            Edit Package
+          </button> : ""
+          }
             </div>
           </div>
         </div>
