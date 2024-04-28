@@ -1,11 +1,25 @@
 import axiosInstance from "./AxiosInstance";
 import Package from "../Interfaces/common/Package";
 import LoginType from "../Interfaces/common/LoginType";
+import Cookies from "js-cookie";
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response &&
+      error.response.data &&
+      error.response.data.blocked === true
+    ) {
+      Cookies.remove("host");
+      window.location.href = "/host/login";
+    }
+  }
+);
 
 const HostAPIs = {
   signup: async (formData: LoginType) => {
     try {
-      
       const signUpResponse = await axiosInstance.post("/host/signup", formData);
 
       return signUpResponse;
@@ -16,7 +30,7 @@ const HostAPIs = {
   verifyOTP: async (otp: string) => {
     try {
       console.log("ethi");
-      
+
       const otpResponse = await axiosInstance.post("/host/verify_otp", { otp });
       return otpResponse;
     } catch (error) {

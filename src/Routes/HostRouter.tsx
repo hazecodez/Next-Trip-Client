@@ -11,6 +11,8 @@ import ForgetPass from "../Components/Common/ForgetPass";
 import NewPass from "../Components/Common/NewPass";
 import IsLoggedIn from "../Middlewares/Host/IsLoggedIn";
 import IsLoggedOut from "../Middlewares/Host/IsLoggedOut";
+import PackageDetails from "../Pages/Host/PackageDetails";
+import ChatPage from "../Pages/Host/ChatPage";
 
 export default function HostRouter() {
   return (
@@ -93,6 +95,22 @@ export default function HostRouter() {
           element={
             <IsLoggedIn>
               <Schedules />
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="/package_details/:id"
+          element={
+            <IsLoggedIn>
+              <PackageDetails />
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="/chat"
+          element={
+            <IsLoggedIn>
+              <ChatPage />
             </IsLoggedIn>
           }
         />

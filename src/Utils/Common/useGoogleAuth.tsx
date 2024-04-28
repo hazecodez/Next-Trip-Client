@@ -41,8 +41,10 @@ const useGoogleLoginHook = ({
           const googleResponse = await HostAPIs.google_Auth(userInfo);
           if (googleResponse?.data.status) {
             toast.success(googleResponse.data.message);
-            dispatch(hostLogin({ host: googleResponse.data.hostData }));
-            navigate("/host/");
+            if (googleResponse.data.token) {
+              dispatch(hostLogin({ host: googleResponse.data.hostData }));
+              navigate("/host/");
+            }
           } else {
             toast.error(googleResponse?.data.message);
           }
@@ -52,8 +54,8 @@ const useGoogleLoginHook = ({
             toast.success(googleResponse.data.message);
             dispatch(adminLogin({ admin: googleResponse.data.adminData }));
             navigate("/admin/");
-          }else {
-            toast.error(googleResponse?.data.message)
+          } else {
+            toast.error(googleResponse?.data.message);
           }
         }
       } catch (error) {

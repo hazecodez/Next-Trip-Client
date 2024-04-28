@@ -32,7 +32,6 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
     <div className="flex flex-wrap items-center justify-evenly bg-[#F2F2F2] py-10 px-12 ">
       {packages.map((data: Package, index) => (
         <div className="card-wrapper mb-4 text-end" key={index}>
-          
           <div
             className={`card  glass w-80 h-80 ${
               who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
@@ -42,25 +41,38 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
               <img
                 className="w-full"
                 key={index}
-                src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data.images[0]}`}
+                src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images[0]}`}
                 alt="car!"
               />
             </figure>
             <div className="card-body" key={index}>
-              <h2 className="card-title text-black">{data.name}</h2>
+              <h2
+                onClick={() => {
+                  who === "traveler"
+                    ? navigate(`/package_details/${data._id}`)
+                    : navigate(`/host/package_details/${data._id}`);
+                }}
+                className="card-title text-black"
+              >
+                {data.name}
+              </h2>
               <p className="text-black">{data.destination}</p>
-              <p className="text-black">{data.dur_start} to {data.dur_end}</p>
+              <p className="text-black">
+                {data.dur_start} to {data.dur_end}
+              </p>
               <p className="text-black">{data.itinerary}</p>
               <p className="text-black font-bold text-end"> ₹ {data.price}</p>
               <div className="card-actions items-center"></div>
-              {
-            who === "host" ? <button
-            onClick={() => navigate(`/host/edit_package/${data._id}`)}
-            className="btn bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F]"
-          >
-            Edit Package
-          </button> : ""
-          }
+              {who === "host" ? (
+                <button
+                  onClick={() => navigate(`/host/edit_package/${data._id}`)}
+                  className="btn bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F]"
+                >
+                  Edit Package
+                </button>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

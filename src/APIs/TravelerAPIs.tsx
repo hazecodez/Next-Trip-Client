@@ -61,19 +61,23 @@ const TravelerAPIs = {
   },
   forget_pass: async (email: string) => {
     try {
-      const response = await axiosInstance.patch("/forget_pass", {email:email});
+      const response = await axiosInstance.patch("/forget_pass", {
+        email: email,
+      });
       return response;
     } catch (error) {
       console.log("Didn't get response from traveler forget_pass API", error);
     }
   },
-  confirm_forget_otp: async(otp:string) => {
+  confirm_forget_otp: async (otp: string) => {
     try {
-      const response = await axiosInstance.post("/confirm_forget_otp",{otp});
+      const response = await axiosInstance.post("/confirm_forget_otp", { otp });
       return response;
     } catch (error) {
-      console.log("Didn't get response from traveler confirm_forget_otp API",error);
-      
+      console.log(
+        "Didn't get response from traveler confirm_forget_otp API",
+        error
+      );
     }
   },
   new_password: async (password: string) => {
@@ -84,6 +88,17 @@ const TravelerAPIs = {
       return response;
     } catch (error) {
       console.log("Didn't get response from traveler new_password API", error);
+    }
+  },
+  package_details: async (id: string) => {
+    try {
+      const response = await axiosInstance.patch("/package_details", {
+        id,
+      });
+
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler package_details API", error);
     }
   },
 };

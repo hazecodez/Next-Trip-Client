@@ -20,15 +20,14 @@ export default function Navbar() {
 
   function logout() {
     dispatch(TravelerLogout());
-    Cookies.remove("travelerToken");
-    Cookies.remove("traveler")
+    Cookies.remove("traveler");
     toast.success("You have been logged out successfully.");
     navigate("/login");
   }
 
   return (
     <>
-      <div className={`navbar bg-base-100 z-10`}>
+      <div className={`navbar bg-base-100 z-20 sticky top-0`}>
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -127,13 +126,16 @@ export default function Navbar() {
               className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
             >
               <li>
-                <a className="justify-between">
+                <a
+                  className="justify-between"
+                  onClick={() => navigate("/profile")}
+                >
                   Profile
                   <span className="badge bg-[#9EC8B9] text-base-100">New</span>
                 </a>
               </li>
               <li>
-                <a>Chats</a>
+                <a onClick={()=> navigate("/chat")}>Chats</a>
               </li>
               <li>
                 <a onClick={logoutModal}>Logout</a>

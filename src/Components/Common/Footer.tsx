@@ -1,17 +1,20 @@
-type PropsType = {
-  bgColor: string;
-  Logo: string;
-};
-
-export default function Footer({ bgColor, Logo }: PropsType) {
+export default function Footer({ who }: { who: "host" | "traveler" }) {
   return (
     <>
       <footer
-        className={`footer footer-center p-10 ${bgColor} text-white-content  `}
+        className={`footer footer-center p-10 ${
+          who === "host" ? "bg-[#C63D2F] text-[#FF9B50]" : "bg-base-100"
+        } text-white-content  `}
       >
         <aside>
-          <img src={Logo} className="h-auto w-36" alt="Flowbite Logo" />
-          <p className="font-bold">
+          <img
+            src={
+              who === "host" ? "../Host/HostLogo.png" : "../Traveler/Logo.png"
+            }
+            className="h-auto w-36"
+            alt="Next-Trip Logo"
+          />
+          <p className="font-bold text-lg">
             ACME Industries Ltd. <br />
             Providing reliable tech since 1992
           </p>

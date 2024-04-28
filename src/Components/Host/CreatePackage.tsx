@@ -7,10 +7,13 @@ import { useFormik } from "formik";
 import Package from "../../Interfaces/common/Package";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { HashLoader } from "react-spinners";
+import "./css/loader.css";
 
 export default function CreatePackage() {
   const navigate = useNavigate();
   const [previewSources, setPreviewSources] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -34,12 +37,14 @@ export default function CreatePackage() {
 
   const Submission = async (formData: Package) => {
     try {
+      setLoading(true);
       const response = await HostAPIs.create_package(formData, previewSources);
-      if(response?.data.status) {
+      if (response?.data.status) {
+        setLoading(false);
         toast.success(response.data.message);
         navigate("/host/my_packages");
-      }else {
-        toast.error(response?.data.message)
+      } else {
+        toast.error(response?.data.message);
       }
     } catch (error) {
       console.log(error);
@@ -465,12 +470,18 @@ export default function CreatePackage() {
             ) : (
               ""
             )}
-            <button
-              type="submit"
-              className="m-4 btn btn-wide bg-[#C63D2F] hover:bg-[#E25E3E] border-none text-white text-xl text-center"
-            >
-              Submit
-            </button>
+            {loading ? (
+              <div className="loader-container">
+                <HashLoader color="#C63D2F" size={80} />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="m-4 btn btn-wide bg-[#C63D2F] hover:bg-[#E25E3E] border-none text-white text-xl text-center"
+              >
+                Submit
+              </button>
+            )}
           </form>
         </div>
       </div>

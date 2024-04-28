@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import Footer from "../../Components/Common/Footer";
 import Navbar from "../../Components/Host/Navbar";
-import PackageCard from "../../Components/Host/PackageCard";
+import PackageCard from "../../Components/Common/PackageCard";
 
 export default function MyPackages() {
   const navigate = useNavigate();
@@ -17,7 +17,7 @@ export default function MyPackages() {
         </button>
       </div>
       <PackageCard who="host" />
-      <Footer bgColor="bg-[#C63D2F]" Logo="../Host/HostLogo.png" />
+      <Footer who="host" />
     </>
   );
 }

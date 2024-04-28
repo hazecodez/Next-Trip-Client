@@ -10,7 +10,7 @@ export default function Schedules() {
           <span className="loading loading-infinity loading-lg"></span>
           <h2>Coming Soon...</h2>
         </div>
-      <Footer bgColor="bg-[#C63D2F]" Logo="../Host/HostLogo.png" />
+      <Footer who="host" />
       </div>
     </>
     

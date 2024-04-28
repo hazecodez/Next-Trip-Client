@@ -146,7 +146,7 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
-                <a>
+                <a onClick={()=> navigate("/host/chat")}>
                   Chats{" "}
                   <span className="badge bg-[#FFBB5C] border-none text-black">
                     New

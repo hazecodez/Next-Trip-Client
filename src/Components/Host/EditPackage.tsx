@@ -7,12 +7,15 @@ import { useFormik } from "formik";
 import PackageSchema from "../../Validations/Host/PackageSchema";
 import Package from "../../Interfaces/common/Package";
 import { toast } from "sonner";
+import { HashLoader } from "react-spinners";
+import "./css/loader.css";
 
 export default function EditPackage() {
   const navigate = useNavigate();
   const { id } = useParams();
   const [details, setDetails] = useState({});
   const [previewSources, setPreviewSources] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -40,6 +43,7 @@ export default function EditPackage() {
         const response = await HostAPIs.package_details(id as string);
         if (response?.data) {
           setDetails(response.data);
+
           setFieldValue("name", response?.data.name);
           setFieldValue("capacity", response?.data.capacity);
           setFieldValue("destination", response?.data.destination);
@@ -58,7 +62,8 @@ export default function EditPackage() {
           setFieldValue("itinerary", response?.data.itinerary);
           setFieldValue("arrival_time", response?.data.arrival_time);
           setFieldValue("depa_time", response?.data.depa_time);
-          setFieldValue("_id", response.data._id);
+          setFieldValue("_id", response?.data._id);
+          setFieldValue("images", response?.data.images);
         }
       } catch (error) {
         console.log(error);
@@ -70,8 +75,10 @@ export default function EditPackage() {
 
   const Submission = async (formData: Package) => {
     try {
+      setLoading(true);
       const response = await HostAPIs.update_package(formData, previewSources);
       if (response?.data.status) {
+        setLoading(false);
         toast.success(response.data.message);
         navigate("/host/my_packages");
       } else {
@@ -446,29 +453,15 @@ export default function EditPackage() {
               </div>
             </div>
             <div className="flex justify-evenly flex-wrap">
-              {/* <img   
-                      key="1" 
-                      className="m-4 w-56 h-auto"
-                      src={`https://res.cloudinary.com/doac4pi2c/image/upload/${details.images[0]}`}
-                      alt={`Preview 1`}
-                    /> */}
-              {previewSources
-                ? previewSources.map((source, index) => (
-                    <img
-                      key={index}
-                      className="m-4 w-56 h-auto"
-                      src={source}
-                      alt={`Preview ${index + 1}`}
-                    />
-                  ))
-                : details.images.map((image, index) => (
-                    <img
-                      key={index}
-                      className="m-4 w-56 h-auto"
-                      src={`https://res.cloudinary.com/doac4pi2c/image/upload/${image}`}
-                      alt={`Preview ${index + 1}`}
-                    />
-                  ))}
+              {values.images &&
+                Object.entries(values?.images).map(([key, value]) => (
+                  <img
+                    key={key}
+                    className="m-4 w-56 h-auto"
+                    src={`https://res.cloudinary.com/doac4pi2c/image/upload/${value}`}
+                    alt={`Preview ${key + 1}`}
+                  />
+                ))}
             </div>
 
             <div className="grid md:grid-cols-2 md:gap-6">
@@ -525,16 +518,22 @@ export default function EditPackage() {
             ) : (
               ""
             )}
-            <button
-              type="submit"
-              className="m-4 btn btn-wide bg-[#C63D2F] hover:bg-[#E25E3E] border-none text-white text-xl text-center"
-            >
-              Submit
-            </button>
+            {loading ? (
+              <div className="loader-container">
+                <HashLoader color="#C63D2F" size={80} />
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="m-4 btn btn-wide bg-[#C63D2F] hover:bg-[#E25E3E] border-none text-white text-xl text-center"
+              >
+                Submit
+              </button>
+            )}
           </form>
         </div>
       </div>
-      <Footer bgColor="bg-[#C63D2F]" Logo="../Host/HostLogo.png" />
+      <Footer who="host" />
     </>
   );
 }

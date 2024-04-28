@@ -7,9 +7,8 @@ interface MiddlewareProps {
 }
 
 const IsLogged: React.FC<MiddlewareProps> = ({ children }) => {
-  const logged = Cookies.get("travelerToken");
   const signed = Cookies.get("traveler");
-  if (logged || signed) {
+  if (signed) {
     return <>{children}</>;
   } else {
     return <Navigate to="/login" />;

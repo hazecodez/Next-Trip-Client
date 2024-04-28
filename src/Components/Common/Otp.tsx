@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
 import Cookies from "js-cookie";
 import { TravelerLogin } from "../../Redux/Slices/Traveler";
-import { hostLogin } from "../../Redux/Slices/Host";
+
 import HostAPIs from "../../APIs/HostAPIs";
 import { toast } from "sonner";
 
@@ -88,6 +88,8 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
           const response = await TravelerAPIs.confirm_forget_otp(fullOTP);
           if (response?.data.status) {
             navigate("/new_pass");
+            toast.success(response.data.message);
+            
           }
         } else {
           const OtpResponse = await TravelerAPIs.confirmOTP(fullOTP);
@@ -111,20 +113,15 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
           const response = await HostAPIs.confirm_forget_otp(fullOTP);
           if (response?.data.status) {
             navigate("/host/new_pass");
+            toast.success(response.data.message);
+            
           }
         } else {
-          
-          
           const otpResponse = await HostAPIs.verifyOTP(fullOTP);
           if (otpResponse?.data.status) {
-            dispatch(
-              hostLogin({
-                host: otpResponse.data.hostData,
-              })
-            );
             Cookies.remove("hostOtp");
-            toast.success(`Your account is verified`);
-            navigate("/host/");
+            toast.success(otpResponse?.data.message);
+            navigate("/host/login");
           } else {
             toast.warning(otpResponse?.data.message);
           }

@@ -7,6 +7,13 @@ import ForgetPass from "../Components/Common/ForgetPass";
 import NewPass from "../Components/Common/NewPass";
 import IsLogged from "../Middlewares/Traveler/IsLogged";
 import IsLoggedOut from "../Middlewares/Traveler/IsLoggedOut";
+import PackageDetails from "../Pages/Traveler/PackageDetails";
+import Packages from "../Pages/Traveler/Packages";
+import Blogs from "../Pages/Traveler/Blogs";
+import Stays from "../Pages/Traveler/Stays";
+import Flights from "../Pages/Traveler/Flights";
+import Profile from "../Pages/Traveler/Profile";
+import ChatPage from "../Pages/Traveler/ChatPage";
 
 export default function TravelerRoute() {
   return (
@@ -59,10 +66,62 @@ export default function TravelerRoute() {
           </IsLoggedOut>
         }
       />
-      <Route path="/packages" />
-      <Route path="/blogs" />
-      <Route path="/stays" />
-      <Route path="/flights" />
+      <Route
+        path="/package_details/:id"
+        element={
+          <IsLogged>
+            <PackageDetails />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/packages"
+        element={
+          <IsLogged>
+            <Packages />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/blogs"
+        element={
+          <IsLogged>
+            <Blogs />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/stays"
+        element={
+          <IsLogged>
+            <Stays />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/flights"
+        element={
+          <IsLogged>
+            <Flights />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <IsLogged>
+            <Profile />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/chat"
+        element={
+          <IsLogged>
+            <ChatPage />
+          </IsLogged>
+        }
+      />
     </Routes>
   );
 }

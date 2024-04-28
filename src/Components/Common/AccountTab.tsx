@@ -17,7 +17,7 @@ export default function AccountTab({ tabNumber }: propTypes) {
               type="button"
               className={`${
                 activeTab === "1" ? "bg-[#092637] text-white" : ""
-              } hover:text-gray-800 dark:bg-gray-800 dark:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-800  rounded-full hover:text-neutral-content disabled:opacity-50 disabled:pointer-events-none dark:hover:text-dark-800 `}
+              } hover:text-gray-800 dark:bg-gray-800 dark:text-white py-3 px-4 inline-flex items-center gap-x-2 bg-transparent text-sm font-medium text-center text-gray-800  rounded-full  disabled:opacity-50 disabled:pointer-events-none dark:hover:text-dark-800 `}
               role="tab"
               onClick={() => {
                 navigate("/login");

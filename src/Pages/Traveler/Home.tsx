@@ -1,14 +1,14 @@
 import Footer from "../../Components/Common/Footer";
 import Navbar from "../../Components/Traveler/Navbar";
 import Banner from "../../Components/Traveler/Banner";
-import PackageCard from "../../Components/Host/PackageCard";
+import PackageCard from "../../Components/Common/PackageCard";
 
 export default function HomePage() {
   return (
     <>
       <Navbar />
       <Banner />
-      <PackageCard who="traveler"/>
+      <PackageCard who="traveler" />
 
       {/* <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
         We invest in the{" "}
@@ -21,8 +21,7 @@ export default function HomePage() {
         capital can unlock long-term value and drive economic growth.
       </p> */}
 
-      
-      <Footer bgColor="bg-base-100" Logo="../Traveler/Logo.png" />
+      <Footer who="traveler" />
     </>
   );
 }

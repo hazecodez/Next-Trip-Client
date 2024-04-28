@@ -28,7 +28,7 @@ const Table: React.FC<Props> = ({ action, data }) => {
           </thead>
           <tbody>
             {data.map((data: DataType, index: number) => (
-              <tr>
+              <tr key={index}>
                 <td>{index + 1}</td>
                 <td>
                   <div>

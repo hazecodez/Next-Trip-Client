@@ -46,8 +46,7 @@ export default function SignUp() {
       >
         <div className=" p-5 flex rounded-2xl shadow-lg max-w-3xl glass">
           <div className="md:w-1/2 px-3">
-            {/* <h2 className="text-2xl font-bold text-[#002D74]">Login</h2>
-        <p className="text-sm mt-4 text-[#002D74]">If you have an account, please login</p> */}
+            
             <form className="mt-6" onSubmit={handleSubmit}>
               <div>
                 <label className="block text-gray-700">Full Name</label>

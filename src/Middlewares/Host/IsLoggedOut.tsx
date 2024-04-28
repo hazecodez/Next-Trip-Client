@@ -3,12 +3,11 @@ import Cookies from "js-cookie";
 import { Navigate } from "react-router-dom";
 
 const IsLoggedOut: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const logged = Cookies.get("hostToken");
   const signed = Cookies.get("host");
 
-  if (!logged && !signed) {
+  if (!signed) {
     return <>{children}</>;
-  }else {
+  } else {
     return <Navigate to={"/host"} />;
   }
 };
