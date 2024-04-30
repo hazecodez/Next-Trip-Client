@@ -98,7 +98,64 @@ const TravelerAPIs = {
 
       return response;
     } catch (error) {
-      console.log("Didn't get response from traveler package_details API", error);
+      console.log(
+        "Didn't get response from traveler package_details API",
+        error
+      );
+    }
+  },
+  new_conversation: async (hostId: string) => {
+    try {
+      const response = await axiosInstance.post(
+        `/new_conversation?hostId=${hostId}`
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  get_conversations: async (userId: string) => {
+    try {
+      const response = await axiosInstance.get(
+        `/get_conversations?userId=${userId}`
+      );
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  get_messages: async (conversationId: string) => {
+    try {
+      const response = await axiosInstance.patch(`/get_messages`, {
+        conversationId,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  new_message: async (
+    text: string,
+    conversationId: string,
+    senderId: string
+  ) => {
+    try {
+      const response = await axiosInstance.post(`/new_message`, {
+        text,
+        conversationId,
+        senderId,
+      });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  user_name: async (userId: string, who: string) => {
+    try {
+      const response = await axiosInstance.patch(`/find_user`, { userId, who });
+      return response;
+    } catch (error) {
+      console.log(error);
     }
   },
 };

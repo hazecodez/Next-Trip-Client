@@ -3,7 +3,7 @@ export default function Footer({ who }: { who: "host" | "traveler" }) {
     <>
       <footer
         className={`footer footer-center p-10 ${
-          who === "host" ? "bg-[#C63D2F] text-[#FF9B50]" : "bg-base-100"
+          who === "host" ? "bg-[#C63D2F] text-[#FF9B50]" : "bg-[#092635]"
         } text-white-content  `}
       >
         <aside>

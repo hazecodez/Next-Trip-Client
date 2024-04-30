@@ -8,6 +8,19 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const [details, setDetails] = useState<Package>();
+  // const [chatBox, setChatBox] = useState(false);
+  // const [conversationId, setConversationId] = useState("");
+
+  const handleConversation = async () => {
+    // setChatBox(true);
+    const response = await TravelerAPIs.new_conversation(
+      details?.host as string
+    );
+    // console.log(response);
+    localStorage.setItem("conversationId", response?.data.data._id);
+    // setConversationId(response?.data.data._id);
+    navigate("/chat");
+  };
 
   async function fetchDetails() {
     try {
@@ -63,16 +76,22 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
               {details?.dur_start} - {details?.dur_end}
             </p>
             {who === "Traveler" ? (
-              <div
-                onClick={() => navigate("/chat")}
-                className={`bg-[#1B4242] text-white border-l-2 border-t-2 hover:shadow-inner hover:bg-[#215252] font-bold  w-auto rounded-l-xl h-14 flex justify-center items-center`}
-              >
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <i className="fa-solid fa-comments text-3xl" />{" "}
-                &nbsp;&nbsp;&nbsp;
-                <h1>Chat With Host</h1>
-                &nbsp;
-              </div>
+              <>
+                <div
+                  onClick={handleConversation}
+                  className={`bg-[#1B4242] text-white border-l-2 
+                border-t-2 hover:shadow-inner 
+                hover:bg-[#215252] font-bold  
+                w-auto rounded-l-xl h-14 flex 
+                justify-center items-center`}
+                >
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  <i className="fa-solid fa-comments text-3xl" />{" "}
+                  &nbsp;&nbsp;&nbsp;
+                  <h1>Chat With Host</h1>
+                  &nbsp;
+                </div>
+              </>
             ) : (
               ""
             )}

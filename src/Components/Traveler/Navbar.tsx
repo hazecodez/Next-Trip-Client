@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className={`navbar bg-base-100 z-20 sticky top-0`}>
+      <div className={`navbar bg-[#092635] z-20 sticky top-0`}>
         <div className="navbar-start">
           <div className="dropdown">
             <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -135,7 +135,14 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
-                <a onClick={()=> navigate("/chat")}>Chats</a>
+                <a
+                  onClick={() => {
+                    localStorage.removeItem("conversationId");
+                    navigate("/chat");
+                  }}
+                >
+                  Chats
+                </a>
               </li>
               <li>
                 <a onClick={logoutModal}>Logout</a>

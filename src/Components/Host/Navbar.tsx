@@ -146,7 +146,9 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
-                <a onClick={()=> navigate("/host/chat")}>
+                <a onClick={()=>{ 
+                  localStorage.removeItem("conversationId")
+                  navigate("/host/chat")}}>
                   Chats{" "}
                   <span className="badge bg-[#FFBB5C] border-none text-black">
                     New
