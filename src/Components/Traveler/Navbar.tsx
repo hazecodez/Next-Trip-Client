@@ -48,7 +48,7 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-[#092635] rounded-box w-52"
             >
               <NavLinks color="[#9EC8B9]" name="Home" link="/" />
               <NavLinks color="[#9EC8B9]" name="Blogs" link="/blogs" />
