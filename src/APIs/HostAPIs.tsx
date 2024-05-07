@@ -62,6 +62,10 @@ const HostAPIs = {
         images,
         form,
       });
+      if (response.data.blocked) {
+        Cookies.remove("host");
+        window.location.href = "/host/login";
+      }
       return response;
     } catch (error) {
       console.log("Didn't get response from host create_package API", error);
@@ -73,6 +77,10 @@ const HostAPIs = {
         form,
         images,
       });
+      if (response.data.blocked) {
+        Cookies.remove("host");
+        window.location.href = "/host/login";
+      }
       return response;
     } catch (error) {
       console.log(error);
@@ -81,6 +89,11 @@ const HostAPIs = {
   package_list: async () => {
     try {
       const response = await axiosInstance.get("/host/package_list");
+
+      if (response.data.blocked) {
+        Cookies.remove("host");
+        window.location.href = "/host/login";
+      }
       return response;
     } catch (error) {
       console.log("Didn't get response from host package_list API", error);
@@ -91,7 +104,10 @@ const HostAPIs = {
       const response = await axiosInstance.patch("/host/package_details", {
         id,
       });
-
+      if (response.data.blocked) {
+        Cookies.remove("host");
+        window.location.href = "/host/login";
+      }
       return response;
     } catch (error) {
       console.log("Didn't get response from host package_details API", error);

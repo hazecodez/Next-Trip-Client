@@ -12,12 +12,14 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
       try {
         if (who === "host") {
           const response = await HostAPIs.package_list();
-
+          
+          
           if (response?.data.packageList) {
             setPackages(response.data.packageList);
           }
         } else if (who === "traveler") {
           const response = await TravelerAPIs.package_list();
+          
           if (response?.data.status) {
             setPackages(response.data.packages);
           }

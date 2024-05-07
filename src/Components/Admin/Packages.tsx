@@ -2,17 +2,22 @@ import AdminAPI from "../../APIs/AdminAPIs";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Package from "../../Interfaces/common/Package";
+import Pagination from "./Pagination";
 
 export default function Packages() {
   const [packages, setPackages] = useState([]);
   const [action, setAction] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     async function fetchPackages() {
       try {
-        const response = await AdminAPI.packages();
+        const response = await AdminAPI.packages(searchTerm, currentPage);
         if (response?.data.status) {
-          setPackages(response.data.packages);
+          setPackages(response.data.packages.packages);
+          setTotalPages(response.data.packages.totalPages);
         } else {
           toast.error(response?.data.message);
         }
@@ -21,8 +26,8 @@ export default function Packages() {
       }
     }
     fetchPackages();
-  }, [action]);
-  async function packageAction(id: string|undefined) {
+  }, [action, searchTerm, currentPage]);
+  async function packageAction(id: string | undefined) {
     try {
       const response = await AdminAPI.package_Actions(id);
       if (response?.data.status) {
@@ -37,7 +42,28 @@ export default function Packages() {
 
   return (
     <>
-      <div className="bg-[#D2E0FB]">
+      <div className="bg-[#D2E0FB] flex justify-between">
+        <div className="lg:pl-10 my-3 text-black font-bold text-2xl">
+          <h1>Packages</h1>
+        </div>
+        <div className="lg:mr-10 md:mr-10">
+          <input
+            className="border-none bg-gray-700 h-8 my-2 py-5 px-5 lg:pr-16 rounded-full text-sm focus:outline-none"
+            type="search"
+            name="search"
+            placeholder="Search"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <button
+            type="submit"
+            className="btn btn-ghost btn-circle text-gray-700"
+          >
+            <i className="fa-solid fa-magnifying-glass text-2xl" />
+          </button>
+        </div>
+      </div>
+      <div className="">
         <div className="overflow-x-auto glass bg-base-content">
           <table className="table text-black font-bold">
             <thead className="text-black text-lg">
@@ -79,6 +105,11 @@ export default function Packages() {
             </tbody>
           </table>
         </div>
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
       </div>
     </>
   );

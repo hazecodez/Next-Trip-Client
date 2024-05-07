@@ -1,7 +1,7 @@
 interface Package {
   _id?:string|undefined;
   name: string;
-  capacity: string;
+  capacity: number;
   destination: string;
   dur_start: string;
   dur_end: string;
@@ -16,7 +16,7 @@ interface Package {
   book_start: string;
   book_end: string;
   activities: string;
-  price: string;
+  price: number;
   itinerary: string;
   host?:string;
   is_verified?:boolean;

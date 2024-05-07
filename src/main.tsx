@@ -10,7 +10,7 @@ import { Toaster } from "sonner";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <Toaster richColors expand={true} position="top-right" />
-    <GoogleOAuthProvider clientId="200809537381-dfbhcef1se00653hlscr0j358frolcgg.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_CLIENT_ID}>
       <Provider store={store}>
         <App />
       </Provider>

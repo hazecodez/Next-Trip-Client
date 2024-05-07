@@ -53,3 +53,33 @@ export interface Conversation {
   _id: string;
   members: string[];
 }
+
+export interface pagination {
+  currentPage: number;
+  setCurrentPage: (value: number) => void;
+  totalPages: number;
+}
+
+export enum Gender {
+  Male = "Male",
+  Female = "Female",
+  Other = "Other",
+}
+
+export interface BookedTravelers {
+  name: string;
+  age: number;
+}
+
+export interface BookTravelerList {
+  name: string;
+  age: number;
+  gender: string;
+}
+
+export interface bookingData {
+  name: string;
+  packageId: string | undefined;
+  totalPrice: number;
+  travelers: BookTravelerList[];
+}

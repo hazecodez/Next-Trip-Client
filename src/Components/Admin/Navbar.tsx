@@ -6,9 +6,11 @@ import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const logoutModal = () => {
     const modal = document.getElementById(
       "my_modal_6"
@@ -17,6 +19,8 @@ export default function Navbar() {
       modal.showModal();
     }
   };
+
+
   function logout() {
     dispatch(adminLogout());
     Cookies.remove("adminToken");
@@ -91,22 +95,7 @@ export default function Navbar() {
           <a className="btn btn-ghost text-xl">Next Trip</a>
         </div>
         <div className="navbar-end">
-          <button className="btn btn-ghost btn-circle">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </button>
+          
           <button className="btn btn-ghost btn-circle">
             <div className="indicator">
               <svg

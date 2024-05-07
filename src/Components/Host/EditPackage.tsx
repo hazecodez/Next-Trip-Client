@@ -101,7 +101,7 @@ export default function EditPackage() {
     initialValues: {
       _id: details._id | "",
       name: details.name | "",
-      capacity: details.capacity | "",
+      capacity: details.capacity | 0,
       destination: details.destination | "",
       dur_start: details.dur_start | "",
       dur_end: details.dur_end | "",
@@ -114,7 +114,7 @@ export default function EditPackage() {
       book_start: details.book_start | "",
       book_end: details.book_end | "",
       activities: details.activities | "",
-      price: details.price | "",
+      price: details.price | 0,
       itinerary: details.itinerary | "",
       arrival_time: details.arrival_time | "",
       depa_time: details.depa_time | "",

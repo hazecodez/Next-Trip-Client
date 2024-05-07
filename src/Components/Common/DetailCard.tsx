@@ -8,35 +8,31 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const [details, setDetails] = useState<Package>();
-  // const [chatBox, setChatBox] = useState(false);
-  // const [conversationId, setConversationId] = useState("");
 
   const handleConversation = async () => {
-    // setChatBox(true);
     const response = await TravelerAPIs.new_conversation(
       details?.host as string
     );
     // console.log(response);
     localStorage.setItem("conversationId", response?.data.data._id);
-    // setConversationId(response?.data.data._id);
     navigate("/chat");
   };
 
-  async function fetchDetails() {
-    try {
-      if (who === "Traveler") {
-        const response = await TravelerAPIs.package_details(id as string);
-        setDetails(response?.data);
-      } else {
-        const response = await HostAPIs.package_details(id as string);
-        setDetails(response?.data);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
   useEffect(() => {
+    async function fetchDetails() {
+      try {
+        if (who === "Traveler") {
+          const response = await TravelerAPIs.package_details(id as string);
+          setDetails(response?.data);
+        } else {
+          const response = await HostAPIs.package_details(id as string);
+          setDetails(response?.data);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     fetchDetails();
   }, []);
 
@@ -208,7 +204,12 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
               </p>
             </div>
             <div className="m-4">
-              <button className="btn btn-wide bg-[#092635] hover:bg-[#5C8374] border-none hover:text-[#092635] rounded-full text-base font-bold text-white">
+              <button
+                onClick={() => {
+                  navigate(`/checkout/${details?._id}`);
+                }}
+                className="btn btn-wide bg-[#092635] hover:bg-[#5C8374] border-none hover:text-[#092635] rounded-full text-base font-bold text-white"
+              >
                 PROCEED TO BOOK PACKAGE
               </button>
             </div>

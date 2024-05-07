@@ -37,6 +37,8 @@ export default function CreatePackage() {
 
   const Submission = async (formData: Package) => {
     try {
+      console.log(formData);
+      
       setLoading(true);
       const response = await HostAPIs.create_package(formData, previewSources);
       if (response?.data.status) {
@@ -55,7 +57,7 @@ export default function CreatePackage() {
     useFormik({
       initialValues: {
         name: "",
-        capacity: "",
+        capacity: 0,
         destination: "",
         dur_start: "",
         dur_end: "",
@@ -68,10 +70,11 @@ export default function CreatePackage() {
         book_start: "",
         book_end: "",
         activities: "",
-        price: "",
+        price: 0,
         itinerary: "",
         arrival_time: "",
         depa_time: "",
+        images: [""],
       },
       validationSchema: PackageSchema,
       onSubmit: Submission,
@@ -398,11 +401,11 @@ export default function CreatePackage() {
                 />
 
                 <div className=" absolute inset-y-0 start-0 flex items-center pointer-events-none ps-4 peer-disabled:opacity-50 peer-disabled:pointer-events-none"></div>
-                {/* {errors.images && touched.images ? (
+                {errors.images && touched.images ? (
                   <p className="text-orange-400">{errors.images}</p>
                 ) : (
                   ""
-                )} */}
+                )}
               </div>
             </div>
             <div className="flex justify-evenly flex-wrap">
@@ -486,7 +489,7 @@ export default function CreatePackage() {
         </div>
       </div>
 
-      <Footer bgColor="bg-[#C63D2F]" Logo="../Host/HostLogo.png" />
+      <Footer who="host" />
     </>
   );
 }

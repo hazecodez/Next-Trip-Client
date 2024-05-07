@@ -12,6 +12,7 @@
   "dependencies": {
     "@react-oauth/google": "^0.12.1",
     "@reduxjs/toolkit": "^2.2.3",
+    "@stripe/stripe-js": "^3.3.0",
     "@types/js-cookie": "^3.0.6",
     "axios": "^1.6.8",
     "cloudinary-react": "^1.8.1",
@@ -32,6 +33,7 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/node": "^20.12.8",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

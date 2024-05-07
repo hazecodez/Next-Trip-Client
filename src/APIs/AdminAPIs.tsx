@@ -27,9 +27,11 @@ const AdminAPI = {
       console.log("Didn't get response from admin google-login API", error);
     }
   },
-  travelers: async () => {
+  travelers: async (searchTerm: string, currentPage: number) => {
     try {
-      const response = await axiosInstance.get("/admin/travelers");
+      const response = await axiosInstance.get(
+        `/admin/travelers?search=${searchTerm}&page=${currentPage}`
+      );
       return response;
     } catch (error) {
       console.log(
@@ -48,9 +50,11 @@ const AdminAPI = {
       console.log("Didn't get response from admin traveler action  API", error);
     }
   },
-  hosts: async () => {
+  hosts: async (searchTerm: string, currentPage: number) => {
     try {
-      const response = await axiosInstance.get("/admin/hosts");
+      const response = await axiosInstance.get(
+        `/admin/hosts?search=${searchTerm}&page=${currentPage}`
+      );
       return response;
     } catch (error) {
       console.log("Didn't get response from admin get hosts list API", error);
@@ -64,9 +68,11 @@ const AdminAPI = {
       console.log("Didn't get response from admin host action  API", error);
     }
   },
-  packages: async () => {
+  packages: async (searchTerm: string, currentPage: number) => {
     try {
-      const response = await axiosInstance.get("/admin/packages");
+      const response = await axiosInstance.get(
+        `/admin/packages?search=${searchTerm}&page=${currentPage}`
+      );
       return response;
     } catch (error) {
       console.log(

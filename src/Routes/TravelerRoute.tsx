@@ -14,6 +14,7 @@ import Stays from "../Pages/Traveler/Stays";
 import Flights from "../Pages/Traveler/Flights";
 import Profile from "../Pages/Traveler/Profile";
 import ChatPage from "../Pages/Traveler/ChatPage";
+import CheckoutPage from "../Pages/Traveler/CheckoutPage";
 
 export default function TravelerRoute() {
   return (
@@ -119,6 +120,14 @@ export default function TravelerRoute() {
         element={
           <IsLogged>
             <ChatPage />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/checkout/:id"
+        element={
+          <IsLogged>
+            <CheckoutPage />
           </IsLogged>
         }
       />
