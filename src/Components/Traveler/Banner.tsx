@@ -5,7 +5,7 @@ export default function Banner() {
         className="hero min-h-screen"
         style={{
           backgroundImage:
-            "url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg)",
+            "url(https://www.pixelstalk.net/wp-content/uploads/images6/4K-Travel-HD-Wallpaper.jpg)",
         }}
       >
         <div className="hero-overlay bg-opacity-60"></div>

@@ -3,11 +3,13 @@ import HostAPIs from "../../APIs/HostAPIs";
 import { useEffect, useState } from "react";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
 import Package from "../../Interfaces/common/Package";
+import { bookingData } from "../../Interfaces/Interfaces";
 
 export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
   const navigate = useNavigate();
   const { id } = useParams();
   const [details, setDetails] = useState<Package>();
+  const [bookings, setBookings] = useState<bookingData[]>([]);
 
   const handleConversation = async () => {
     const response = await TravelerAPIs.new_conversation(
@@ -27,12 +29,15 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
         } else {
           const response = await HostAPIs.package_details(id as string);
           setDetails(response?.data);
+          const bookings = await HostAPIs.bookings(
+            response?.data._id as string
+          );
+          setBookings(bookings?.data.bookings);          
         }
       } catch (error) {
         console.log(error);
       }
     }
-
     fetchDetails();
   }, []);
 
@@ -65,12 +70,18 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
           <h1 className="text-black font-bold text-3xl px-16 pt-5">
             {details?.name}
           </h1>
+          {details?.capacity < 11 && (
+            <p className="px-16 pt-5 text-red-700 font-bold">
+              Only {details?.capacity} seats left.
+            </p>
+          )}
 
           <div className="flex justify-between">
             <p className="px-16 text-lg text-gray-700">
               {" "}
               {details?.dur_start} - {details?.dur_end}
             </p>
+
             {who === "Traveler" ? (
               <>
                 <div
@@ -118,13 +129,23 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
         <div
           className={` w-full my-10 h-full lg:mx-28 sm:mx-2 md:mx-5 shadow-2xl rounded-md`}
         >
-          {who === "Host" && (
+          { bookings.length > 0 && (
             <>
               <div className="w-full bg-gray-100 h-full mt-2 rounded">
                 <div className="w-full h-16 flex justify-center items-center text-2xl text-black bg-[#FF9B50]">
                   <h1>Travelers Details</h1>
                 </div>
-                <div className="p-8 text-black"></div>
+                {bookings &&
+                  bookings.map((data, index) => (
+                    <div key={index} className="p-8 text-black">
+                      <h1>Booking {index+1}</h1>
+                      {
+                        data.travelers.map((traveler,index)=>(
+                          <p key={index}>{index+1}. &nbsp; {traveler.name} <span>Age: {traveler.age} </span> <span> Gender: {traveler.gender} </span> </p>
+                        ))
+                      }
+                    </div>
+                  ))}
               </div>
             </>
           )}

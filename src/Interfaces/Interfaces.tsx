@@ -78,8 +78,21 @@ export interface BookTravelerList {
 }
 
 export interface bookingData {
-  name: string;
+  name?: string;
   packageId: string | undefined;
+  hostId?: string;
   totalPrice: number;
   travelers: BookTravelerList[];
+  travelerId?:string;
+  status?:string;
+  packageName?:string;
+}
+
+export interface rootReducersType {
+  host?: {
+    host: User;
+  };
+  traveler?: {
+    traveler: User;
+  };
 }

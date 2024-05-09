@@ -15,6 +15,8 @@ import Flights from "../Pages/Traveler/Flights";
 import Profile from "../Pages/Traveler/Profile";
 import ChatPage from "../Pages/Traveler/ChatPage";
 import CheckoutPage from "../Pages/Traveler/CheckoutPage";
+import SuccessPage from "../Pages/Traveler/SuccessPage";
+import Bookings from "../Pages/Traveler/Bookings";
 
 export default function TravelerRoute() {
   return (
@@ -128,6 +130,22 @@ export default function TravelerRoute() {
         element={
           <IsLogged>
             <CheckoutPage />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/success_page"
+        element={
+          <IsLogged>
+            <SuccessPage />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/bookings"
+        element={
+          <IsLogged>
+            <Bookings />
           </IsLogged>
         }
       />

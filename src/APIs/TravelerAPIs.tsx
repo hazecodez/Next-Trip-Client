@@ -194,11 +194,27 @@ const TravelerAPIs = {
     }
   },
   package_booking: async (Data: bookingData) => {
-    try {      
+    try {
       const response = await axiosInstance.post("/package_booking", Data);
       return response;
     } catch (error) {
-      console.log(error, "Didn't get response from traveler package_booking API");
+      console.log(
+        error,
+        "Didn't get response from traveler package_booking API"
+      );
+    }
+  },
+  booked_packages: async (id: string) => {
+    try {
+      const response = await axiosInstance.get(
+        `/booked_packages?travelerId=${id}`
+      );
+      return response;
+    } catch (error) {
+      console.log(
+        error,
+        "Didn't get response from traveler booked_packages API"
+      );
     }
   },
 };

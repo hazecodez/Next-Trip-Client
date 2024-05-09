@@ -146,6 +146,14 @@ const HostAPIs = {
       console.log("Didn't get response from host new_password API", error);
     }
   },
+  bookings: async (id: string) => {
+    try {
+      const response = await axiosInstance.get(`/host/bookings?packageId=${id}`);
+      return response;
+    } catch (error) {
+      console.log(error, "Didn't get response from host bookings API");
+    }
+  },
 };
 
 export default HostAPIs;

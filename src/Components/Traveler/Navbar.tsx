@@ -117,13 +117,13 @@ export default function Navbar() {
               <div className="w-7 rounded-full">
                 <img
                   alt="Tailwind CSS Navbar component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                  src="https://img.freepik.com/premium-photo/bearded-man-illustration_665280-67047.jpg"
                 />
               </div>
             </div>
             <ul
               tabIndex={0}
-              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-[#092635] rounded-box w-52"
             >
               <li>
                 <a
@@ -135,6 +135,9 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
+                <a onClick={()=> navigate("/bookings")}>Bookings</a>
+              </li>
+              {/* <li>
                 <a
                   onClick={() => {
                     localStorage.removeItem("conversationId");
@@ -143,7 +146,7 @@ export default function Navbar() {
                 >
                   Chats
                 </a>
-              </li>
+              </li> */}
               <li>
                 <a onClick={logoutModal}>Logout</a>
               </li>

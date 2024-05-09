@@ -60,12 +60,17 @@ export default function Checkout() {
 
   //to handle Book Now package
   async function handleBookNow() {
-    if (travelers.length > 0) {
+    if (travelers.length > packDetails?.capacity) {
+      toast.warning(`Only ${packDetails?.capacity} seats left.`);
+    } else if (travelers.length === 0) {
+      toast.warning("Please add travelers.");
+    } else {
       const Data: bookingData = {
         name: packDetails?.name as string,
         packageId: packDetails?._id,
         totalPrice: totalPrice * travelers.length,
         travelers: travelers,
+        hostId: packDetails?.host as string,
       };
       const response = await TravelerAPIs.package_booking(Data);
       if (response?.data.sessionId) {
@@ -73,8 +78,6 @@ export default function Checkout() {
         const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
         stripe?.redirectToCheckout({ sessionId });
       }
-    } else {
-      toast.warning("Please add travelers.");
     }
   }
 
@@ -89,6 +92,11 @@ export default function Checkout() {
               <h1 className="text-2xl font-bold font-mono">
                 {packDetails?.name}
               </h1>
+              {packDetails?.capacity < 11 && (
+                <p className="text-red-700 font-bold">
+                  only {packDetails?.capacity} seats left.
+                </p>
+              )}
 
               <br />
               <p>

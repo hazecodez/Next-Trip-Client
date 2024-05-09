@@ -75,7 +75,7 @@ export default function ChatBar({
           >
             <img
               className="w-10 h-10 rounded-full"
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              src="https://thumbs.dreamstime.com/b/businessman-icon-vector-male-avatar-profile-image-profile-businessman-icon-vector-male-avatar-profile-image-182095609.jpg"
               alt=""
             />
             <div className="font-semibold dark:text-black">
