@@ -7,7 +7,7 @@ export default function Bookings() {
   return (
     <>
     <Navbar/>
-    <div className="w-full h-screen bg-[#c8c2c2]">
+    <div className="w-full h-full bg-[#c8c2c2]">
     <BookedPackages/>
     </div>
     

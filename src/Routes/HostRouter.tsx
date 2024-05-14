@@ -13,6 +13,7 @@ import IsLoggedIn from "../Middlewares/Host/IsLoggedIn";
 import IsLoggedOut from "../Middlewares/Host/IsLoggedOut";
 import PackageDetails from "../Pages/Host/PackageDetails";
 import ChatPage from "../Pages/Host/ChatPage";
+import ProfilePage from "../Pages/Host/ProfilePage";
 
 export default function HostRouter() {
   return (
@@ -111,6 +112,14 @@ export default function HostRouter() {
           element={
             <IsLoggedIn>
               <ChatPage />
+            </IsLoggedIn>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <IsLoggedIn>
+              <ProfilePage />
             </IsLoggedIn>
           }
         />

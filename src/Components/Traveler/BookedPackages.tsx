@@ -4,12 +4,12 @@ import { rootReducersType } from "../../Interfaces/Interfaces";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
 import { bookingData } from "../../Interfaces/Interfaces";
 // import { toast } from "sonner";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function BookedPackages() {
   const traveler = useSelector((state: rootReducersType) => state.traveler);
   const [bookings, setBookings] = useState<bookingData[]>([]);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchBookings() {
@@ -38,7 +38,7 @@ export default function BookedPackages() {
               className="p-8 mb-2 text-black flex justify-between w-full bg-gray-300 h-full shadow-2xl rounded"
             >
               <div>
-                <h1 className="text-2xl font-bold font-mono">
+                <h1 className="text-2xl font-bold font-mono" onClick={()=> navigate(`/package_details/${data.packageId}`)}>
                   {data?.packageName}
                 </h1>
                 <p>Total {data.travelers.length} Travelers</p>
