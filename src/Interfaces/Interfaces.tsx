@@ -9,6 +9,10 @@ export interface User {
   _id?: string;
   name?: string;
   email?: string;
+  image?: string;
+  wallet?: number;
+  walletHistory?: object[];
+  password?: string;
 }
 
 export interface Package {
@@ -86,6 +90,18 @@ export interface bookingData {
   travelerId?:string;
   status?:string;
   packageName?:string;
+}
+export interface walletHistory {
+  packageName: string;
+  travelerName:string;
+  amount:number;
+  status:string;
+  date:string;
+}
+
+export interface changePass {
+  newPass: string;
+  currPass: string;
 }
 
 export interface rootReducersType {

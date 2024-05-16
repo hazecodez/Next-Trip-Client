@@ -2,6 +2,7 @@ import axiosInstance from "./AxiosInstance";
 import Package from "../Interfaces/common/Package";
 import LoginType from "../Interfaces/common/LoginType";
 import Cookies from "js-cookie";
+import { changePass } from "../Interfaces/Interfaces";
 
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -148,10 +149,46 @@ const HostAPIs = {
   },
   bookings: async (id: string) => {
     try {
-      const response = await axiosInstance.get(`/host/bookings?packageId=${id}`);
+      const response = await axiosInstance.get(
+        `/host/bookings?packageId=${id}`
+      );
       return response;
     } catch (error) {
       console.log(error, "Didn't get response from host bookings API");
+    }
+  },
+  host_profile: async () => {
+    try {
+      const response = await axiosInstance.get("/host/profile");
+      return response;
+    } catch (error) {
+      console.log(error, "Didn't get response from host host_profile API");
+    }
+  },
+  host_profile_update: async (data: LoginType) => {
+    try {
+      const response = await axiosInstance.post("/host/profile_update", data);
+      return response;
+    } catch (error) {
+      console.log(error, "Didn't get response from host profile_update API");
+    }
+  },
+  host_change_password: async (data: changePass) => {
+    try {
+      const response = await axiosInstance.post("/host/change_password", data);
+      return response;
+    } catch (error) {
+      console.log(error, "Didn't get response from host change_password API");
+    }
+  },
+  create_password: async (password: string) => {
+    try {
+      const response = await axiosInstance.post("/host/create_password", {
+        password,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from host create_password API", error);
     }
   },
 };

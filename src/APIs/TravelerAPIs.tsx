@@ -1,4 +1,4 @@
-import { bookingData, LoginType } from "../Interfaces/Interfaces";
+import { bookingData, changePass, LoginType } from "../Interfaces/Interfaces";
 import axiosInstance from "./AxiosInstance";
 import Cookies from "js-cookie";
 
@@ -214,6 +214,52 @@ const TravelerAPIs = {
       console.log(
         error,
         "Didn't get response from traveler booked_packages API"
+      );
+    }
+  },
+  traveler_profile: async () => {
+    try {
+      const response = await axiosInstance.get("/profile");
+      return response;
+    } catch (error) {
+      console.log(
+        error,
+        "Didn't get response from traveler traveler_profile API"
+      );
+    }
+  },
+  profile_update: async (data: LoginType) => {
+    try {
+      const response = await axiosInstance.post("/profile_update", data);
+      return response;
+    } catch (error) {
+      console.log(
+        error,
+        "Didn't get response from traveler profile_update API"
+      );
+    }
+  },
+  change_password: async (data: changePass) => {
+    try {
+      const response = await axiosInstance.post("/change_password", data);
+      return response;
+    } catch (error) {
+      console.log(
+        error,
+        "Didn't get response from traveler change_password API"
+      );
+    }
+  },
+  create_password: async (password: string) => {
+    try {
+      const response = await axiosInstance.post("/create_password", {
+        password,
+      });
+      return response;
+    } catch (error) {
+      console.log(
+        "Didn't get response from traveler create_password API",
+        error
       );
     }
   },

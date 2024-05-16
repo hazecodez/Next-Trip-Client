@@ -1,17 +1,16 @@
 import Footer from "../../Components/Common/Footer";
+import ProfileCard from "../../Components/Common/ProfileCard";
 import Navbar from "../../Components/Host/Navbar";
-
+import { Who } from "../../Interfaces/Interfaces";
 
 export default function ProfilePage() {
   return (
     <>
-    <Navbar/>
-    <div className="h-screen bg-[#F2F2F2]">
+      <Navbar />
 
+      <ProfileCard who={Who.Host} />
 
-    </div>
-
-    <Footer who="host" />
+      <Footer who="host" />
     </>
-  )
+  );
 }
