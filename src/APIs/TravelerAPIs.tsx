@@ -271,6 +271,14 @@ const TravelerAPIs = {
       console.log("Didn't get response from traveler dp_update API", error);
     }
   },
+  cancel_booking: async (id: string) => {
+    try {
+      const response = await axiosInstance.patch("/cancel_booking", { id });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default TravelerAPIs;

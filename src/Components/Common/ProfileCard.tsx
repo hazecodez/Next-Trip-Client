@@ -55,7 +55,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       }
     }
     fetchDetails();
-  }, [isEdit, passEdit, createPass,dpUpdated]);
+  }, [isEdit, passEdit, createPass, dpUpdated]);
 
   const handleAvatarClick = () => {
     if (fileInputRef.current) {
@@ -217,7 +217,9 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       console.log(error);
     }
   }
-
+  const sortedWalletHistory = user?.walletHistory?.sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
   return (
     <>
       <div className="bg-[#F2F2F2] p-10 min-h-screen">
@@ -529,8 +531,16 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                     </a>
                   </div>
                 </div>
-                <div className="flex flex-wrap" style={{ maxHeight: "15rem", overflowY: "auto", scrollbarWidth: "none", msOverflowStyle: "none" }}>
-                {user.walletHistory.map((data, index: number) => (
+                <div
+                  className="flex flex-wrap"
+                  style={{
+                    maxHeight: "15rem",
+                    overflowY: "auto",
+                    scrollbarWidth: "none",
+                    msOverflowStyle: "none",
+                  }}
+                >
+                  {sortedWalletHistory?.map((data, index: number) => (
                     <div
                       key={index}
                       className="w-full border-b border-coolGray-100"
@@ -540,9 +550,16 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                           <div className="flex flex-wrap items-center -m-2">
                             <div className="w-auto p-2">
                               <div className="flex items-center justify-center w-12 h-12 bg-yellow-50 rounded-md">
-                                {data.status === "Credited" ? (
+                                {data.status === "Credited" && (
                                   <i className="fa-solid fa-arrow-down-long text-green-600" />
-                                ) : (
+                                )}
+                                {data.status === "Debited" && (
+                                  <i className="fa-solid fa-arrow-up-long text-red-600" />
+                                )}
+                                {data.status === "Cancelled" && (
+                                  <i className="fa-solid fa-arrow-down-long text-green-600" />
+                                )}
+                                {data.status === "Booked" && (
                                   <i className="fa-solid fa-arrow-up-long text-red-600" />
                                 )}
                               </div>
@@ -551,14 +568,25 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                               <h2 className="text-sm font-medium text-coolGray-900">
                                 {data.status === "Credited" &&
                                   `${data.travelerName} Paid ${data.amount}`}
-                                {data.status === "Cancelled" &&
+
+                                {data.status === "Debited" &&
                                   `${data.travelerName} Cancelled ${data.packageName}`}
+
+                                {data.status === "Cancelled" &&
+                                  ` Cancelled ${data.packageName}`}
+
+                                {data.status === "Booked" &&
+                                  ` Booked ${data.packageName}`}
                               </h2>
                               <h2 className="text-sm font-medium text-coolGray-900">
                                 {data.status === "Credited" &&
                                   `${data.packageName}`}
+                                {data.status === "Debited" &&
+                                  ` ${data.amount} Debited from wallet`}
                                 {data.status === "Cancelled" &&
-                                  `${data.packageName}`}
+                                  `${data.amount} Credited to wallet`}
+                                {data.status === "Booked" &&
+                                  `${data.amount} Debited from wallet`}
                               </h2>
                             </div>
                           </div>
@@ -566,13 +594,15 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                         <div className="w-auto p-2">
                           <p
                             className={`text-xs text-${
-                              data.status === "Credited"
+                              data.status === ("Credited" || "Booked")
                                 ? "green-600"
                                 : "red-600"
                             } font-medium`}
                           >
-                            {data.status === "Credited" && `Booked`}
+                            {data.status === "Credited" && `Credit`}
+                            {data.status === "Debited" && "Debit"}
                             {data.status === "Cancelled" && `Cancelled`}
+                            {data.status === "Booked" && "Booked"}
                           </p>
                           <p className="text-xs text-coolGray-500 font-medium">
                             {formatDateTime(data.date)}

@@ -5,6 +5,12 @@ import TravelerAPIs from "../../APIs/TravelerAPIs";
 import Package from "../../Interfaces/common/Package";
 import { bookingData } from "../../Interfaces/Interfaces";
 
+const formatDate = (dateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date: Date = new Date(dateString);
+  return date.toLocaleDateString('en-US', options);
+};
+
 export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -68,19 +74,22 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
       <div className="bg-white w-auto h-auto shadow-2xl">
         <div>
           <h1 className="text-black font-bold text-3xl px-16 pt-5">
-            {details?.name}
+            {details?.name} <span className="px-16 pt-5 text-sm text-red-700 font-bold">Booking Ends on {formatDate(details?.book_end as string)}</span>
           </h1>
           {details?.capacity < 11 && (
+            <>
             <p className="px-16 pt-5 text-red-700 font-bold">
               Only {details?.capacity} seats left.
             </p>
+          </>
           )}
 
           <div className="flex justify-between">
             <p className="px-16 text-lg text-gray-700">
               {" "}
-              {details?.dur_start} - {details?.dur_end}
+              {formatDate(details?.dur_start as string)} - {formatDate(details?.dur_end as string)}
             </p>
+            
 
             {who === "Traveler" ? (
               <>
@@ -154,14 +163,14 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
               <p>
                 <i className="fa-solid fa-plane-departure  text-xl" /> &nbsp;
                 &nbsp; Departure In {details?.depa_airport} on{" "}
-                {details?.depa_time}{" "}
+                {formatDate(details?.depa_time as string)}{" "}
               </p>
 
               <br />
               <p>
                 <i className="fa-solid fa-plane-arrival text-xl"></i>&nbsp;
                 &nbsp; Arrival In {details?.arrival_airport} on{" "}
-                {details?.arrival_time}
+                {formatDate(details?.arrival_time as string)}
               </p>
             </div>
           </div>

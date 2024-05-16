@@ -11,8 +11,16 @@ export interface User {
   email?: string;
   image?: string;
   wallet?: number;
-  walletHistory?: object[];
+  walletHistory?: WalletHistoryItem[];
   password?: string;
+}
+
+interface WalletHistoryItem {
+  status: string;
+  travelerName?: string;
+  packageName: string;
+  amount: number;
+  date: string;
 }
 
 export interface Package {
@@ -82,6 +90,7 @@ export interface BookTravelerList {
 }
 
 export interface bookingData {
+  _id?:string;
   name?: string;
   packageId: string | undefined;
   hostId?: string;
@@ -90,6 +99,7 @@ export interface bookingData {
   travelerId?:string;
   status?:string;
   packageName?:string;
+  cancelDate?:string;
 }
 export interface walletHistory {
   packageName: string;

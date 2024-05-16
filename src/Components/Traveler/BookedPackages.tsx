@@ -5,6 +5,37 @@ import TravelerAPIs from "../../APIs/TravelerAPIs";
 import { bookingData } from "../../Interfaces/Interfaces";
 // import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
+};
+
+const isDateInThePast = (dateString: string): boolean => {
+  const givenDate = new Date(dateString);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return givenDate > today;
+};
+
+async function handleCancellation(id: string) {
+  try {
+    const response = await TravelerAPIs.cancel_booking(id);
+    if (response?.data.status) {
+      toast.success(response?.data.message);
+    } else {
+      toast.error(response?.data.message);
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 export default function BookedPackages() {
   const traveler = useSelector((state: rootReducersType) => state.traveler);
@@ -38,7 +69,10 @@ export default function BookedPackages() {
               className="p-8 mb-2 text-black flex justify-between w-full bg-gray-300 h-full shadow-2xl rounded"
             >
               <div>
-                <h1 className="text-2xl font-bold font-mono" onClick={()=> navigate(`/package_details/${data.packageId}`)}>
+                <h1
+                  className="text-2xl font-bold font-mono"
+                  onClick={() => navigate(`/package_details/${data.packageId}`)}
+                >
                   {data?.packageName}
                 </h1>
                 <p>Total {data.travelers.length} Travelers</p>
@@ -47,14 +81,28 @@ export default function BookedPackages() {
                     <p key={index}> {traveler.name} &nbsp;</p>
                   ))}
                 </div>
+                <p className="text-red-600 font-bold">
+                  Cancellation last date {formatDate(data.cancelDate as string)}
+                </p>
+                <p>{isDateInThePast(data.cancelDate as string)}</p>
               </div>
 
               <div>
-                <p className="text-3xl font-bold">₹ {data.totalPrice}.00 &nbsp;<span className="text-green-500 font-semibold text-xl">Paid <i className="fa-regular fa-circle-check"/></span> </p>
+                <p className="text-3xl font-bold">
+                  ₹ {data.totalPrice}.00 &nbsp;
+                  <span className="text-green-500 font-semibold text-xl">
+                    Paid <i className="fa-regular fa-circle-check" />
+                  </span>{" "}
+                </p>
                 <br />
-                <button className="text-lg btn btn-wide bg-[#092635] text-[#9EC8B9] hover:bg-[#9EC8B9] hover:text-[#092635] border-none">
-                  CANCEL BOOKING
-                </button>
+                {isDateInThePast(data.cancelDate as string) && (
+                  <button
+                    onClick={() => handleCancellation(data._id as string)}
+                    className="text-lg btn btn-wide bg-[#092635] text-[#9EC8B9] hover:bg-[#9EC8B9] hover:text-[#092635] border-none"
+                  >
+                    CANCEL BOOKING
+                  </button>
+                )}
               </div>
             </div>
           ))}

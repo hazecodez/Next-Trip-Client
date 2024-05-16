@@ -13,6 +13,12 @@ import { useFormik } from "formik";
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "sonner";
 
+const formatDate = (dateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date: Date = new Date(dateString);
+  return date.toLocaleDateString('en-US', options);
+};
+
 export default function Checkout() {
   const { id } = useParams();
   const [packDetails, setPackDetails] = useState<Package>();
@@ -101,8 +107,8 @@ export default function Checkout() {
               <br />
               <p>
                 <i className="fa-solid fa-calendar-days" />
-                &nbsp; &nbsp; Start at {packDetails?.dur_start}&nbsp;&nbsp; Ends
-                on {packDetails?.dur_end}
+                &nbsp; &nbsp; Start at {formatDate(packDetails?.dur_start as string)}&nbsp;&nbsp; Ends
+                on {formatDate(packDetails?.dur_end as string)}
               </p>
             </div>
 

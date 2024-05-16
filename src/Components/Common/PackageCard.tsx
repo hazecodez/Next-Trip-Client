@@ -4,6 +4,12 @@ import TravelerAPIs from "../../APIs/TravelerAPIs";
 import { useNavigate } from "react-router-dom";
 import Package from "../../Interfaces/common/Package";
 
+const formatDate = (dateString: string): string => {
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date: Date = new Date(dateString);
+  return date.toLocaleDateString('en-US', options);
+};
+
 export default function PackageCard({ who }: { who: "traveler" | "host" }) {
   const navigate = useNavigate();
   const [packages, setPackages] = useState([]);
@@ -60,7 +66,7 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
               </h2>
               <p className="text-black">{data.destination}</p>
               <p className="text-black">
-                {data.dur_start} to {data.dur_end}
+                {formatDate(data.dur_start)} to {formatDate(data.dur_end)}
               </p>
               <p className="text-black">{data.itinerary}</p>
               <p className="text-black font-bold text-end"> ₹ {data.price}</p>
