@@ -263,6 +263,14 @@ const TravelerAPIs = {
       );
     }
   },
+  dp_update: async (image: string) => {
+    try {
+      const response = await axiosInstance.post("/profile_dp", { image });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler dp_update API", error);
+    }
+  },
 };
 
 export default TravelerAPIs;

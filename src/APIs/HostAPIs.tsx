@@ -191,6 +191,14 @@ const HostAPIs = {
       console.log("Didn't get response from host create_password API", error);
     }
   },
+  dp_update: async (image: string) => {
+    try {
+      const response = await axiosInstance.post("/host/profile_dp", { image });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default HostAPIs;

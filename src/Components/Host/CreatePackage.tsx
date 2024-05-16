@@ -37,8 +37,6 @@ export default function CreatePackage() {
 
   const Submission = async (formData: Package) => {
     try {
-      console.log(formData);
-      
       setLoading(true);
       const response = await HostAPIs.create_package(formData, previewSources);
       if (response?.data.status) {

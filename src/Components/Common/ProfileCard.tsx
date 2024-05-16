@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { Who } from "../../Interfaces/Interfaces";
 import "./Css/Wallet.css";
 import { User } from "../../Interfaces/Interfaces";
@@ -37,6 +37,8 @@ export default function ProfileCard({ who }: ProfileCardProps) {
   const [email, setEmail] = useState("");
   const [currPass, setCurrPass] = useState("");
   const [newPass, setNewPass] = useState("");
+  const [dpUpdated, setDpUpdated] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     async function fetchDetails() {
@@ -53,7 +55,48 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       }
     }
     fetchDetails();
-  }, [isEdit, passEdit, createPass]);
+  }, [isEdit, passEdit, createPass,dpUpdated]);
+
+  const handleAvatarClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        handleDpUpdate(reader.result as string);
+      };
+    }
+  };
+
+  async function handleDpUpdate(image: string) {
+    try {
+      if (who === Who.Host) {
+        const response = await HostAPIs.dp_update(image);
+        if (response?.data.status) {
+          toast.success(response.data.message);
+          setDpUpdated(!dpUpdated);
+        } else {
+          toast.error(response?.data.message);
+        }
+      } else {
+        const response = await TravelerAPIs.dp_update(image);
+        if (response?.data.status) {
+          toast.success(response?.data.message);
+          setDpUpdated(!dpUpdated);
+        } else {
+          toast.error(response?.data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   async function handleUpdate() {
     try {
@@ -183,11 +226,12 @@ export default function ProfileCard({ who }: ProfileCardProps) {
             who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
           } h-full p-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-t`}
         >
-          <div className="avatar w-1/2 md:w-1/5 flex min-w-56  min-h-56 justify-center md:justify-start">
+          <div className="avatar w-1/2 md:w-1/5 flex min-w-56 min-h-56 justify-center md:justify-start">
             <div
               className={`w-56 h-56 rounded-full ring-8 ${
                 who === "host" ? "ring-[#c87369]" : "ring-[#092635]"
-              } `}
+              } cursor-pointer`}
+              onClick={handleAvatarClick}
             >
               {user?.image === "" ? (
                 <img
@@ -203,16 +247,12 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                 />
               )}
             </div>
-            <button
-              onClick={() => console.log("image")}
-              className={`btn rounded-full w-12 bg-transparent ${
-                who === "host"
-                  ? "text-[#C63D2F]  hover:bg-[#C63D2F] hover:text-[#FFBB5C]"
-                  : "text-[#092635] hover:bg-[#092635] hover:text-[#9EC8B9]"
-              }  border-none `}
-            >
-              <i className="fa-solid fa-pen-to-square text-xl " />
-            </button>
+            <input
+              type="file"
+              ref={fileInputRef}
+              className="hidden"
+              onChange={handleFileChange}
+            />
           </div>
           <div
             className={`w-full md:w-4/5 ${
@@ -489,8 +529,8 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                     </a>
                   </div>
                 </div>
-                <div className="flex flex-wrap">
-                  {user.walletHistory.map((data, index: number) => (
+                <div className="flex flex-wrap" style={{ maxHeight: "15rem", overflowY: "auto", scrollbarWidth: "none", msOverflowStyle: "none" }}>
+                {user.walletHistory.map((data, index: number) => (
                     <div
                       key={index}
                       className="w-full border-b border-coolGray-100"
