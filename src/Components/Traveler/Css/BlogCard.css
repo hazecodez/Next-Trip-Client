@@ -1,0 +1,168 @@
+.post-card {
+    width: 320px;
+    background: lightgrey;
+    background: linear-gradient(to right, #26404E, #092635);
+    border: 1px solid rgb(84 90 106);
+    border-radius: 20px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    padding: 10px 20px;
+  }
+  
+  .avatar {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+    
+  }
+  
+  .title {
+    font-size: 20px;
+    line-height: 22px;
+    font-weight: 600;
+    margin-top: 10px;
+    color: #fff;
+    text-decoration: none;
+    transition: all .35s ease-in;
+  }
+  
+  .title:hover {
+    text-decoration: underline blueviolet;
+  }
+  
+  .datetime {
+    font-size: 12px;
+    color: rgb(168 179 207);
+    margin: 10px 0;
+  }
+  
+  .image-preview {
+    flex: 1;
+    min-height: 150px;
+    width: 100%;
+    border-radius: 20px;
+    
+    margin-bottom: 4px;
+  }
+  
+  .comment-like {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 2px 0;
+  }
+  
+  .comment-like span {
+    cursor: pointer;
+    height: 40px;
+    width: 50px;
+    padding: 0 3px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    border-radius: 10px;
+    background-color: transparent;
+    transition: all .15s ease;
+  }
+  
+  .comment-like span:hover {
+    background-color: rgba(137, 43, 226, 0.096);
+  }
+  
+  .comment-like span svg {
+    fill: rgb(255, 255, 255);
+    margin-right: 2px;
+  }
+
+
+
+
+  /* coment section */
+
+  .card-container {
+    background-color: #092635;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 480px;
+    height: 590px;
+  }
+  
+  .card-header {
+    display: flex;
+    align-items: center;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .card-header .img-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 20px;
+    background-color: #333;
+  }
+  
+  .card-header .text-chat {
+    color: black;
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  .card-body {
+    flex: 1;
+    overflow-y: auto;
+  }
+  
+  .messages-container {
+    padding: 15px;
+  }
+  
+  .message-box {
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 10px;
+  }
+  
+  .message-box.left {
+    background-color: #f1f1f1;
+    color: black;
+    font-size: 13px;
+    left: 0;
+  }
+  
+
+  
+  .message-input {
+    padding: 5px;
+    border-top: 1px solid #ccc;
+  }
+  
+  .message-input .message-send {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    resize: none;
+  }
+  
+  .message-input .button-send {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px;
+    border-radius: 10px;
+    font-size: 13px;
+  }
+  
+  .message-input .button-send:hover {
+    background-color: #f1f1f1;
+    color: #333;
+  }
+  

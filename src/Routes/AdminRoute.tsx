@@ -7,6 +7,8 @@ import PackagePage from "../Pages/Admin/PackagePage";
 import Dashboard from "../Pages/Admin/Dashboard";
 import IsLoggedOut from "../Middlewares/Admin/IsLoggedOut";
 import IsLoggedIn from "../Middlewares/Admin/IsLoggedIn";
+import Error404 from "../Pages/Common/Error404";
+
 
 export default function AdminRoute() {
   return (
@@ -60,6 +62,7 @@ export default function AdminRoute() {
             </IsLoggedIn>
           }
         />
+        <Route path="*" element={<Error404/>} />
       </Routes>
     </>
   );

@@ -17,6 +17,8 @@ import ChatPage from "../Pages/Traveler/ChatPage";
 import CheckoutPage from "../Pages/Traveler/CheckoutPage";
 import SuccessPage from "../Pages/Traveler/SuccessPage";
 import Bookings from "../Pages/Traveler/Bookings";
+import Error404 from "../Pages/Common/Error404";
+
 
 export default function TravelerRoute() {
   return (
@@ -134,7 +136,7 @@ export default function TravelerRoute() {
         }
       />
       <Route
-        path="/success_page"
+        path="/success_page/:id"
         element={
           <IsLogged>
             <SuccessPage />
@@ -149,6 +151,7 @@ export default function TravelerRoute() {
           </IsLogged>
         }
       />
+      <Route path="*" element={<Error404 />} />
     </Routes>
   );
 }

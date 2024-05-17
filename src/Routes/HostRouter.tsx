@@ -14,6 +14,8 @@ import IsLoggedOut from "../Middlewares/Host/IsLoggedOut";
 import PackageDetails from "../Pages/Host/PackageDetails";
 import ChatPage from "../Pages/Host/ChatPage";
 import ProfilePage from "../Pages/Host/ProfilePage";
+import Error404 from "../Pages/Common/Error404";
+
 
 export default function HostRouter() {
   return (
@@ -123,6 +125,7 @@ export default function HostRouter() {
             </IsLoggedIn>
           }
         />
+        <Route path="*" element={<Error404  />} />
       </Routes>
     </>
   );
