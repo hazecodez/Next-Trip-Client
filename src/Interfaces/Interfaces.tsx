@@ -90,23 +90,23 @@ export interface BookTravelerList {
 }
 
 export interface bookingData {
-  _id?:string;
+  _id?: string;
   name?: string;
   packageId: string | undefined;
   hostId?: string;
   totalPrice: number;
   travelers: BookTravelerList[];
-  travelerId?:string;
-  status?:string;
-  packageName?:string;
-  cancelDate?:string;
+  travelerId?: string;
+  status?: string;
+  packageName?: string;
+  cancelDate?: string;
 }
 export interface walletHistory {
   packageName: string;
-  travelerName:string;
-  amount:number;
-  status:string;
-  date:string;
+  travelerName: string;
+  amount: number;
+  status: string;
+  date: string;
 }
 
 export interface changePass {
@@ -121,4 +121,22 @@ export interface rootReducersType {
   traveler?: {
     traveler: User;
   };
+}
+
+export interface Blog {
+  _id?: string;
+  caption: string;
+  location: string;
+  experience: string;
+  image?: string;
+  time?: string;
+  likes?: number;
+  comments?: comments[];
+  userId?:string;
+}
+
+export interface comments {
+  senderId?: string;
+  comment?: string;
+  time?: string;
 }

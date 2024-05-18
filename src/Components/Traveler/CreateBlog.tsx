@@ -1,22 +1,73 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./Css/CreateForm.css";
+import BlogSchema from "../../Validations/Traveler/BlogSchema";
+import { Blog } from "../../Interfaces/Interfaces";
+
+import { useFormik } from "formik";
+import { toast } from "sonner";
+import TravelerAPIs from "../../APIs/TravelerAPIs";
 
 interface modalProp {
   onClose: () => void;
 }
 
 export default function CreateBlog({ onClose }: modalProp) {
-  const [preview, setPreview] = useState(false);
+  const [preview, setPreview] = useState("");
+  const [imageError, setImageError] = useState(false);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setPreview(reader.result as string);
+      };
+    }
+  };
+  const submit = async (form: Blog) => {
+    try {
+      if (!preview) {
+        setImageError(true);
+      } else {
+        const response = await TravelerAPIs.create_blog(form, preview);
+        if (response?.data.status) {
+          toast.success(response.data.message);
+          onClose();
+        } else {
+          toast.error(response?.data.message);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const { errors, values, touched, handleBlur, handleChange, handleSubmit } =
+    useFormik({
+      initialValues: {
+        caption: "",
+        experience: "",
+        location: "",
+      },
+      validationSchema: BlogSchema,
+      onSubmit: submit,
+    });
+
   return (
     <>
       <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
         <div className="form-container">
           <label className="custum-file-upload ml-6">
             {preview ? (
-              <img
-                src="https://www.holidify.com/images/bgImages/MUNNAR.jpg"
-                alt=""
-              />
+              <>
+                <img className="h-48 w-72" src={preview} alt="" />
+                <input
+                  type="file"
+                  id="file"
+                  name="image"
+                  onChange={handleImageChange}
+                />
+              </>
             ) : (
               <>
                 <div className="icon">
@@ -45,23 +96,67 @@ export default function CreateBlog({ onClose }: modalProp) {
                 <div className="text">
                   <span>Click to upload image</span>
                 </div>
-                <input type="file" id="file" />
+                <input
+                  type="file"
+                  id="file"
+                  name="image"
+                  onChange={handleImageChange}
+                />
               </>
             )}
           </label>
+          {imageError && <p className="text-orange-400">Image is required.</p>}
 
-          <form className="form">
+          <form className="form" onSubmit={handleSubmit}>
             <div className="form-group">
               <label>Location</label>
-              <input name="location" id="email" type="text" />
+              <input
+                name="location"
+                id="email"
+                type="text"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.location}
+              />
+              {errors.location && touched.location ? (
+                <p className="text-orange-400">{errors.location}</p>
+              ) : (
+                ""
+              )}
             </div>
+
             <div className="form-group">
               <label>Caption</label>
-              <input name="caption" id="email" type="text" />
+              <input
+                name="caption"
+                id="email"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.caption}
+                type="text"
+              />
+              {errors.caption && touched.caption ? (
+                <p className="text-orange-400">{errors.caption}</p>
+              ) : (
+                ""
+              )}
             </div>
             <div className="form-group">
               <label>Share your Experience...</label>
-              <textarea cols={50} rows={10} id="textarea" name="textarea" />
+              <textarea
+                cols={50}
+                rows={10}
+                id="textarea"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.experience}
+                name="experience"
+              />
+              {errors.experience && touched.experience ? (
+                <p className="text-orange-400">{errors.experience}</p>
+              ) : (
+                ""
+              )}
             </div>
             <div className="flex">
               <button

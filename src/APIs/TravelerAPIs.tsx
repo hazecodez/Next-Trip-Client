@@ -1,4 +1,10 @@
-import { bookingData, changePass, LoginType } from "../Interfaces/Interfaces";
+import {
+  Blog,
+  bookingData,
+  changePass,
+  comments,
+  LoginType,
+} from "../Interfaces/Interfaces";
 import axiosInstance from "./AxiosInstance";
 import Cookies from "js-cookie";
 
@@ -277,6 +283,52 @@ const TravelerAPIs = {
       return response;
     } catch (error) {
       console.log(error);
+    }
+  },
+  create_blog: async (form: Blog, image: string) => {
+    try {
+      const response = await axiosInstance.post("/create_blog", {
+        form,
+        image,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler create_blog API", error);
+    }
+  },
+  fetch_blogs: async () => {
+    try {
+      const response = await axiosInstance.get("/blogs");
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler fetch_blogs API", error);
+    }
+  },
+  blog_details: async (id: string) => {
+    try {
+      const response = await axiosInstance.patch("/blog_details", { id: id });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler blog_details API", error);
+    }
+  },
+  like_blog: async (id: string) => {
+    try {
+      const response = await axiosInstance.patch("/like_blog", { id: id });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler like_blog API", error);
+    }
+  },
+  comment_blog: async (id: string, comment: comments) => {
+    try {
+      const response = await axiosInstance.patch("/comment_blog", {
+        id: id,
+        comment: comment,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from traveler comment_blog API", error);
     }
   },
 };
