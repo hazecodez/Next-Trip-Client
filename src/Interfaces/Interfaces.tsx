@@ -125,14 +125,16 @@ export interface rootReducersType {
 
 export interface Blog {
   _id?: string;
+  liked?: boolean;
   caption: string;
   location: string;
   experience: string;
   image?: string;
-  time?: string;
-  likes?: number;
+  time?: Date;
+  liked_users?: string[];
   comments?: comments[];
-  userId?:string;
+  userId?: string;
+  userName?: string;
 }
 
 export interface comments {

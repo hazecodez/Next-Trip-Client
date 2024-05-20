@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import "./Css/CreateForm.css";
 import BlogSchema from "../../Validations/Traveler/BlogSchema";
-import { Blog } from "../../Interfaces/Interfaces";
+import { Blog, User } from "../../Interfaces/Interfaces";
+import { RiseLoader } from "react-spinners";
+
+interface UserData {
+  traveler?: {
+    traveler: User;
+  };
+}
 
 import { useFormik } from "formik";
 import { toast } from "sonner";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
+import { useSelector } from "react-redux";
 
 interface modalProp {
   onClose: () => void;
@@ -14,6 +22,8 @@ interface modalProp {
 export default function CreateBlog({ onClose }: modalProp) {
   const [preview, setPreview] = useState("");
   const [imageError, setImageError] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const traveler = useSelector((state: UserData) => state.traveler);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -30,12 +40,19 @@ export default function CreateBlog({ onClose }: modalProp) {
       if (!preview) {
         setImageError(true);
       } else {
-        const response = await TravelerAPIs.create_blog(form, preview);
+        setLoader(true);
+        const response = await TravelerAPIs.create_blog(
+          form,
+          preview,
+          traveler?.traveler.name as string
+        );
         if (response?.data.status) {
           toast.success(response.data.message);
           onClose();
+          setLoader(false);
         } else {
           toast.error(response?.data.message);
+          setLoader(false);
         }
       }
     } catch (error) {
@@ -48,6 +65,7 @@ export default function CreateBlog({ onClose }: modalProp) {
         caption: "",
         experience: "",
         location: "",
+        
       },
       validationSchema: BlogSchema,
       onSubmit: submit,
@@ -158,20 +176,30 @@ export default function CreateBlog({ onClose }: modalProp) {
                 ""
               )}
             </div>
-            <div className="flex">
-              <button
-                onClick={onClose}
-                className="form-submit-btn m-5 mb-0 bg-[#260b0b] hover:bg-[#371717]"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="form-submit-btn bg-[#0a1a22] hover:bg-[#152229]"
-              >
-                Create
-              </button>
-            </div>
+            {loader ? (
+              <div className="loader-container">
+                <RiseLoader color="#5C8374" size={30} />
+
+                <p className="pt-10 pl-6 text-[#92aba2] text-lg">
+                  Wait for while....
+                </p>
+              </div>
+            ) : (
+              <div className="flex">
+                <button
+                  onClick={onClose}
+                  className="form-submit-btn m-5 mb-0 bg-[#260b0b] hover:bg-[#371717]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="form-submit-btn bg-[#0a1a22] hover:bg-[#152229]"
+                >
+                  Create
+                </button>
+              </div>
+            )}
           </form>
         </div>
       </div>

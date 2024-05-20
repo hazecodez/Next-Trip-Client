@@ -50,7 +50,7 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
               <img
                 className=""
                 key={index}
-                src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images[0]}`}
+                src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images?.[0]}`}
                 alt="car!"
               />
             </figure>

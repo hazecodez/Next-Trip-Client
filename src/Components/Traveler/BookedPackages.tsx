@@ -24,24 +24,25 @@ const isDateInThePast = (dateString: string): boolean => {
   return givenDate > today;
 };
 
-async function handleCancellation(id: string) {
-  try {
-    const response = await TravelerAPIs.cancel_booking(id);
-    if (response?.data.status) {
-      toast.success(response?.data.message);
-    } else {
-      toast.error(response?.data.message);
-    }
-  } catch (error) {
-    console.log(error);
-  }
-}
-
 export default function BookedPackages() {
   const traveler = useSelector((state: rootReducersType) => state.traveler);
   const [bookings, setBookings] = useState<bookingData[]>([]);
   const navigate = useNavigate();
+  const [update, setUpdate] = useState(false);
 
+  async function handleCancellation(id: string) {
+    try {
+      const response = await TravelerAPIs.cancel_booking(id);
+      if (response?.data.status) {
+        toast.success(response?.data.message);
+        setUpdate(!update);
+      } else {
+        toast.error(response?.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   useEffect(() => {
     async function fetchBookings() {
       const response = await TravelerAPIs.booked_packages(
@@ -58,7 +59,7 @@ export default function BookedPackages() {
       // }
     }
     fetchBookings();
-  }, []);
+  }, [update]);
   return (
     <>
       <div className=" flex-wrap p-10">

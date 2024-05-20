@@ -2,7 +2,6 @@ import {
   Blog,
   bookingData,
   changePass,
-  comments,
   LoginType,
 } from "../Interfaces/Interfaces";
 import axiosInstance from "./AxiosInstance";
@@ -285,11 +284,12 @@ const TravelerAPIs = {
       console.log(error);
     }
   },
-  create_blog: async (form: Blog, image: string) => {
+  create_blog: async (form: Blog, image: string, name: string) => {
     try {
       const response = await axiosInstance.post("/create_blog", {
         form,
         image,
+        name,
       });
       return response;
     } catch (error) {
@@ -306,29 +306,55 @@ const TravelerAPIs = {
   },
   blog_details: async (id: string) => {
     try {
-      const response = await axiosInstance.patch("/blog_details", { id: id });
+      const response = await axiosInstance.patch("/blog_details", {
+        blogId: id,
+      });
       return response;
     } catch (error) {
       console.log("Didn't get response from traveler blog_details API", error);
     }
   },
-  like_blog: async (id: string) => {
+  like_unlike_blog: async (blogId: string) => {
     try {
-      const response = await axiosInstance.patch("/like_blog", { id: id });
+      const response = await axiosInstance.patch("/like_unlike_blog", {
+        blogId: blogId,
+      });
       return response;
     } catch (error) {
       console.log("Didn't get response from traveler like_blog API", error);
     }
   },
-  comment_blog: async (id: string, comment: comments) => {
+  comment_blog: async (blogId: string, comment: string) => {
     try {
       const response = await axiosInstance.patch("/comment_blog", {
-        id: id,
+        blogId: blogId,
         comment: comment,
       });
       return response;
     } catch (error) {
       console.log("Didn't get response from traveler comment_blog API", error);
+    }
+  },
+  blogs_by_user: async () => {
+    try {
+      const response = await axiosInstance.get("/blogs_by_user");
+      return response;
+    } catch (error) {
+      console.log(
+        "Didn't get response from traveler blogs_by_userId API",
+        error
+      );
+    }
+  },
+  remove_blog: async (blogId: string) => {
+    try {
+      const response = await axiosInstance.patch("remove_blog", { blogId });
+      return response;
+    } catch (error) {
+      console.log(
+        "Didn't get response from traveler blogs_by_userId API",
+        error
+      );
     }
   },
 };

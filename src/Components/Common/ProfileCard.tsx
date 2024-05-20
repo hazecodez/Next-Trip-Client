@@ -1,14 +1,38 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Who } from "../../Interfaces/Interfaces";
+import { Blog, Who, bookingData } from "../../Interfaces/Interfaces";
 import "./Css/Wallet.css";
 import { User } from "../../Interfaces/Interfaces";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
 import HostAPIs from "../../APIs/HostAPIs";
 import { toast } from "sonner";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import SelectedBlog from "../Traveler/SelectedBlog";
+import { format } from "timeago.js";
+import Package from "../../Interfaces/common/Package";
+import CreateBlog from "../Traveler/CreateBlog";
+import ButtonCreateBlog from "../Traveler/ButtonCreateBlog";
 
 interface ProfileCardProps {
   who: Who;
 }
+
+interface UserData {
+  traveler?: {
+    traveler: User;
+  };
+}
+  //----TO TIME FORMAT---
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+  return date.toLocaleDateString("en-US", options);
+};
+
 const formatDateTime = (isoString: string) => {
   const date = new Date(isoString);
   const formattedDate = date.toLocaleDateString(undefined, {
@@ -23,23 +47,64 @@ const formatDateTime = (isoString: string) => {
   return `${formattedDate} at ${formattedTime}`;
 };
 
+//--TO CHECK IS CANCEL BOOKING AVAILABLE--------------------
+const isDateInThePast = (dateString: string): boolean => {
+  const givenDate = new Date(dateString);
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return givenDate > today;
+};
+
 export default function ProfileCard({ who }: ProfileCardProps) {
+
+  const navigate = useNavigate()
+  const traveler = useSelector((state: UserData) => state.traveler);
+  //--TO DESIGN WHEN TOGGLE ACTIVE
+  const toggleDesign =
+    who === Who.Host
+      ? "bg-[#f2ceb3] rounded-full w-full h-8 text-lg font-semibold text-[#C63D2F]"
+      : "bg-[#D9D9D9] rounded-full w-full h-8 text-lg font-semibold text-[#092635]";
+  //--TO DESIGN WALLET CARD FOR BOTH
   const gradientColors =
-    who === "traveler"
+    who === Who.Traveler
       ? "linear-gradient(to right, #26404E, #092635)"
       : "linear-gradient(to right, #FF9B50, #C63D2F)";
 
+      //--TO STRORE USER DETAILS
   const [user, setUser] = useState<User>();
+      //--HANDLE THE PROFILE EDIT INPUT
   const [isEdit, setIsEdit] = useState(false);
+      //--TO HANDLE PASS EDIT INPUT
   const [passEdit, setPassEdit] = useState(false);
+      //--TO HANDLE CREATE PASS INPUT
   const [createPass, setCreatePass] = useState(false);
+      //--TO STORE USER DETAILS FOR HANDLING
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+      //--TO HANDLE PASSWORD FOR UPDATION
   const [currPass, setCurrPass] = useState("");
   const [newPass, setNewPass] = useState("");
-  const [dpUpdated, setDpUpdated] = useState(false);
+      //--TO HANDLE AVATR CLICK
   const fileInputRef = useRef<HTMLInputElement>(null);
+      //--TO HANDLE TOGGLE ACTIVE
+  const [selected, setSelected] = useState("wallet");
+      //--TO STORE BOOKINGS
+  const [bookings, setBookings] = useState<bookingData[]>([]);
+      //--HANDLE RE-RENDERING AFTER UPDATION
+  const [update, setUpdate] = useState(false);
+      //--TO HANDLE BLOGS
+  const [blogs, setBlogs] = useState([]);
+  const [blogModal, setBlogModal] = useState(false);
+  const [blogId, setBlogId] = useState("");
+      //--TO STORE HOST PACKAGES
+  const [packages,setPackages] = useState([])
+      //--
+  const [blogCreateModal, setBlogCreateModal] = useState(false);
+  const closeBlogCreateModal = () => {
+    setBlogCreateModal(false)
+  };
 
+  //-----------------------------------------HANDLE PROFILE DETAILS--------------------------------------------------
   useEffect(() => {
     async function fetchDetails() {
       if (who === "host") {
@@ -55,13 +120,16 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       }
     }
     fetchDetails();
-  }, [isEdit, passEdit, createPass, dpUpdated]);
+  }, [isEdit, passEdit, createPass,!update]);
 
+  //-----TO OPEN FILE FOR UPLOAD DP----
   const handleAvatarClick = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
     }
   };
+
+//------TO CHANGE OR UPLOAD DP-----------------------
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -80,7 +148,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
         const response = await HostAPIs.dp_update(image);
         if (response?.data.status) {
           toast.success(response.data.message);
-          setDpUpdated(!dpUpdated);
+          setUpdate(!update);
         } else {
           toast.error(response?.data.message);
         }
@@ -88,7 +156,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
         const response = await TravelerAPIs.dp_update(image);
         if (response?.data.status) {
           toast.success(response?.data.message);
-          setDpUpdated(!dpUpdated);
+          setUpdate(!update);
         } else {
           toast.error(response?.data.message);
         }
@@ -97,6 +165,8 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       console.log(error);
     }
   }
+
+//-----PROFILE DETAILS UPDATE------------------
 
   async function handleUpdate() {
     try {
@@ -135,6 +205,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       console.log(error);
     }
   }
+//----CREATE NEW PASS IF USER DON'T HAVE PASSWORD-----IF USER LOGIN THROUGH GOOGLE---
 
   async function handleCreatePass() {
     try {
@@ -173,6 +244,8 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       console.log(error);
     }
   }
+
+  //-----TO UPDATE PASSWORD----------------------
 
   async function handlePassUpdate() {
     try {
@@ -217,9 +290,90 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       console.log(error);
     }
   }
+  //----SORT WALLETHISTORY DESCENDING ORDER
   const sortedWalletHistory = user?.walletHistory?.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
+
+//--------------------------------------------------BOOKING HANDLING FOR TRAVELER----------------------------------------
+
+  async function fetchBookings() {
+    const response = await TravelerAPIs.booked_packages(
+      traveler?.traveler._id as string
+    );
+
+    if (response?.data.status) {
+      setBookings(response.data.bookings);
+    }
+
+    // if (bookings.length === 0) {
+    //   toast.error("You didn't book any packages..");
+    //   navigate("/packages");
+    // }
+  }
+  async function handleCancellation(id: string) {
+    try {
+      const response = await TravelerAPIs.cancel_booking(id);
+      if (response?.data.status) {
+        toast.success(response?.data.message);
+        setUpdate(!update);
+      } else {
+        toast.error(response?.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  //--------------------------------------------------BLOGS HANDLING FOR TRAVELER----------------------------------------
+
+  async function fetchBlogs() {
+    try {
+      const response = await TravelerAPIs.blogs_by_user();
+      if (response?.data.status) {
+        const processedBlogs = response.data.blogs.map((blog: Blog) => {
+          const liked = blog?.liked_users?.includes(
+            traveler?.traveler._id as string
+          );
+          return { ...blog, liked };
+        });
+        setBlogs(processedBlogs);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function like_unlike(blogId: string) {
+    try {
+      const response = await TravelerAPIs.like_unlike_blog(blogId);
+      if (response?.data.status) {
+        toast.success(response.data.message);
+        fetchBlogs()
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const closeModal = () => {
+    setBlogModal(false);
+    setUpdate(!update)
+  };
+
+  //--------------------------------------------------BOOKING HANDLING FOR TRAVELER----------------------------------------
+
+  async function fetchPackages() {
+    try {
+        const response = await HostAPIs.package_list();
+        if (response?.data.packageList) {
+          setPackages(response.data.packageList);
+        }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <>
       <div className="bg-[#F2F2F2] p-10 min-h-screen">
@@ -399,66 +553,203 @@ export default function ProfileCard({ who }: ProfileCardProps) {
             </div>
           </div>
         </div>
-        <hr
-          className={`${
-            who === "host" ? "border-[#C63D2F]" : "border-[#092635]"
-          } `}
-        />
+
+        {/* ----------------------------------------------TOGGLE BUTTON-------------------------------------------------------- */}
+
         <div
-          className={`${
+          className={`flex items-center justify-center ${
             who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
-          } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
+          }`}
         >
-          <div className="flip-card">
-            <div className="flip-card-inner">
-              <div
-                className="flip-card-front"
-                style={{ backgroundImage: gradientColors }}
-              >
-                <p className="heading_8264">
-                  {who === "host" ? "MYBIZ WALLET" : "XTRIP WALLET"}
+          <div
+            className={`input ${
+              who === Who.Host ? "bg-[#E25E3E]" : "bg-[#5C8374]"
+            } rounded-full justify-around`}
+          >
+            <button
+              onClick={() => {
+                setSelected("bookings")
+                if(who === Who.Traveler ){
+                  fetchBookings()
+                }
+              }}
+              className={`${
+                selected === "bookings"
+                  ? toggleDesign
+                  : "rounded-full w-full h-8 text-lg text-[#f2f2f2]"
+              } `}
+            >
+              <i className="fa-solid fa-plane text-xl pt-1 pr-1" />
+              {`${who === Who.Host ? "Schedules" : "My Trips"} `}
+            </button>
+            <button
+              onClick={() => setSelected("wallet")}
+              className={`${
+                selected === "wallet"
+                  ? toggleDesign
+                  : "rounded-full w-full h-8 text-lg text-[#f2f2f2]"
+              } `}
+            >
+              <i className="fa-solid fa-wallet text-xl pt-1 pr-2" />
+              Wallet
+            </button>
+            <button
+              onClick={() => {
+                setSelected("blogs")
+                if(who === Who.Traveler) {
+                  fetchBlogs()
+                }else {
+                  fetchPackages()
+                }
+              }}
+              className={`${
+                selected === "blogs"
+                  ? toggleDesign
+                  : "rounded-full w-full h-8 text-lg text-[#f2f2f2]"
+              } `}
+            >
+              <i className="fa-regular fa-images text-xl pt-1 pr-1" />
+              {`${who === Who.Host ? "My Packages" : "My Blogs"}`}
+            </button>
+          </div>
+        </div>
+
+        {/* --------------------------------MYTRIPS - TRAVELER  |  SCHEDULES - HOST---------------------------------------------- */}
+
+        {selected === "bookings" && (
+          <div
+            className={`${
+              who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
+            } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
+          >
+            {who === Who.Host ? (<>
+            
+            
+
+
+
+
+            
+            </>) : (<>
+            
+            
+              <div className=" flex-wrap p-10">
+                {
+                  !bookings.length && (
+                    <p className="p-16 ">
+                          No Bookings
+                          </p>
+                  )
+                }
+        {bookings &&
+          bookings.map((data, index) => (
+            <div
+              key={index}
+              className="p-8 mb-2 text-black flex justify-between w-full bg-gray-300 h-full shadow-2xl rounded"
+            >
+              <div>
+                <h1
+                  className="text-2xl font-bold font-mono"
+                  onClick={() => navigate(`/package_details/${data.packageId}`)}
+                >
+                  {data?.packageName}
+                </h1>
+                <p>Total {data.travelers.length} Travelers</p>
+                <div className="flex">
+                  {data.travelers.map((traveler, index) => (
+                    <p key={index}> {traveler.name} &nbsp;</p>
+                  ))}
+                </div>
+                <p className="text-red-600 font-bold">
+                  Cancellation last date {formatDate(data.cancelDate as string)}
                 </p>
-                <svg
-                  className="logo"
-                  xmlns="http://www.w3.org/2000/svg"
-                  x="0px"
-                  y="0px"
-                  width="56"
-                  height="56"
-                  viewBox="0 0 48 48"
-                >
-                  <path
-                    fill="#ff9800"
-                    d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z"
-                  ></path>
-                  <path
-                    fill="#d50000"
-                    d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z"
-                  ></path>
-                  <path
-                    fill="#ff3d00"
-                    d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z"
-                  ></path>
-                </svg>
-                <svg
-                  version="1.1"
-                  className="chip"
-                  id="Layer_1"
-                  xmlns="http://www.w3.org/2000/svg"
-                  x="0px"
-                  y="0px"
-                  width="50px"
-                  height="50px"
-                  viewBox="0 0 50 50"
-                >
-                  {" "}
-                  <image
-                    id="image0"
-                    width="50"
-                    height="50"
-                    x="0"
-                    y="0"
-                    href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
+                <p>{isDateInThePast(data.cancelDate as string)}</p>
+              </div>
+
+              <div>
+                <p className="text-3xl font-bold">
+                  ₹ {data.totalPrice}.00 &nbsp;
+                  <span className="text-green-500 font-semibold text-xl">
+                    Paid <i className="fa-regular fa-circle-check" />
+                  </span>{" "}
+                </p>
+                <br />
+                {isDateInThePast(data.cancelDate as string) && (
+                  <button
+                    onClick={() => handleCancellation(data._id as string)}
+                    className="text-lg btn btn-wide bg-[#092635] text-[#9EC8B9] hover:bg-[#9EC8B9] hover:text-[#092635] border-none"
+                  >
+                    CANCEL BOOKING
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
+      </div>
+            
+            
+            
+            </>)}
+          </div>
+        )}
+        {/* ------------------------------------------------WALLET CARD AND HISTORY--------------------------------------------------------- */}
+        {selected === "wallet" && (
+          <>
+            <div
+              className={`${
+                who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
+              } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
+            >
+              <div className="flip-card">
+                <div className="flip-card-inner">
+                  <div
+                    className="flip-card-front"
+                    style={{ backgroundImage: gradientColors }}
+                  >
+                    <p className="heading_8264">
+                      {who === "host" ? "MYBIZ WALLET" : "XTRIP WALLET"}
+                    </p>
+                    <svg
+                      className="logo"
+                      xmlns="http://www.w3.org/2000/svg"
+                      x="0px"
+                      y="0px"
+                      width="56"
+                      height="56"
+                      viewBox="0 0 48 48"
+                    >
+                      <path
+                        fill="#ff9800"
+                        d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z"
+                      ></path>
+                      <path
+                        fill="#d50000"
+                        d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z"
+                      ></path>
+                      <path
+                        fill="#ff3d00"
+                        d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z"
+                      ></path>
+                    </svg>
+                    <svg
+                      version="1.1"
+                      className="chip"
+                      id="Layer_1"
+                      xmlns="http://www.w3.org/2000/svg"
+                      x="0px"
+                      y="0px"
+                      width="50px"
+                      height="50px"
+                      viewBox="0 0 50 50"
+                    >
+                      {" "}
+                      <image
+                        id="image0"
+                        width="50"
+                        height="50"
+                        x="0"
+                        y="0"
+                        href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAMAAAAp4XiDAAAABGdBTUEAALGPC/xhBQAAACBjSFJN
           AAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAB6VBMVEUAAACNcTiVeUKVeUOY
           fEaafEeUeUSYfEWZfEaykleyklaXe0SWekSZZjOYfEWYe0WXfUWXe0WcgEicfkiXe0SVekSXekSW
           ekKYe0a9nF67m12ZfUWUeEaXfESVekOdgEmVeUWWekSniU+VeUKVeUOrjFKYfEWliE6WeESZe0GS
@@ -484,138 +775,324 @@ export default function ProfileCard({ who }: ProfileCardProps) {
           cmVhdGUAMjAyMy0wMi0xM1QwODoxNToyOSswMDowMEUnN7UAAAAldEVYdGRhdGU6bW9kaWZ5ADIw
           MjMtMDItMTNUMDg6MTU6MjkrMDA6MDA0eo8JAAAAKHRFWHRkYXRlOnRpbWVzdGFtcAAyMDIzLTAy
           LTEzVDA4OjE1OjI5KzAwOjAwY2+u1gAAAABJRU5ErkJggg=="
-                  />
-                </svg>
+                      />
+                    </svg>
 
-                <p className="number">₹ {user?.wallet}.00</p>
-                <p className="valid_thru">VALID THRU</p>
-                <p className="date_8264">1 2 / 2 8</p>
-                <p className="name">{user?.name}</p>
-              </div>
-              <div
-                className="flip-card-back"
-                style={{ backgroundImage: gradientColors }}
-              >
-                <div className="strip"></div>
-                <div className="mstrip"></div>
-                <div className="sstrip">
-                  <p className="code">***</p>
+                    <p className="number">₹ {user?.wallet}.00</p>
+                    <p className="valid_thru">VALID THRU</p>
+                    <p className="date_8264">1 2 / 2 8</p>
+                    <p className="name">{user?.name}</p>
+                  </div>
+                  <div
+                    className="flip-card-back"
+                    style={{ backgroundImage: gradientColors }}
+                  >
+                    <div className="strip"></div>
+                    <div className="mstrip"></div>
+                    <div className="sstrip">
+                      <p className="code">***</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div
-          className={`${
-            who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
-          } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
-        >
-          {user?.walletHistory && (
-            <div className=" px-4 ">
-              <div className="mx-auto p-6 pb-1 border bg-white rounded-md shadow-dashboard">
-                <div className="flex flex-wrap items-center justify-between mb-1 -m-2">
-                  <div className="w-auto p-2">
-                    <h2 className="text-lg font-semibold text-coolGray-900">
-                      Transactions History
-                    </h2>
-                    <p className="text-xs text-coolGray-500 font-medium">
-                      All transactions
-                    </p>
-                  </div>
-                  <div className="w-auto p-2">
-                    <a
-                      href="#"
-                      className="text-sm text-green-500 hover:text-green-600 font-semibold"
-                    >
-                      See all
-                    </a>
-                  </div>
-                </div>
-                <div
-                  className="flex flex-wrap"
-                  style={{
-                    maxHeight: "15rem",
-                    overflowY: "auto",
-                    scrollbarWidth: "none",
-                    msOverflowStyle: "none",
-                  }}
-                >
-                  {sortedWalletHistory?.map((data, index: number) => (
+
+            <div
+              className={`${
+                who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
+              } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
+            >
+              {user?.walletHistory && (
+                <div className=" px-4 ">
+                  <div className="mx-auto p-6 pb-1 border bg-white rounded-md shadow-dashboard">
+                    <div className="flex flex-wrap items-center justify-between mb-1 -m-2">
+                      <div className="w-auto p-2">
+                        <h2 className="text-lg font-semibold text-coolGray-900">
+                          Transactions History
+                        </h2>
+                        <p className="text-xs text-coolGray-500 font-medium">
+                          All transactions
+                        </p>
+                      </div>
+                      <div className="w-auto p-2">
+                        <a
+                          href="#"
+                          className="text-sm text-green-500 hover:text-green-600 font-semibold"
+                        >
+                          See all
+                        </a>
+                      </div>
+                    </div>
                     <div
-                      key={index}
-                      className="w-full border-b border-coolGray-100"
+                      className="flex flex-wrap"
+                      style={{
+                        maxHeight: "15rem",
+                        overflowY: "auto",
+                        scrollbarWidth: "none",
+                        msOverflowStyle: "none",
+                      }}
                     >
-                      <div className="flex flex-wrap items-center justify-between py-4 -m-2">
-                        <div className="w-auto p-2">
-                          <div className="flex flex-wrap items-center -m-2">
+                      {
+                        !sortedWalletHistory?.length && (
+                          <p className="p-16">
+                          No Transactions
+                          </p>
+                        )
+                      }
+                      {sortedWalletHistory?.map((data, index: number) => (
+                        <div
+                          key={index}
+                          className="w-full border-b border-coolGray-100"
+                        >
+                          <div className="flex flex-wrap items-center justify-between py-4 -m-2">
                             <div className="w-auto p-2">
-                              <div className="flex items-center justify-center w-12 h-12 bg-yellow-50 rounded-md">
-                                {data.status === "Credited" && (
-                                  <i className="fa-solid fa-arrow-down-long text-green-600" />
-                                )}
-                                {data.status === "Debited" && (
-                                  <i className="fa-solid fa-arrow-up-long text-red-600" />
-                                )}
-                                {data.status === "Cancelled" && (
-                                  <i className="fa-solid fa-arrow-down-long text-green-600" />
-                                )}
-                                {data.status === "Booked" && (
-                                  <i className="fa-solid fa-arrow-up-long text-red-600" />
-                                )}
+                              <div className="flex flex-wrap items-center -m-2">
+                                <div className="w-auto p-2">
+                                  <div className="flex items-center justify-center w-12 h-12 bg-yellow-50 rounded-md">
+                                    {data.status === "Credited" && (
+                                      <i className="fa-solid fa-arrow-down-long text-green-600" />
+                                    )}
+                                    {data.status === "Debited" && (
+                                      <i className="fa-solid fa-arrow-up-long text-red-600" />
+                                    )}
+                                    {data.status === "Cancelled" && (
+                                      <i className="fa-solid fa-arrow-down-long text-green-600" />
+                                    )}
+                                    {data.status === "Booked" && (
+                                      <i className="fa-solid fa-arrow-up-long text-red-600" />
+                                    )}
+                                  </div>
+                                </div>
+                                <div className="w-auto p-2">
+                                  <h2 className="text-sm font-medium text-coolGray-900">
+                                    {data.status === "Credited" &&
+                                      `${data.travelerName} Paid ${data.amount}`}
+
+                                    {data.status === "Debited" &&
+                                      `${data.travelerName} Cancelled ${data.packageName}`}
+
+                                    {data.status === "Cancelled" &&
+                                      ` Cancelled ${data.packageName}`}
+
+                                    {data.status === "Booked" &&
+                                      ` Booked ${data.packageName}`}
+                                  </h2>
+                                  <h2 className="text-sm font-medium text-coolGray-900">
+                                    {data.status === "Credited" &&
+                                      `${data.packageName}`}
+                                    {data.status === "Debited" &&
+                                      ` ${data.amount} Debited from wallet`}
+                                    {data.status === "Cancelled" &&
+                                      `${data.amount} Credited to wallet`}
+                                    {data.status === "Booked" &&
+                                      `${data.amount} Debited from wallet`}
+                                  </h2>
+                                </div>
                               </div>
                             </div>
                             <div className="w-auto p-2">
-                              <h2 className="text-sm font-medium text-coolGray-900">
-                                {data.status === "Credited" &&
-                                  `${data.travelerName} Paid ${data.amount}`}
-
-                                {data.status === "Debited" &&
-                                  `${data.travelerName} Cancelled ${data.packageName}`}
-
-                                {data.status === "Cancelled" &&
-                                  ` Cancelled ${data.packageName}`}
-
-                                {data.status === "Booked" &&
-                                  ` Booked ${data.packageName}`}
-                              </h2>
-                              <h2 className="text-sm font-medium text-coolGray-900">
-                                {data.status === "Credited" &&
-                                  `${data.packageName}`}
-                                {data.status === "Debited" &&
-                                  ` ${data.amount} Debited from wallet`}
-                                {data.status === "Cancelled" &&
-                                  `${data.amount} Credited to wallet`}
-                                {data.status === "Booked" &&
-                                  `${data.amount} Debited from wallet`}
-                              </h2>
+                              <p
+                                className={`text-xs text-${
+                                  data.status === ("Credited" || "Booked")
+                                    ? "green-600"
+                                    : "red-600"
+                                } font-medium`}
+                              >
+                                {data.status === "Credited" && `Credit`}
+                                {data.status === "Debited" && "Debit"}
+                                {data.status === "Cancelled" && `Cancelled`}
+                                {data.status === "Booked" && "Booked"}
+                              </p>
+                              <p className="text-xs text-coolGray-500 font-medium">
+                                {formatDateTime(data.date)}
+                              </p>
                             </div>
                           </div>
                         </div>
-                        <div className="w-auto p-2">
-                          <p
-                            className={`text-xs text-${
-                              data.status === ("Credited" || "Booked")
-                                ? "green-600"
-                                : "red-600"
-                            } font-medium`}
-                          >
-                            {data.status === "Credited" && `Credit`}
-                            {data.status === "Debited" && "Debit"}
-                            {data.status === "Cancelled" && `Cancelled`}
-                            {data.status === "Booked" && "Booked"}
-                          </p>
-                          <p className="text-xs text-coolGray-500 font-medium">
-                            {formatDateTime(data.date)}
-                          </p>
-                        </div>
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  </div>
                 </div>
+              )}
+            </div>
+          </>
+        )}
+
+        {/* -----------------------------------MY BLOGS - TRAVELER  |  MY PACKAGES - HOST ------------------------------------------------------ */}
+        {selected === "blogs" && (
+          <>
+          {
+            who === Who.Traveler && (
+              <div className="flex justify-center pt-10 bg-[#D9D9D9]">
+                 <ButtonCreateBlog setCreateModal={setBlogCreateModal} />
+                 </div>
+            )
+          }
+          {
+            who === Who.Host && (
+              <div className="flex justify-center pt-10 bg-[#f2ceb3]">
+                 <button
+          onClick={() => navigate("/host/create_package")}
+          className="btn btn-wide bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F] text-xl"
+        >
+          Create Package
+        </button>
+                 </div>
+            )
+          }
+          <div
+            className={`${
+              who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
+            } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
+          >
+            {who === Who.Host ?(
+
+
+               <>
+               <div className="flex flex-wrap items-center justify-evenly gap-5 py-10 px-12 ">
+
+               {packages.map((data: Package, index) => (
+        <div className="card-wrapper mb-4 text-end" key={index} >
+          <div
+          
+            className={`card  glass w-96  ${
+              who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
+            }  `}
+          >
+            <figure className="w-full h-52">
+              <img
+                className=""
+                key={index}
+                src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images?.[0]}`}
+                alt="car!"
+              />
+            </figure>
+            <div className="card-body" key={index} style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}>
+              <h2
+                onClick={() => navigate(`/host/package_details/${data._id}`)}
+                className="card-title text-black"
+              >
+                {data.name}
+              </h2>
+              <p className="text-black">{data.destination}</p>
+              <p className="text-black">
+                {formatDate(data.dur_start)} to {formatDate(data.dur_end)}
+              </p>
+              <p className="text-black">{data.itinerary}</p>
+              <p className="text-black font-bold text-end"> ₹ {data.price}</p>
+              <div className="card-actions items-center"></div>
+              {who === "host" ? (
+                <button
+                  onClick={() => navigate(`/host/edit_package/${data._id}`)}
+                  className="btn bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F]"
+                >
+                  Edit Package
+                </button>
+              ) : (
+                ""
+              )}
+            </div>
+          </div>
+        </div>
+      ))}
+               </div>
+               
+               
+               </>
+
+
+               ) :(
+
+
+                 <>
+                 
+                 
+                 <div className="flex flex-wrap items-center justify-evenly gap-5 py-10 px-12 ">
+                 {blogCreateModal && <CreateBlog onClose={closeBlogCreateModal} />}
+                 
+                 
+                  {
+                    !blogs.length && (
+                      <p className="p-16 ">
+                          No Blogs
+                          </p>
+                    )
+                  }
+        {blogs &&
+          blogs?.map((blog: Blog, index: number) => (
+            <div key={index} className="post-card">
+              {blogModal && (
+                <SelectedBlog onClose={closeModal} blogId={blogId} />
+              )}
+              <div className="flex justify-between">
+                <img
+                  className="avatar"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3OnF25iXucIOQkieN9v75o5TCNmr7X75d_LowE9dUX4bVnGaFQ2F6KI7p&s=10"
+                  alt=""
+                />
+                <p className="pl-3 pt-1">@{blog.userName}</p>
+                <i className="fa-solid fa-pen-to-square text-xl pt-2"/>
+              </div>
+
+              <a
+                onClick={() => {
+                  setBlogModal(true);
+                  setBlogId(blog._id as string);
+                }}
+                className="title"
+              >
+                {blog.caption}
+              </a>
+              <span className="datetime">{format(blog?.time as Date)}</span>
+              <div className="image-preview">
+                <img
+                  className="rounded"
+                  src={`https://res.cloudinary.com/doac4pi2c/image/upload/${blog?.image}`}
+                  alt=""
+                />
+              </div>
+              <div className="comment-like">
+                <span>
+                  {blog.liked ? (
+                    <i
+                      onClick={() => like_unlike(blog._id as string)}
+                      className="fa-solid fa-heart text-red-600 text-2xl"
+                    />
+                  ) : (
+                    <i
+                      onClick={() => like_unlike(blog._id as string)}
+                      className="fa-regular fa-heart text-2xl"
+                    ></i>
+                  )}
+                  &nbsp;&nbsp;&nbsp;
+                  {blog.liked_users?.length}
+                </span>
+                <span>
+                  <i
+                    className="fa-regular fa-comment text-2xl"
+                    onClick={() => {
+                      setBlogModal(true);
+                      setBlogId(blog._id as string);
+                    }}
+                  />{" "}
+                  &nbsp;&nbsp;&nbsp;
+                  {blog.comments?.length}
+                </span>
               </div>
             </div>
-          )}
-        </div>
+          ))}
+      </div>
+                 
+                 </>
+
+
+                 )}
+          </div>
+          </>
+        )}
       </div>
     </>
   );
