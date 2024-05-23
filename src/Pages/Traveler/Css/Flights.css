@@ -1,0 +1,26 @@
+.search-input {
+  width: 250px;
+  height: 64px;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.8
+  ); /* Light white background with opacity */
+  border: 2px solid black; /* Black border */
+  border-radius: 8px; /* Rounded corners */
+  padding: 0 10px; /* Padding inside the input */
+  font-size: 16px; /* Font size */
+  color: #000; /* Text color */
+  outline: none; /* Remove default outline */
+  transition: background 0.3s ease; /* Smooth transition for background */
+}
+
+.search-input::placeholder {
+  color: #888; /* Placeholder text color */
+}
+
+.search-input:focus {
+  background: #09263581; /* Fully opaque background on focus */
+  color: white;
+}

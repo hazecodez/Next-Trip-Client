@@ -6,6 +6,7 @@ import { Blog, User } from "../../Interfaces/Interfaces";
 import { format } from "timeago.js";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import Pagination from "../Common/Pagination";
 
 interface UserData {
   traveler?: {
@@ -84,7 +85,7 @@ export default function BlogCard() {
               <span className="datetime">{format(blog?.time as Date)}</span>
               <div className="image-preview">
                 <img
-                  className="rounded"
+                  className="rounded imagedesign"
                   src={`https://res.cloudinary.com/doac4pi2c/image/upload/${blog?.image}`}
                   alt=""
                 />
@@ -120,6 +121,10 @@ export default function BlogCard() {
             </div>
           ))}
       </div>
+      <div className="bg-[#5C8374] pb-5">
+      <Pagination/>
+      </div>
+      
     </>
   );
 }

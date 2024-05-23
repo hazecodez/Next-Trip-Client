@@ -216,11 +216,13 @@ export default function ChatBody({ who }: WhoseChat) {
                   src="https://img.freepik.com/premium-photo/bearded-man-illustration_665280-67047.jpg"
                   alt=""
                 />
-                <div className="font-semibold text-white">
+                <div className="font-semibold w-full text-white flex justify-between">
                   <div>{user}</div>
-                  <div className="text-sm text-gray-400">
-                    {/* Joined in August 2014 */}
-                  </div>
+                  {user && who === Who.Traveler && (
+                    <>
+                      {/* <i onClick={VideoCall(user)} className="fa-solid fa-video pr-10 text-xl pt-3"></i> */}
+                    </>
+                  )}
                 </div>
               </div>
             </div>

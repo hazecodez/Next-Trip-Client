@@ -39,16 +39,16 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
   return (
     <div className="flex flex-wrap items-center justify-evenly bg-[#F2F2F2] py-10 px-12 ">
       {packages.map((data: Package, index) => (
-        <div className="card-wrapper mb-4 text-end" key={index} >
+        <div className="card-wrapper mb-4 text-end " key={index} >
           <div
           
-            className={`card  glass w-96  ${
+            className={`card h-fit  glass w-96  ${
               who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
             }  `}
           >
             <figure className="w-full h-52">
               <img
-                className=""
+                className=" object-cover"
                 key={index}
                 src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images?.[0]}`}
                 alt="car!"
@@ -64,7 +64,7 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
                     ? navigate(`/package_details/${data._id}`)
                     : navigate(`/host/package_details/${data._id}`);
                 }}
-                className="card-title text-black"
+                className="card-title text-black text-ellipsis whitespace-nowrap"
               >
                 {data.name}
               </h2>

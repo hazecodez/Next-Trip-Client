@@ -5,6 +5,9 @@ import { useNavigate } from "react-router-dom";
 import { hostLogout } from "../../Redux/Slices/Host";
 import Cookies from "js-cookie";
 import { toast } from "sonner";
+import { useState } from "react";
+import { Who } from "../../Interfaces/Interfaces";
+import Notification from "../Common/Notification";
 
 export default function Navbar() {
   const dispatch = useDispatch();
@@ -25,6 +28,12 @@ export default function Navbar() {
     toast.success("You have been logged out successfully.");
     navigate("/host/login");
   }
+
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const toggleNotification = () => {
+    setIsNotificationOpen(!isNotificationOpen);
+  };
+
   return (
     <>
       <div className={`navbar bg-[#C63D2F] sticky top-0 z-20`}>
@@ -85,7 +94,7 @@ export default function Navbar() {
           </ul>
         </div>
         <div className="navbar-end">
-          <button className="btn btn-ghost btn-circle">
+          {/* <button className="btn btn-ghost btn-circle">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-5 w-5 text-[#FFBB5C]"
@@ -100,8 +109,8 @@ export default function Navbar() {
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-          </button>
-          <button className="btn btn-ghost btn-circle">
+          </button> */}
+          <button  onClick={toggleNotification} className="btn btn-ghost btn-circle">
             <div className="indicator">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -146,9 +155,12 @@ export default function Navbar() {
                 </a>
               </li>
               <li>
-                <a onClick={()=>{ 
-                  localStorage.removeItem("conversationId")
-                  navigate("/host/chat")}}>
+                <a
+                  onClick={() => {
+                    localStorage.removeItem("conversationId");
+                    navigate("/host/chat");
+                  }}
+                >
                   Chats{" "}
                   <span className="badge bg-[#FFBB5C] border-none text-black">
                     New
@@ -163,6 +175,9 @@ export default function Navbar() {
         </div>
         <LogoutCard color="[#C63D2F]" action={logout} />
       </div>
+      {isNotificationOpen && (
+        <Notification who={Who.Host} toggleNotification={toggleNotification} />
+      )}
     </>
   );
 }

@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Blog, Who, bookingData } from "../../Interfaces/Interfaces";
+import { Blog, Who } from "../../Interfaces/Interfaces";
 import "./Css/Wallet.css";
 import { User } from "../../Interfaces/Interfaces";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
@@ -12,6 +12,8 @@ import { format } from "timeago.js";
 import Package from "../../Interfaces/common/Package";
 import CreateBlog from "../Traveler/CreateBlog";
 import ButtonCreateBlog from "../Traveler/ButtonCreateBlog";
+import BookedPackages from "../Traveler/BookedPackages";
+import Schedules from "../Host/Schedules";
 
 interface ProfileCardProps {
   who: Who;
@@ -22,7 +24,7 @@ interface UserData {
     traveler: User;
   };
 }
-  //----TO TIME FORMAT---
+//----TO TIME FORMAT---
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
   const options: Intl.DateTimeFormatOptions = {
@@ -47,17 +49,8 @@ const formatDateTime = (isoString: string) => {
   return `${formattedDate} at ${formattedTime}`;
 };
 
-//--TO CHECK IS CANCEL BOOKING AVAILABLE--------------------
-const isDateInThePast = (dateString: string): boolean => {
-  const givenDate = new Date(dateString);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  return givenDate > today;
-};
-
 export default function ProfileCard({ who }: ProfileCardProps) {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const traveler = useSelector((state: UserData) => state.traveler);
   //--TO DESIGN WHEN TOGGLE ACTIVE
   const toggleDesign =
@@ -70,38 +63,36 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       ? "linear-gradient(to right, #26404E, #092635)"
       : "linear-gradient(to right, #FF9B50, #C63D2F)";
 
-      //--TO STRORE USER DETAILS
+  //--TO STRORE USER DETAILS
   const [user, setUser] = useState<User>();
-      //--HANDLE THE PROFILE EDIT INPUT
+  //--HANDLE THE PROFILE EDIT INPUT
   const [isEdit, setIsEdit] = useState(false);
-      //--TO HANDLE PASS EDIT INPUT
+  //--TO HANDLE PASS EDIT INPUT
   const [passEdit, setPassEdit] = useState(false);
-      //--TO HANDLE CREATE PASS INPUT
+  //--TO HANDLE CREATE PASS INPUT
   const [createPass, setCreatePass] = useState(false);
-      //--TO STORE USER DETAILS FOR HANDLING
+  //--TO STORE USER DETAILS FOR HANDLING
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-      //--TO HANDLE PASSWORD FOR UPDATION
+  //--TO HANDLE PASSWORD FOR UPDATION
   const [currPass, setCurrPass] = useState("");
   const [newPass, setNewPass] = useState("");
-      //--TO HANDLE AVATR CLICK
+  //--TO HANDLE AVATR CLICK
   const fileInputRef = useRef<HTMLInputElement>(null);
-      //--TO HANDLE TOGGLE ACTIVE
+  //--TO HANDLE TOGGLE ACTIVE
   const [selected, setSelected] = useState("wallet");
-      //--TO STORE BOOKINGS
-  const [bookings, setBookings] = useState<bookingData[]>([]);
-      //--HANDLE RE-RENDERING AFTER UPDATION
+  //--HANDLE RE-RENDERING AFTER UPDATION
   const [update, setUpdate] = useState(false);
-      //--TO HANDLE BLOGS
+  //--TO HANDLE BLOGS
   const [blogs, setBlogs] = useState([]);
   const [blogModal, setBlogModal] = useState(false);
   const [blogId, setBlogId] = useState("");
-      //--TO STORE HOST PACKAGES
-  const [packages,setPackages] = useState([])
-      //--
+  //--TO STORE HOST PACKAGES
+  const [packages, setPackages] = useState([]);
+  //--
   const [blogCreateModal, setBlogCreateModal] = useState(false);
   const closeBlogCreateModal = () => {
-    setBlogCreateModal(false)
+    setBlogCreateModal(false);
   };
 
   //-----------------------------------------HANDLE PROFILE DETAILS--------------------------------------------------
@@ -120,7 +111,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       }
     }
     fetchDetails();
-  }, [isEdit, passEdit, createPass,!update]);
+  }, [isEdit, passEdit, createPass, !update]);
 
   //-----TO OPEN FILE FOR UPLOAD DP----
   const handleAvatarClick = () => {
@@ -129,7 +120,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
     }
   };
 
-//------TO CHANGE OR UPLOAD DP-----------------------
+  //------TO CHANGE OR UPLOAD DP-----------------------
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -166,7 +157,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
     }
   }
 
-//-----PROFILE DETAILS UPDATE------------------
+  //-----PROFILE DETAILS UPDATE------------------
 
   async function handleUpdate() {
     try {
@@ -205,7 +196,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       console.log(error);
     }
   }
-//----CREATE NEW PASS IF USER DON'T HAVE PASSWORD-----IF USER LOGIN THROUGH GOOGLE---
+  //----CREATE NEW PASS IF USER DON'T HAVE PASSWORD-----IF USER LOGIN THROUGH GOOGLE---
 
   async function handleCreatePass() {
     try {
@@ -291,39 +282,11 @@ export default function ProfileCard({ who }: ProfileCardProps) {
     }
   }
   //----SORT WALLETHISTORY DESCENDING ORDER
+
   const sortedWalletHistory = user?.walletHistory?.sort(
     (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
-//--------------------------------------------------BOOKING HANDLING FOR TRAVELER----------------------------------------
-
-  async function fetchBookings() {
-    const response = await TravelerAPIs.booked_packages(
-      traveler?.traveler._id as string
-    );
-
-    if (response?.data.status) {
-      setBookings(response.data.bookings);
-    }
-
-    // if (bookings.length === 0) {
-    //   toast.error("You didn't book any packages..");
-    //   navigate("/packages");
-    // }
-  }
-  async function handleCancellation(id: string) {
-    try {
-      const response = await TravelerAPIs.cancel_booking(id);
-      if (response?.data.status) {
-        toast.success(response?.data.message);
-        setUpdate(!update);
-      } else {
-        toast.error(response?.data.message);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   //--------------------------------------------------BLOGS HANDLING FOR TRAVELER----------------------------------------
 
@@ -349,7 +312,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
       const response = await TravelerAPIs.like_unlike_blog(blogId);
       if (response?.data.status) {
         toast.success(response.data.message);
-        fetchBlogs()
+        fetchBlogs();
       }
     } catch (error) {
       console.log(error);
@@ -358,17 +321,17 @@ export default function ProfileCard({ who }: ProfileCardProps) {
 
   const closeModal = () => {
     setBlogModal(false);
-    setUpdate(!update)
+    setUpdate(!update);
   };
 
   //--------------------------------------------------BOOKING HANDLING FOR TRAVELER----------------------------------------
 
   async function fetchPackages() {
     try {
-        const response = await HostAPIs.package_list();
-        if (response?.data.packageList) {
-          setPackages(response.data.packageList);
-        }
+      const response = await HostAPIs.package_list();
+      if (response?.data.packageList) {
+        setPackages(response.data.packageList);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -568,9 +531,9 @@ export default function ProfileCard({ who }: ProfileCardProps) {
           >
             <button
               onClick={() => {
-                setSelected("bookings")
-                if(who === Who.Traveler ){
-                  fetchBookings()
+                setSelected("bookings");
+                if(who === Who.Host ){
+                  fetchPackages();
                 }
               }}
               className={`${
@@ -595,11 +558,11 @@ export default function ProfileCard({ who }: ProfileCardProps) {
             </button>
             <button
               onClick={() => {
-                setSelected("blogs")
-                if(who === Who.Traveler) {
-                  fetchBlogs()
-                }else {
-                  fetchPackages()
+                setSelected("blogs");
+                if (who === Who.Traveler) {
+                  fetchBlogs();
+                } else {
+                  fetchPackages();
                 }
               }}
               className={`${
@@ -622,74 +585,15 @@ export default function ProfileCard({ who }: ProfileCardProps) {
               who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
             } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
           >
-            {who === Who.Host ? (<>
-            
-            
-
-
-
-
-            
-            </>) : (<>
-            
-            
-              <div className=" flex-wrap p-10">
-                {
-                  !bookings.length && (
-                    <p className="p-16 ">
-                          No Bookings
-                          </p>
-                  )
-                }
-        {bookings &&
-          bookings.map((data, index) => (
-            <div
-              key={index}
-              className="p-8 mb-2 text-black flex justify-between w-full bg-gray-300 h-full shadow-2xl rounded"
-            >
-              <div>
-                <h1
-                  className="text-2xl font-bold font-mono"
-                  onClick={() => navigate(`/package_details/${data.packageId}`)}
-                >
-                  {data?.packageName}
-                </h1>
-                <p>Total {data.travelers.length} Travelers</p>
-                <div className="flex">
-                  {data.travelers.map((traveler, index) => (
-                    <p key={index}> {traveler.name} &nbsp;</p>
-                  ))}
-                </div>
-                <p className="text-red-600 font-bold">
-                  Cancellation last date {formatDate(data.cancelDate as string)}
-                </p>
-                <p>{isDateInThePast(data.cancelDate as string)}</p>
-              </div>
-
-              <div>
-                <p className="text-3xl font-bold">
-                  ₹ {data.totalPrice}.00 &nbsp;
-                  <span className="text-green-500 font-semibold text-xl">
-                    Paid <i className="fa-regular fa-circle-check" />
-                  </span>{" "}
-                </p>
-                <br />
-                {isDateInThePast(data.cancelDate as string) && (
-                  <button
-                    onClick={() => handleCancellation(data._id as string)}
-                    className="text-lg btn btn-wide bg-[#092635] text-[#9EC8B9] hover:bg-[#9EC8B9] hover:text-[#092635] border-none"
-                  >
-                    CANCEL BOOKING
-                  </button>
-                )}
-              </div>
-            </div>
-          ))}
-      </div>
-            
-            
-            
-            </>)}
+            {who === Who.Host ? (
+              <>
+                <Schedules/>
+              </>
+            ) : (
+              <>
+                <BookedPackages />
+              </>
+            )}
           </div>
         )}
         {/* ------------------------------------------------WALLET CARD AND HISTORY--------------------------------------------------------- */}
@@ -832,13 +736,9 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                         msOverflowStyle: "none",
                       }}
                     >
-                      {
-                        !sortedWalletHistory?.length && (
-                          <p className="p-16">
-                          No Transactions
-                          </p>
-                        )
-                      }
+                      {!sortedWalletHistory?.length && (
+                        <p className="p-16">No Transactions</p>
+                      )}
                       {sortedWalletHistory?.map((data, index: number) => (
                         <div
                           key={index}
@@ -921,176 +821,173 @@ export default function ProfileCard({ who }: ProfileCardProps) {
         {/* -----------------------------------MY BLOGS - TRAVELER  |  MY PACKAGES - HOST ------------------------------------------------------ */}
         {selected === "blogs" && (
           <>
-          {
-            who === Who.Traveler && (
+            {who === Who.Traveler && (
               <div className="flex justify-center pt-10 bg-[#D9D9D9]">
-                 <ButtonCreateBlog setCreateModal={setBlogCreateModal} />
-                 </div>
-            )
-          }
-          {
-            who === Who.Host && (
+                <ButtonCreateBlog setCreateModal={setBlogCreateModal} />
+              </div>
+            )}
+            {who === Who.Host && (
               <div className="flex justify-center pt-10 bg-[#f2ceb3]">
-                 <button
-          onClick={() => navigate("/host/create_package")}
-          className="btn btn-wide bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F] text-xl"
-        >
-          Create Package
-        </button>
-                 </div>
-            )
-          }
-          <div
-            className={`${
-              who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
-            } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
-          >
-            {who === Who.Host ?(
-
-
-               <>
-               <div className="flex flex-wrap items-center justify-evenly gap-5 py-10 px-12 ">
-
-               {packages.map((data: Package, index) => (
-        <div className="card-wrapper mb-4 text-end" key={index} >
-          <div
-          
-            className={`card  glass w-96  ${
-              who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
-            }  `}
-          >
-            <figure className="w-full h-52">
-              <img
-                className=""
-                key={index}
-                src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images?.[0]}`}
-                alt="car!"
-              />
-            </figure>
-            <div className="card-body" key={index} style={{
-              scrollbarWidth: "none",
-              msOverflowStyle: "none",
-            }}>
-              <h2
-                onClick={() => navigate(`/host/package_details/${data._id}`)}
-                className="card-title text-black"
-              >
-                {data.name}
-              </h2>
-              <p className="text-black">{data.destination}</p>
-              <p className="text-black">
-                {formatDate(data.dur_start)} to {formatDate(data.dur_end)}
-              </p>
-              <p className="text-black">{data.itinerary}</p>
-              <p className="text-black font-bold text-end"> ₹ {data.price}</p>
-              <div className="card-actions items-center"></div>
-              {who === "host" ? (
                 <button
-                  onClick={() => navigate(`/host/edit_package/${data._id}`)}
-                  className="btn bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F]"
+                  onClick={() => navigate("/host/create_package")}
+                  className="btn btn-wide bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F] text-xl"
                 >
-                  Edit Package
+                  Create Package
                 </button>
+              </div>
+            )}
+            <div
+              className={`${
+                who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
+              } h-full pt-10 pb-16 flex flex-col md:flex-row md:justify-evenly items-center rounded-b`}
+            >
+              {who === Who.Host ? (
+                <>
+                  <div className="flex flex-wrap items-center justify-evenly gap-5 py-10 px-12 ">
+                    {packages.map((data: Package, index) => (
+                      <div className="card-wrapper mb-4 text-end" key={index}>
+                        <div
+                          className={`card  glass w-96  ${
+                            who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
+                          }  `}
+                        >
+                          <figure className="w-full h-52">
+                            <img
+                              className=""
+                              key={index}
+                              src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images?.[0]}`}
+                              alt="car!"
+                            />
+                          </figure>
+                          <div
+                            className="card-body"
+                            key={index}
+                            style={{
+                              scrollbarWidth: "none",
+                              msOverflowStyle: "none",
+                            }}
+                          >
+                            <h2
+                              onClick={() =>
+                                navigate(`/host/package_details/${data._id}`)
+                              }
+                              className="card-title text-black"
+                            >
+                              {data.name}
+                            </h2>
+                            <p className="text-black">{data.destination}</p>
+                            <p className="text-black">
+                              {formatDate(data.dur_start)} to{" "}
+                              {formatDate(data.dur_end)}
+                            </p>
+                            <p className="text-black">{data.itinerary}</p>
+                            <p className="text-black font-bold text-end">
+                              {" "}
+                              ₹ {data.price}
+                            </p>
+                            <div className="card-actions items-center"></div>
+                            {who === "host" ? (
+                              <button
+                                onClick={() =>
+                                  navigate(`/host/edit_package/${data._id}`)
+                                }
+                                className="btn bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F]"
+                              >
+                                Edit Package
+                              </button>
+                            ) : (
+                              ""
+                            )}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
               ) : (
-                ""
+                <>
+                  <div className="flex flex-wrap items-center justify-evenly gap-5 py-10 px-12 ">
+                    {blogCreateModal && (
+                      <CreateBlog onClose={closeBlogCreateModal} />
+                    )}
+
+                    {!blogs.length && <p className="p-16 ">No Blogs</p>}
+                    {blogs &&
+                      blogs?.map((blog: Blog, index: number) => (
+                        <div key={index} className="post-card">
+                          {blogModal && (
+                            <SelectedBlog
+                              onClose={closeModal}
+                              blogId={blogId}
+                            />
+                          )}
+                          <div className="flex justify-between">
+                            <img
+                              className="avatar"
+                              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3OnF25iXucIOQkieN9v75o5TCNmr7X75d_LowE9dUX4bVnGaFQ2F6KI7p&s=10"
+                              alt=""
+                            />
+                            <p className="pl-3 pt-1">@{blog.userName}</p>
+                            <i className="fa-solid fa-pen-to-square text-xl pt-2" />
+                          </div>
+
+                          <a
+                            onClick={() => {
+                              setBlogModal(true);
+                              setBlogId(blog._id as string);
+                            }}
+                            className="title"
+                          >
+                            {blog.caption}
+                          </a>
+                          <span className="datetime">
+                            {format(blog?.time as Date)}
+                          </span>
+                          <div className="image-preview">
+                            <img
+                              className="rounded"
+                              src={`https://res.cloudinary.com/doac4pi2c/image/upload/${blog?.image}`}
+                              alt=""
+                            />
+                          </div>
+                          <div className="comment-like">
+                            <span>
+                              {blog.liked ? (
+                                <i
+                                  onClick={() =>
+                                    like_unlike(blog._id as string)
+                                  }
+                                  className="fa-solid fa-heart text-red-600 text-2xl"
+                                />
+                              ) : (
+                                <i
+                                  onClick={() =>
+                                    like_unlike(blog._id as string)
+                                  }
+                                  className="fa-regular fa-heart text-2xl"
+                                ></i>
+                              )}
+                              &nbsp;&nbsp;&nbsp;
+                              {blog.liked_users?.length}
+                            </span>
+                            <span>
+                              <i
+                                className="fa-regular fa-comment text-2xl"
+                                onClick={() => {
+                                  setBlogModal(true);
+                                  setBlogId(blog._id as string);
+                                }}
+                              />{" "}
+                              &nbsp;&nbsp;&nbsp;
+                              {blog.comments?.length}
+                            </span>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </>
               )}
             </div>
-          </div>
-        </div>
-      ))}
-               </div>
-               
-               
-               </>
-
-
-               ) :(
-
-
-                 <>
-                 
-                 
-                 <div className="flex flex-wrap items-center justify-evenly gap-5 py-10 px-12 ">
-                 {blogCreateModal && <CreateBlog onClose={closeBlogCreateModal} />}
-                 
-                 
-                  {
-                    !blogs.length && (
-                      <p className="p-16 ">
-                          No Blogs
-                          </p>
-                    )
-                  }
-        {blogs &&
-          blogs?.map((blog: Blog, index: number) => (
-            <div key={index} className="post-card">
-              {blogModal && (
-                <SelectedBlog onClose={closeModal} blogId={blogId} />
-              )}
-              <div className="flex justify-between">
-                <img
-                  className="avatar"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3OnF25iXucIOQkieN9v75o5TCNmr7X75d_LowE9dUX4bVnGaFQ2F6KI7p&s=10"
-                  alt=""
-                />
-                <p className="pl-3 pt-1">@{blog.userName}</p>
-                <i className="fa-solid fa-pen-to-square text-xl pt-2"/>
-              </div>
-
-              <a
-                onClick={() => {
-                  setBlogModal(true);
-                  setBlogId(blog._id as string);
-                }}
-                className="title"
-              >
-                {blog.caption}
-              </a>
-              <span className="datetime">{format(blog?.time as Date)}</span>
-              <div className="image-preview">
-                <img
-                  className="rounded"
-                  src={`https://res.cloudinary.com/doac4pi2c/image/upload/${blog?.image}`}
-                  alt=""
-                />
-              </div>
-              <div className="comment-like">
-                <span>
-                  {blog.liked ? (
-                    <i
-                      onClick={() => like_unlike(blog._id as string)}
-                      className="fa-solid fa-heart text-red-600 text-2xl"
-                    />
-                  ) : (
-                    <i
-                      onClick={() => like_unlike(blog._id as string)}
-                      className="fa-regular fa-heart text-2xl"
-                    ></i>
-                  )}
-                  &nbsp;&nbsp;&nbsp;
-                  {blog.liked_users?.length}
-                </span>
-                <span>
-                  <i
-                    className="fa-regular fa-comment text-2xl"
-                    onClick={() => {
-                      setBlogModal(true);
-                      setBlogId(blog._id as string);
-                    }}
-                  />{" "}
-                  &nbsp;&nbsp;&nbsp;
-                  {blog.comments?.length}
-                </span>
-              </div>
-            </div>
-          ))}
-      </div>
-                 
-                 </>
-
-
-                 )}
-          </div>
           </>
         )}
       </div>

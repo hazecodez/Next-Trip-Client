@@ -30,6 +30,7 @@ export default function SelectedBlog({ onClose, blogId }: modalProp) {
         if (response?.data.status) {
           setBlog(response.data.details);
           setUpdate(!update);
+          
           if (
             response?.data.details.liked_users?.includes(
               traveler?.traveler._id as string
@@ -53,6 +54,7 @@ export default function SelectedBlog({ onClose, blogId }: modalProp) {
     );
     toast.success(response?.data.message);
     setUpdate(!update)
+    setComment("")
   }
   async function like_unlike(blogId: string) {
     try {

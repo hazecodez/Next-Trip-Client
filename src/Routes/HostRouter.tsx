@@ -4,7 +4,7 @@ import HostSignupPage from "../Pages/Host/SignUp";
 import Otp from "../Components/Common/Otp";
 import Dashboard from "../Pages/Host/Dashboard";
 import MyPackages from "../Pages/Host/MyPackages";
-import Schedules from "../Pages/Host/Schedules";
+import Schedules from "../Pages/Host/SchedulesPage";
 import CreatePackage from "../Components/Host/CreatePackage";
 import EditPackage from "../Components/Host/EditPackage";
 import ForgetPass from "../Components/Common/ForgetPass";
