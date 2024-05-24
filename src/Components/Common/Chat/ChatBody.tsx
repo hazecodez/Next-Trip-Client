@@ -5,11 +5,13 @@ import { Who } from "../../../Interfaces/Interfaces";
 import { useSelector } from "react-redux";
 import { User } from "../../../Interfaces/Interfaces";
 import { io, Socket } from "socket.io-client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useContext } from "react";
 // import HostAPIs from "../../../APIs/HostAPIs";
 import { format } from "timeago.js";
 import { MessageType } from "../../../Interfaces/Interfaces";
 import TravelerAPIs from "../../../APIs/TravelerAPIs";
+import { AuthContext } from "../../../Context/ContextProvider";
+import { useNavigate } from "react-router-dom";
 
 interface UserData {
   host?: {
@@ -27,6 +29,9 @@ export default function ChatBody({ who }: WhoseChat) {
   const host = useSelector((state: UserData) => state.host);
   const traveler = useSelector((state: UserData) => state.traveler);
   const data = who === "traveler" ? traveler?.traveler : host?.host;
+  const navigate = useNavigate()
+
+  const { setNotification , setVideoCall} = useContext(AuthContext);
 
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [conversations, setConversation] = useState([]);
@@ -56,6 +61,10 @@ export default function ChatBody({ who }: WhoseChat) {
         createdAt: new Date(),
         conversationId: data.conversationId,
       } as MessageType);
+      setNotification(data);
+      // if (!notification?.includes(data)) {
+      //   setNotification([data, ...notification]);
+      // }
     });
   }, []);
 
@@ -220,7 +229,7 @@ export default function ChatBody({ who }: WhoseChat) {
                   <div>{user}</div>
                   {user && who === Who.Traveler && (
                     <>
-                      {/* <i onClick={VideoCall(user)} className="fa-solid fa-video pr-10 text-xl pt-3"></i> */}
+                      <i onClick={()=> navigate("/video")} className="fa-solid fa-video pr-10 text-xl pt-3"></i>
                     </>
                   )}
                 </div>

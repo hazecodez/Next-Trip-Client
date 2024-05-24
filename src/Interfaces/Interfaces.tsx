@@ -54,11 +54,11 @@ export enum Who {
 }
 
 export interface MessageType {
-  sender: string;
-  text: string;
-  createdAt: Date;
-  conversationId: string;
-  senderId: string;
+  sender?: string;
+  text?: string;
+  createdAt?: Date;
+  conversationId?: string;
+  senderId?: string;
 }
 
 export interface Conversation {
@@ -135,6 +135,7 @@ export interface Blog {
   comments?: comments[];
   userId?: string;
   userName?: string;
+  isBlocked:boolean;
 }
 
 export interface comments {

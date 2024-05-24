@@ -18,7 +18,7 @@ import CheckoutPage from "../Pages/Traveler/CheckoutPage";
 import SuccessPage from "../Pages/Traveler/SuccessPage";
 import Bookings from "../Pages/Traveler/Bookings";
 import Error404 from "../Pages/Common/Error404";
-
+import Video from "../Pages/Traveler/VideoChat";
 
 export default function TravelerRoute() {
   return (
@@ -148,6 +148,14 @@ export default function TravelerRoute() {
         element={
           <IsLogged>
             <Bookings />
+          </IsLogged>
+        }
+      />
+      <Route
+        path="/video"
+        element={
+          <IsLogged>
+            <Video />
           </IsLogged>
         }
       />

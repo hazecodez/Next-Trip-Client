@@ -6,6 +6,7 @@ import { bookingData } from "../../Interfaces/Interfaces";
 // import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import Pagination from "../Common/Pagination";
 
 const formatDate = (dateString: string): string => {
   const date = new Date(dateString);
@@ -27,10 +28,12 @@ const isDateInThePast = (dateString: string): boolean => {
 export default function BookedPackages() {
   const traveler = useSelector((state: rootReducersType) => state.traveler);
   const [bookings, setBookings] = useState<bookingData[]>([]);
-  const [blogId,setBlogid] = useState("")
+  const [bookId,setBookid] = useState("")
   const navigate = useNavigate();
   const [update, setUpdate] = useState(false);
   const [confirmModal, setConfirmModal] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   async function handleCancellation(id: string) {
     try {
@@ -49,11 +52,12 @@ export default function BookedPackages() {
   useEffect(() => {
     async function fetchBookings() {
       const response = await TravelerAPIs.booked_packages(
-        traveler?.traveler._id as string
+        traveler?.traveler._id as string, currentPage
       );
 
       if (response?.data.status) {
-        setBookings(response.data.bookings);
+        setBookings(response.data.bookings.bookings);
+        setTotalPages(response.data.bookings.totalPages)
       }
 
       // if (bookings.length === 0) {
@@ -62,7 +66,7 @@ export default function BookedPackages() {
       // }
     }
     fetchBookings();
-  }, [update]);
+  }, [update,currentPage]);
 
   return (
     <>
@@ -95,7 +99,7 @@ export default function BookedPackages() {
                 <button onClick={()=> setConfirmModal(false)} className="mb-2 md:mb-0 bg-gray-700 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border-2 border-gray-600 hover:border-gray-700 text-gray-300 rounded-full hover:shadow-lg hover:bg-gray-800 transition ease-in duration-300">
                   Cancel
                 </button>
-                <button onClick={()=> handleCancellation(blogId)} className="bg-red-500 hover:bg-transparent px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-red-500 hover:border-red-500 text-white hover:text-red-500 rounded-full transition ease-in duration-300">
+                <button onClick={()=> handleCancellation(bookId)} className="bg-red-500 hover:bg-transparent px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-red-500 hover:border-red-500 text-white hover:text-red-500 rounded-full transition ease-in duration-300">
                   Confirm
                 </button>
               </div>
@@ -138,7 +142,7 @@ export default function BookedPackages() {
                 <br />
                 {isDateInThePast(data.cancelDate as string) && (
                   <button
-                    onClick={() => {setConfirmModal(true),setBlogid(data?._id as string)}}
+                    onClick={() => {setConfirmModal(true),setBookid(data?._id as string)}}
                     className="text-lg btn btn-wide bg-[#092635] text-[#9EC8B9] hover:bg-[#9EC8B9] hover:text-[#092635] border-none"
                   >
                     CANCEL BOOKING
@@ -147,6 +151,9 @@ export default function BookedPackages() {
               </div>
             </div>
           ))}
+          <Pagination currentPage={currentPage} 
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages} />
       </div>
     </>
   );

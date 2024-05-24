@@ -19,30 +19,35 @@ export default function BlogCard() {
   const [blogs, setBlogs] = useState([]);
   const [blogId, setBlogId] = useState("");
   const [update, setUpdate] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const traveler = useSelector((state: UserData) => state.traveler);
   const closeModal = () => {
     setBlogModal(false);
-    setUpdate(!update)
+    setUpdate(!update);
   };
   useEffect(() => {
     async function fetchBlogs() {
       try {
-        const response = await TravelerAPIs.fetch_blogs();
+        const response = await TravelerAPIs.fetch_blogs(currentPage);
+        console.log(response?.data);
+        
         if (response?.data.status) {
-          const processedBlogs = response.data.blogs.map((blog: Blog) => {
+          const processedBlogs = response.data.blogs.blogs.map((blog: Blog) => {
             const liked = blog?.liked_users?.includes(
               traveler?.traveler._id as string
             );
             return { ...blog, liked };
           });
           setBlogs(processedBlogs);
+          setTotalPages(response.data.blogs.totalPages);
         }
       } catch (error) {
         console.log(error);
       }
     }
     fetchBlogs();
-  }, [update]);
+  }, [update,currentPage]);
 
   async function like_unlike(blogId: string) {
     try {
@@ -122,9 +127,12 @@ export default function BlogCard() {
           ))}
       </div>
       <div className="bg-[#5C8374] pb-5">
-      <Pagination/>
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
       </div>
-      
     </>
   );
 }

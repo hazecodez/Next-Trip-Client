@@ -209,10 +209,10 @@ const TravelerAPIs = {
       );
     }
   },
-  booked_packages: async (id: string) => {
+  booked_packages: async (id: string, currentPage: number) => {
     try {
       const response = await axiosInstance.get(
-        `/booked_packages?travelerId=${id}`
+        `/booked_packages?travelerId=${id}&page=${currentPage}`
       );
       return response;
     } catch (error) {
@@ -296,9 +296,9 @@ const TravelerAPIs = {
       console.log("Didn't get response from traveler create_blog API", error);
     }
   },
-  fetch_blogs: async () => {
+  fetch_blogs: async (currentPage: number) => {
     try {
-      const response = await axiosInstance.get("/blogs");
+      const response = await axiosInstance.get(`/blogs?page=${currentPage}`);
       return response;
     } catch (error) {
       console.log("Didn't get response from traveler fetch_blogs API", error);
@@ -348,7 +348,7 @@ const TravelerAPIs = {
   },
   remove_blog: async (blogId: string) => {
     try {
-      const response = await axiosInstance.patch("remove_blog", { blogId });
+      const response = await axiosInstance.patch("/remove_blog", { blogId });
       return response;
     } catch (error) {
       console.log(

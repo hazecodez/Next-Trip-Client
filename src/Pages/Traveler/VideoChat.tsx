@@ -1,4 +1,6 @@
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+import { useContext } from "react";
+import { AuthContext } from "../../Context/ContextProvider";
 
 function randomID(len: number) {
   let result = "";
@@ -6,6 +8,7 @@ function randomID(len: number) {
   const chars =
     "12345qwertyuiopasdfgh67890jklmnbvcxzMNBVCZXASDQWERTYHGFUIOLKJP";
   const maxPos = chars.length;
+
   len = len || 5;
   for (let i = 0; i < len; i++) {
     result += chars.charAt(Math.floor(Math.random() * maxPos));
@@ -18,12 +21,15 @@ export function getUrlParams(url = window.location.href) {
   return new URLSearchParams(urlStr);
 }
 
-export default function App() {
+export default function Video() {
   const roomID = getUrlParams().get("roomID") || randomID(5);
-  const myMeeting = async (element) => {
+  const {setVideoCall} = useContext(AuthContext)
+  const myMeeting = async (element: any) => {
     // generate Kit Token
-    const appID = import.meta.env.VITE_ZEGO_APP_ID;
-    const serverSecret = import.meta.env.VITE_ZEGO_SERVER_SECRET;
+    // const appID = import.meta.env.VITE_ZEGO_APP_ID;
+    // const serverSecret = import.meta.env.VITE_ZEGO_SERVER_SECRET;
+    const appID = 1220893534;
+    const serverSecret = "b870df89b233b6ba8ae65e772acb113a";
     const kitToken = ZegoUIKitPrebuilt.generateKitTokenForTest(
       appID,
       serverSecret,
@@ -39,14 +45,8 @@ export default function App() {
       container: element,
       sharedLinks: [
         {
-          name: "Copy link",
-          url:
-            window.location.protocol +
-            "//" +
-            window.location.host +
-            window.location.pathname +
-            "?roomID=" +
-            roomID,
+          name: "copy link",
+          url: "http://localhost:5173/host/video?roomID=" + roomID,
         },
       ],
       scenario: {

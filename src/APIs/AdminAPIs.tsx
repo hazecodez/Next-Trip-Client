@@ -91,6 +91,29 @@ const AdminAPI = {
       console.log("Didn't get response from admin package_Actions API", error);
     }
   },
+  blogs: async (searchTerm: string, currentPage: number) => {
+    try {
+      const response = await axiosInstance.get(
+        `/admin/blogs?search=${searchTerm}&page=${currentPage}`
+      );
+      return response;
+    } catch (error) {
+      console.log(
+        "Didn't get response from admin get travelers list API",
+        error
+      );
+    }
+  },
+  blogAction: async (id: string) => {
+    try {
+      const response = await axiosInstance.patch("/admin/blog_action", {
+        id,
+      });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from admin traveler action  API", error);
+    }
+  },
 };
 
 export default AdminAPI;
