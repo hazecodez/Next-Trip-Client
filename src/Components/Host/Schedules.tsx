@@ -16,12 +16,14 @@ const formatDate = (dateString: string): string => {
 export default function Schedules() {
   const [packages, setPackages] = useState([]);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   useEffect(() => {
     async function fetchPackages() {
       try {
-        const response = await HostAPIs.package_list();
+        const response = await HostAPIs.package_list(currentPage);
         if (response?.data.packageList) {
-          const sortedPackages = response.data.packageList.sort((a, b) => {
+          const sortedPackages = response.data.packageList.packages.sort((a, b) => {
             const dateA = new Date(a.dur_start);
             const dateB = new Date(b.dur_start);
 
@@ -32,6 +34,7 @@ export default function Schedules() {
             return dateA.getTime() - dateB.getTime();
           });
           setPackages(sortedPackages);
+          setTotalPages(response.data.packageList.totalPages);
         }
       } catch (error) {
         console.log(error);
@@ -39,7 +42,7 @@ export default function Schedules() {
     }
 
     fetchPackages();
-  }, []);
+  }, [currentPage]);
   return (
     <>
       <div className="overflow-x-auto bg-[#f2f2f2] rounded-md w-full ml-3 mr-3 h-screen">
@@ -82,7 +85,11 @@ export default function Schedules() {
         
         
       </div>
-      <Pagination/>
+      <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
     </>
   );
 }

@@ -82,7 +82,7 @@ export default function Navbar() {
                     link="/admin/packages"
                     name="Packages"
                   />
-                  <NavLinks color="[#DBDFEA" link="/admin/blogs" name="Blogs" />
+                  <NavLinks color="[#DBDFEA" link="/admin/blogs" name="Moments" />
                   <li onClick={logoutModal} className="mt-auto">
                     <NavLinks color="[#DBDFEA" link="" name="Logout" />
                   </li>

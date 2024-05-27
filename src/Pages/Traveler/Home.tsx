@@ -2,24 +2,28 @@ import Footer from "../../Components/Common/Footer";
 import Navbar from "../../Components/Traveler/Navbar";
 import Banner from "../../Components/Traveler/Banner";
 import PackageCard from "../../Components/Common/PackageCard";
+import BlogCard from "../../Components/Traveler/BlogCard";
 
 export default function HomePage() {
   return (
     <>
       <Navbar />
       <Banner />
+      <div className="flex justify-center p-8 bg-[#F2F2F2]">
+        <h1 className="text-black text-3xl font-bold">
+        Packages
+        </h1>
+      </div>
+      <hr />
       <PackageCard who="traveler" />
-
-      {/* <h1 className="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-white">
-        We invest in the{" "}
-        <span className="underline underline-offset-3 decoration-8 decoration-blue-400 dark:decoration-blue-600">
-          world’s potential
-        </span>
-      </h1>
-      <p className="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400">
-        Here at Flowbite we focus on markets where technology, innovation, and
-        capital can unlock long-term value and drive economic growth.
-      </p> */}
+      <hr />
+      <div className="flex justify-center p-8 bg-[#F2F2F2]">
+        <h1 className="text-black text-3xl font-bold">
+        Blogs
+        </h1>
+      </div>
+      <hr />
+      <BlogCard />
 
       <Footer who="traveler" />
     </>

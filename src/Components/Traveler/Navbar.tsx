@@ -61,7 +61,7 @@ export default function Navbar() {
               className="menu menu-lg dropdown-content mt-3 z-[1] p-2 shadow bg-[#092635] rounded-box w-52"
             >
               <NavLinks color="[#9EC8B9]" name="Home" link="/" />
-              <NavLinks color="[#9EC8B9]" name="Blogs" link="/blogs" />
+              <NavLinks color="[#9EC8B9]" name="Moments" link="/blogs" />
               <NavLinks color="[#9EC8B9]" name="Stays" link="/stays" />
               <NavLinks color="[#9EC8B9]" name="Flights" link="/flights" />
               <NavLinks color="[#9EC8B9]" name="Packages" link="/packages" />
@@ -76,7 +76,7 @@ export default function Navbar() {
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal px-1">
             <NavLinks color="[#9EC8B9]" name="Home" link="/" />
-            <NavLinks color="[#9EC8B9]" name="Blogs" link="/blogs" />
+            <NavLinks color="[#9EC8B9]" name="Moments" link="/blogs" />
             <NavLinks color="[#9EC8B9]" name="Stays" link="/stays" />
             <NavLinks color="[#9EC8B9]" name="Flights" link="/flights" />
             <NavLinks color="[#9EC8B9]" name="Packages" link="/packages" />

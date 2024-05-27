@@ -87,9 +87,11 @@ const HostAPIs = {
       console.log(error);
     }
   },
-  package_list: async () => {
+  package_list: async (currentPage: number) => {
     try {
-      const response = await axiosInstance.get("/host/package_list");
+      const response = await axiosInstance.get(
+        `/host/package_list?page=${currentPage}`
+      );
 
       if (response.data.blocked) {
         Cookies.remove("host");

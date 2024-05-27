@@ -30,8 +30,6 @@ export default function BlogCard() {
     async function fetchBlogs() {
       try {
         const response = await TravelerAPIs.fetch_blogs(currentPage);
-        console.log(response?.data);
-        
         if (response?.data.status) {
           const processedBlogs = response.data.blogs.blogs.map((blog: Blog) => {
             const liked = blog?.liked_users?.includes(

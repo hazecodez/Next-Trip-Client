@@ -63,9 +63,11 @@ const TravelerAPIs = {
       console.log("Didn't get response from traveler google-login API", error);
     }
   },
-  package_list: async () => {
+  package_list: async (currentPage: number) => {
     try {
-      const response = await axiosInstance.get("/package_list");
+      const response = await axiosInstance.get(
+        `/package_list?page=${currentPage}`
+      );
       if (response.data.blocked) {
         Cookies.remove("traveler");
         window.location.href = "/login";
