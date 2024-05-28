@@ -12,6 +12,7 @@ import { MessageType } from "../../../Interfaces/Interfaces";
 import TravelerAPIs from "../../../APIs/TravelerAPIs";
 import { AuthContext } from "../../../Context/ContextProvider";
 import { useNavigate } from "react-router-dom";
+import { v4 as uuidv4 } from "uuid";
 
 interface UserData {
   host?: {
@@ -29,9 +30,9 @@ export default function ChatBody({ who }: WhoseChat) {
   const host = useSelector((state: UserData) => state.host);
   const traveler = useSelector((state: UserData) => state.traveler);
   const data = who === "traveler" ? traveler?.traveler : host?.host;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const { setNotification , setVideoCall} = useContext(AuthContext);
+  const { setNotification } = useContext(AuthContext);
 
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [conversations, setConversation] = useState([]);
@@ -49,7 +50,8 @@ export default function ChatBody({ who }: WhoseChat) {
   const [receiver, setReceiver] = useState("");
   const [clicked, setClicked] = useState(false);
   const [user, setUser] = useState<string | null>(null);
-  const scrollRef = useRef<HTMLDivElement | null>(null);
+  const [showModal,setShowModal] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null);
   const socket = useRef<Socket | undefined>();
 
   useEffect(() => {
@@ -86,9 +88,13 @@ export default function ChatBody({ who }: WhoseChat) {
     };
     fetchConversations();
   }, []);
-  // useEffect(() => {
-  //   scrollRef.current?.scrollIntoView({ behavior: "smooth" });
-  // }, [messages]);
+
+  useEffect(() => {
+    scrollRef.current?.scrollTo({
+      top: scrollRef.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [messages]);
 
   useEffect(() => {
     if (conversationId) {
@@ -101,7 +107,7 @@ export default function ChatBody({ who }: WhoseChat) {
       };
       chat(conversationId);
     }
-  });
+  }, []);
   const handleClick = async (conversationId: string) => {
     localStorage.setItem("conversationId", conversationId);
     setConversationId(conversationId);
@@ -131,6 +137,19 @@ export default function ChatBody({ who }: WhoseChat) {
       }
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const handleVideoCall = (receiverId: string) => {
+    const randomNumber = uuidv4().slice(0, 5);
+    if (socket.current) {
+      socket.current.emit("videoCallInitiated", {
+        userId: traveler?.traveler._id,
+        username: traveler?.traveler.name,
+        roomId: randomNumber,
+        receiverId: receiverId,
+      });
+      navigate(`/video/${randomNumber}`);
     }
   };
 
@@ -229,7 +248,10 @@ export default function ChatBody({ who }: WhoseChat) {
                   <div>{user}</div>
                   {user && who === Who.Traveler && (
                     <>
-                      <i onClick={()=> navigate("/video")} className="fa-solid fa-video pr-10 text-xl pt-3"></i>
+                      <i
+                        onClick={() => handleVideoCall(receiver)}
+                        className="fa-solid fa-video pr-10 text-xl pt-3"
+                      ></i>
                     </>
                   )}
                 </div>
@@ -237,7 +259,7 @@ export default function ChatBody({ who }: WhoseChat) {
             </div>
           )}
 
-          <div className="overflow-y-auto max-h-80 ">
+          <div ref={scrollRef} className="overflow-y-auto max-h-80 ">
             {messages &&
               messages.map((message, index) => (
                 <div key={index}>
@@ -245,7 +267,8 @@ export default function ChatBody({ who }: WhoseChat) {
                     <div
                       className={`chat chat-end m-4`}
                       key={index}
-                      ref={index === messages.length - 1 ? scrollRef : null}
+                      // ref={index === messages.length - 1 ? scrollRef : null}
+                      ref={scrollRef}
                     >
                       <div className="chat-image avatar">
                         <div className="w-10 rounded-full">
@@ -271,7 +294,8 @@ export default function ChatBody({ who }: WhoseChat) {
                     <div
                       className={`chat chat-start m-4`}
                       key={index}
-                      ref={index === messages.length - 1 ? scrollRef : null}
+                      // ref={index === messages.length - 1 ? scrollRef : null}
+                      ref={scrollRef}
                     >
                       <div className="chat-image avatar">
                         <div className="w-10 rounded-full">
@@ -290,7 +314,7 @@ export default function ChatBody({ who }: WhoseChat) {
                         {message.text}
                       </div>
                       <div className="chat-footer opacity-50 text-black">
-                        {format(message.createdAt)}{" "}
+                        {format(message?.createdAt as Date)}{" "}
                       </div>
                     </div>
                   )}

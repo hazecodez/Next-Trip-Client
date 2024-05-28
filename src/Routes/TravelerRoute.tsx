@@ -152,7 +152,7 @@ export default function TravelerRoute() {
         }
       />
       <Route
-        path="/video"
+        path="/video/:roomId"
         element={
           <IsLogged>
             <Video />

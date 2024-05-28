@@ -143,3 +143,13 @@ export interface comments {
   comment?: string;
   time?: string;
 }
+
+
+export interface UserData {
+  host?: {
+    host: User;
+  };
+  traveler?: {
+    traveler: User;
+  };
+}

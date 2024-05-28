@@ -6,9 +6,13 @@ import Package from "../../Interfaces/common/Package";
 import { bookingData } from "../../Interfaces/Interfaces";
 
 const formatDate = (dateString: string): string => {
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   const date: Date = new Date(dateString);
-  return date.toLocaleDateString('en-US', options);
+  return date.toLocaleDateString("en-US", options);
 };
 
 export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
@@ -22,8 +26,10 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
       details?.host as string
     );
     // console.log(response);
-    localStorage.setItem("conversationId", response?.data.data._id);
-    navigate("/chat");
+    if (response) {
+      localStorage.setItem("conversationId", response?.data.data._id);
+      navigate("/chat");
+    }
   };
 
   useEffect(() => {
@@ -38,7 +44,7 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
           const bookings = await HostAPIs.bookings(
             response?.data._id as string
           );
-          setBookings(bookings?.data.bookings);          
+          setBookings(bookings?.data.bookings);
         }
       } catch (error) {
         console.log(error);
@@ -74,22 +80,25 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
       <div className="bg-white w-auto h-auto shadow-2xl">
         <div>
           <h1 className="text-black font-bold text-3xl px-16 pt-5">
-            {details?.name} <span className="px-16 pt-5 text-sm text-red-700 font-bold">Booking Ends on {formatDate(details?.book_end as string)}</span>
+            {details?.name}{" "}
+            <span className="px-16 pt-5 text-sm text-red-700 font-bold">
+              Booking Ends on {formatDate(details?.book_end as string)}
+            </span>
           </h1>
           {details?.capacity < 11 && (
             <>
-            <p className="px-16 pt-5 text-red-700 font-bold">
-              Only {details?.capacity} seats left.
-            </p>
-          </>
+              <p className="px-16 pt-5 text-red-700 font-bold">
+                Only {details?.capacity} seats left.
+              </p>
+            </>
           )}
 
           <div className="flex justify-between">
             <p className="px-16 text-lg text-gray-700">
               {" "}
-              {formatDate(details?.dur_start as string)} - {formatDate(details?.dur_end as string)}
+              {formatDate(details?.dur_start as string)} -{" "}
+              {formatDate(details?.dur_end as string)}
             </p>
-            
 
             {who === "Traveler" ? (
               <>
@@ -138,7 +147,7 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
         <div
           className={` w-full my-10 h-full lg:mx-28 sm:mx-2 md:mx-5 shadow-2xl rounded-md`}
         >
-          { bookings.length > 0 && (
+          {bookings.length > 0 && (
             <>
               <div className="w-full bg-gray-100 h-full mt-2 rounded">
                 <div className="w-full h-16 flex justify-center items-center text-2xl text-black bg-[#FF9B50]">
@@ -147,12 +156,14 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
                 {bookings &&
                   bookings.map((data, index) => (
                     <div key={index} className="p-8 text-black">
-                      <h1>Booking {index+1}</h1>
-                      {
-                        data.travelers.map((traveler,index)=>(
-                          <p key={index}>{index+1}. &nbsp; {traveler.name} <span>Age: {traveler.age} </span> <span> Gender: {traveler.gender} </span> </p>
-                        ))
-                      }
+                      <h1>Booking {index + 1}</h1>
+                      {data.travelers.map((traveler, index) => (
+                        <p key={index}>
+                          {index + 1}. &nbsp; {traveler.name}{" "}
+                          <span>Age: {traveler.age} </span>{" "}
+                          <span> Gender: {traveler.gender} </span>{" "}
+                        </p>
+                      ))}
                     </div>
                   ))}
               </div>

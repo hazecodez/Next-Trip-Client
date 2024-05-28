@@ -19,7 +19,7 @@ export default function HomePage() {
       <hr />
       <div className="flex justify-center p-8 bg-[#F2F2F2]">
         <h1 className="text-black text-3xl font-bold">
-        Blogs
+        Moments
         </h1>
       </div>
       <hr />

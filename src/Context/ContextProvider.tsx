@@ -13,14 +13,12 @@ interface AuthContextValue {
   notification: MessageType[] | null;
   setNotification: Dispatch<SetStateAction<MessageType[] | null>>;
   videoCall: string | null;
-  setVideoCall: Dispatch<SetStateAction<string | null>>;
 }
 
 const initialContextValue: AuthContextValue = {
   notification: null,
   setNotification: () => null,
   videoCall: null,
-  setVideoCall: () => null,
 };
 
 export const AuthContext = createContext<AuthContextValue>(initialContextValue);

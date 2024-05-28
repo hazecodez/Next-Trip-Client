@@ -48,7 +48,7 @@ export default function BlogsAdmin() {
     <>
     <div className="bg-[#D2E0FB] flex justify-between">
         <div className="lg:pl-10 my-3 text-black font-bold text-2xl">
-          <h1>Blogs</h1>
+          <h1>Moments</h1>
         </div>
         <div className="lg:mr-10 md:mr-10">
           <input
@@ -73,7 +73,7 @@ export default function BlogsAdmin() {
             <thead className="text-black text-lg">
               <tr>
                 <th>No.</th>
-                <th>Blog Caption</th>
+                <th>Caption</th>
                 <th>Location</th>
                 <th>Experience</th>
                 <th>User Name</th>
