@@ -1,7 +1,7 @@
 // import ChatHeader from "./ChatHeader";
 // import ChatInput from "./ChatInput";
 import ChatBar from "./ChatBar";
-import { Who } from "../../../Interfaces/Interfaces";
+import { CallDetails, Who } from "../../../Interfaces/Interfaces";
 import { useSelector } from "react-redux";
 import { User } from "../../../Interfaces/Interfaces";
 import { io, Socket } from "socket.io-client";
@@ -50,7 +50,9 @@ export default function ChatBody({ who }: WhoseChat) {
   const [receiver, setReceiver] = useState("");
   const [clicked, setClicked] = useState(false);
   const [user, setUser] = useState<string | null>(null);
-  const [showModal,setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [callDetails, setCallDetails] = useState<CallDetails>();
+  const [roomNumber, setRoomNumber] = useState("");
   const scrollRef = useRef<HTMLDivElement>(null);
   const socket = useRef<Socket | undefined>();
 
@@ -153,12 +155,64 @@ export default function ChatBody({ who }: WhoseChat) {
     }
   };
 
+  useEffect(() => {
+    if (socket.current) {
+      socket.current.on("videoCallAccept", (data) => {
+        setCallDetails({
+          username: data.username,
+          roomId: data.roomId,
+        });
+        console.log(data.roomId);
+        setRoomNumber(data.roomId);
+
+        setShowModal(true);
+      });
+    }
+  }, [socket]);
+
+  const acceptCall = async () => {
+    navigate(`/host/video/${roomNumber}`);
+    setShowModal(false);
+  };
+
   return (
     <>
       <div
         className={`flex justify-between
        bg-[#F2F2F2]`}
       >
+        {showModal && (
+          <>
+            <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+              <div className="w-[250px] flex flex-col p-4 relative items-center justify-center bg-[#C63D2F] border border-[#C63D2F] shadow-lg rounded-2xl">
+                <div className="">
+                  <div className="text-center p-3 flex-auto justify-center">
+                    <i className="fa-solid fa-user text-5xl text-white" />
+                    <h2 className="text-xl font-bold py-4 text-gray-200">
+                      {callDetails?.username} Calling..
+                    </h2>
+                  </div>
+                  <div className="p-2 mt-2 text-center space-x-1 md:block">
+                    <button
+                      onClick={() => setShowModal(false)}
+                      className="mb-2 md:mb-0 bg-red-700 px-5 py-2 text-sm shadow-sm font-medium tracking-wider border-2 border-gray-600 hover:border-red-700 text-gray-300 rounded-full hover:shadow-lg hover:bg-red-800 transition ease-in duration-300"
+                    >
+                      <i className="fa-solid fa-phone" />
+                      &nbsp;Reject
+                    </button>
+                    <button
+                      onClick={acceptCall}
+                      className="bg-green-400 hover:bg-green-500 px-5 ml-4 py-2 text-sm shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-green-300 hover:border-green-500 text-white rounded-full transition ease-in duration-300"
+                    >
+                      <i className="fa-solid fa-video" />
+                      &nbsp; Accept
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
         {/* {who === "traveler" ? (
           <ChatBar
             who={Who.Traveler}

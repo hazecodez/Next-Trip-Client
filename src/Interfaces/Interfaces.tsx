@@ -135,7 +135,7 @@ export interface Blog {
   comments?: comments[];
   userId?: string;
   userName?: string;
-  isBlocked:boolean;
+  isBlocked: boolean;
 }
 
 export interface comments {
@@ -144,7 +144,6 @@ export interface comments {
   time?: string;
 }
 
-
 export interface UserData {
   host?: {
     host: User;
@@ -152,4 +151,9 @@ export interface UserData {
   traveler?: {
     traveler: User;
   };
+}
+
+export interface CallDetails {
+  username: string;
+  roomId: string;
 }
