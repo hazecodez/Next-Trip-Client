@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import HostLoginPage from "../Pages/Host/Login";
 import HostSignupPage from "../Pages/Host/SignUp";
 import Otp from "../Components/Common/Otp";
-import Dashboard from "../Pages/Host/Dashboard";
+import Dashboard from "../Pages/Host/DashboardPage";
 import MyPackages from "../Pages/Host/MyPackages";
 import Schedules from "../Pages/Host/SchedulesPage";
 import CreatePackage from "../Components/Host/CreatePackage";

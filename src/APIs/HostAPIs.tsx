@@ -198,9 +198,18 @@ const HostAPIs = {
       const response = await axiosInstance.post("/host/profile_dp", { image });
       return response;
     } catch (error) {
-      console.log(error);
+      console.log("Didn't get response from host dp_update API", error);
     }
   },
+  dashboard: async() =>{
+    try {
+      const response = await axiosInstance.get("/host/dashboard");
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from host dashboard API", error);
+      
+    }
+  }
 };
 
 export default HostAPIs;

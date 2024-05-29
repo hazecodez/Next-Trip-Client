@@ -114,6 +114,14 @@ const AdminAPI = {
       console.log("Didn't get response from admin traveler action  API", error);
     }
   },
+  dashboard: async () => {
+    try {
+      const response = await axiosInstance.get("/admin/dashboard");
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from admin dashboard API", error);
+    }
+  },
 };
 
 export default AdminAPI;
