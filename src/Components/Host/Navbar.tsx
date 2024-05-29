@@ -129,7 +129,7 @@ export default function Navbar() {
                 />
               </svg>
               {
-                notification &&  <span className="badge badge-xs badge-primary indicator-item"></span>
+                notification &&  <span className="badge badge-xs badge-warning indicator-item">{notification.length}</span>
               }
              
             </div>

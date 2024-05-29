@@ -10,28 +10,23 @@ import { MessageType } from "../Interfaces/Interfaces";
 // Define the notification type
 
 interface AuthContextValue {
-  notification: MessageType[] | null;
-  setNotification: Dispatch<SetStateAction<MessageType[] | null>>;
-  videoCall: string | null;
+  notification: MessageType[]
+  setNotification: Dispatch<SetStateAction<MessageType[]>>;
 }
 
 const initialContextValue: AuthContextValue = {
-  notification: null,
-  setNotification: () => null,
-  videoCall: null,
+  notification: [],
+  setNotification: () => [],
 };
 
 export const AuthContext = createContext<AuthContextValue>(initialContextValue);
 
 const ContextProvider = ({ children }: { children: ReactNode }) => {
-  const [notification, setNotification] = useState<MessageType[] | null>(null);
-  const [videoCall, setVideoCall] = useState("");
+  const [notification, setNotification] = useState<MessageType[]>([]);
 
   const contextValue = {
     notification,
     setNotification,
-    videoCall,
-    setVideoCall,
   };
 
   return (

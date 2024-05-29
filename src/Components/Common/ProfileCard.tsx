@@ -14,6 +14,7 @@ import CreateBlog from "../Traveler/CreateBlog";
 import ButtonCreateBlog from "../Traveler/ButtonCreateBlog";
 import BookedPackages from "../Traveler/BookedPackages";
 import Schedules from "../Host/Schedules";
+import Pagination from "./Pagination";
 
 interface ProfileCardProps {
   who: Who;
@@ -89,6 +90,9 @@ export default function ProfileCard({ who }: ProfileCardProps) {
   const [blogId, setBlogId] = useState("");
   //--TO STORE HOST PACKAGES
   const [packages, setPackages] = useState([]);
+  //--
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   //--
   const [blogCreateModal, setBlogCreateModal] = useState(false);
   const closeBlogCreateModal = () => {
@@ -334,7 +338,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
         toast.error(response?.data.message);
       }
       fetchBlogs();
-      setConfirmModal(false)
+      setConfirmModal(false);
     } catch (error) {
       console.log(error);
     }
@@ -344,9 +348,10 @@ export default function ProfileCard({ who }: ProfileCardProps) {
 
   async function fetchPackages() {
     try {
-      const response = await HostAPIs.package_list();
+      const response = await HostAPIs.package_list(currentPage);
       if (response?.data.packageList) {
-        setPackages(response.data.packageList);
+        setPackages(response.data.packageList.packages);
+        setTotalPages(response.data.packageList.totalPages);
       }
     } catch (error) {
       console.log(error);
@@ -919,6 +924,12 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                       </div>
                     ))}
                   </div>
+                    
+                  <Pagination
+                    currentPage={currentPage}
+                    setCurrentPage={setCurrentPage}
+                    totalPages={totalPages}
+                  />
                 </>
               ) : (
                 <>

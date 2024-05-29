@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Package from "../../Interfaces/common/Package";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
 import {
@@ -7,6 +7,7 @@ import {
   Gender,
   BookTravelerList,
   bookingData,
+  User,
 } from "../../Interfaces/Interfaces";
 import AddTraveler from "../../Validations/Traveler/AddTraveler";
 import { useFormik } from "formik";
@@ -14,9 +15,13 @@ import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "sonner";
 
 const formatDate = (dateString: string): string => {
-  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'long', day: 'numeric' };
+  const options: Intl.DateTimeFormatOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   const date: Date = new Date(dateString);
-  return date.toLocaleDateString('en-US', options);
+  return date.toLocaleDateString("en-US", options);
 };
 
 export default function Checkout() {
@@ -25,6 +30,9 @@ export default function Checkout() {
   const [travelers, setTravelers] = useState<BookTravelerList[]>([]);
   const [totalPrice, setTotalPrice] = useState(0);
   const [selectedGender, setSelectedGender] = useState("Other");
+  const [method, setmethod] = useState("Online Payment");
+  const [user, setUser] = useState<User>();
+  const navigate = useNavigate();
 
   const handleGenderChange = (gender: string) => {
     setSelectedGender(gender);
@@ -61,28 +69,50 @@ export default function Checkout() {
         console.log(error);
       }
     }
+    async function travelerDetails() {
+      try {
+        const response = await TravelerAPIs.traveler_profile();
+        setUser(response?.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     fetchDetails();
+    travelerDetails();
   }, []);
 
+  const handleMethodChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setmethod(event.target.value);
+  };
+
   //to handle Book Now package
-  async function handleBookNow() {
-    if (travelers.length > packDetails?.capacity) {
+  async function handleBookNow(pay_method: string) {
+    const totalAmount = totalPrice * travelers.length;
+    if (travelers.length > (packDetails?.capacity as number)) {
       toast.warning(`Only ${packDetails?.capacity} seats left.`);
     } else if (travelers.length === 0) {
       toast.warning("Please add travelers.");
+    } else if (
+      pay_method !== "Online Payment" &&
+      (user?.wallet as number) < totalAmount
+    ) {
+      toast.warning("You don't have enough amount in wallet");
     } else {
       const Data: bookingData = {
         name: packDetails?.name as string,
         packageId: packDetails?._id,
-        totalPrice: totalPrice * travelers.length,
+        totalPrice: totalAmount,
         travelers: travelers,
         hostId: packDetails?.host as string,
+        method: method,
       };
       const response = await TravelerAPIs.package_booking(Data);
       if (response?.data.sessionId) {
         const sessionId = response?.data.sessionId;
         const stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
         stripe?.redirectToCheckout({ sessionId });
+      } else if (response?.data.status) {
+        navigate("/bookings");
       }
     }
   }
@@ -98,7 +128,7 @@ export default function Checkout() {
               <h1 className="text-2xl font-bold font-mono">
                 {packDetails?.name}
               </h1>
-              {packDetails?.capacity < 11 && (
+              {(packDetails?.capacity as number) < 11 && (
                 <p className="text-red-700 font-bold">
                   only {packDetails?.capacity} seats left.
                 </p>
@@ -107,7 +137,8 @@ export default function Checkout() {
               <br />
               <p>
                 <i className="fa-solid fa-calendar-days" />
-                &nbsp; &nbsp; Start at {formatDate(packDetails?.dur_start as string)}&nbsp;&nbsp; Ends
+                &nbsp; &nbsp; Start at{" "}
+                {formatDate(packDetails?.dur_start as string)}&nbsp;&nbsp; Ends
                 on {formatDate(packDetails?.dur_end as string)}
               </p>
             </div>
@@ -124,8 +155,23 @@ export default function Checkout() {
                 ₹ {totalPrice * travelers.length}.00{" "}
               </p>
               <br />
+
+              <div className="flex justify-between">
+                <select
+                  className="select bg-transparent select-bordered w-full max-w-xs"
+                  value={method}
+                  onChange={handleMethodChange}
+                >
+                  <option disabled>Payment Method</option>
+
+                  <option>Wallet Payment ₹{user?.wallet}</option>
+                  <option>Online Payment</option>
+                </select>
+              </div>
+
+              <br />
               <button
-                onClick={handleBookNow}
+                onClick={() => handleBookNow(method)}
                 className="text-lg btn btn-wide bg-[#092635] text-[#9EC8B9] hover:bg-[#9EC8B9] hover:text-[#092635] border-none"
               >
                 BOOK NOW

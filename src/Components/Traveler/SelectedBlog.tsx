@@ -80,9 +80,7 @@ export default function SelectedBlog({ onClose, blogId }: modalProp) {
             <p className="pl-3 pt-1">{blog?.userName}</p>
           </div>
 
-          <a href="#" className="title">
-            {blog?.caption}
-          </a>
+          
           <span className="datetime">{format(blog?.time as Date)}</span>
           <div className="image-preview ">
             <img
@@ -136,6 +134,9 @@ export default function SelectedBlog({ onClose, blogId }: modalProp) {
               <i className="fa-regular fa-circle-xmark pt-5"></i>
             </a>
           </div>
+          <a href="#" className="w-96 text-lg font-bold">
+            {blog?.caption}
+          </a>
           <div
             className="card-body"
             style={{
@@ -143,7 +144,9 @@ export default function SelectedBlog({ onClose, blogId }: modalProp) {
               msOverflowStyle: "none",
             }}
           >
+            
             <div className="messages-container">
+              
               {blog?.comments?.length ? (
                 blog?.comments?.map((com, index) => (
                   <div className="flex" key={index}>

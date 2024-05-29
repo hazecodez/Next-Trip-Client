@@ -65,12 +65,13 @@ export default function ChatBody({ who }: WhoseChat) {
         createdAt: new Date(),
         conversationId: data.conversationId,
       } as MessageType);
-      setNotification(data);
-      // if (!notification?.includes(data)) {
-      //   setNotification([data, ...notification]);
-      // }
     });
   }, []);
+  useEffect(() => {
+    socket.current?.on("getNotification", (data) => {
+      setNotification((prev) => [data, ...prev]);
+    });
+  }, [setNotification]);
 
   useEffect(() => {
     if (arrivalMessage) {
@@ -129,6 +130,7 @@ export default function ChatBody({ who }: WhoseChat) {
         );
         socket.current?.emit("sendMessage", {
           senderId: data?._id,
+          senderName: data?.name,
           receiverId: receiver,
           text: message,
         });

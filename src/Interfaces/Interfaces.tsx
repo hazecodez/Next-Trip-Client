@@ -55,6 +55,7 @@ export enum Who {
 
 export interface MessageType {
   sender?: string;
+  senderName?: string;
   text?: string;
   createdAt?: Date;
   conversationId?: string;
@@ -100,6 +101,9 @@ export interface bookingData {
   status?: string;
   packageName?: string;
   cancelDate?: string;
+  startDate?: string;
+  endDate?: string;
+  method?:string;
 }
 export interface walletHistory {
   packageName: string;

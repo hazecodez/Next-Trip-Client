@@ -85,7 +85,7 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
               Booking Ends on {formatDate(details?.book_end as string)}
             </span>
           </h1>
-          {details?.capacity < 11 && (
+          {(details?.capacity as number) < 11 && (
             <>
               <p className="px-16 pt-5 text-red-700 font-bold">
                 Only {details?.capacity} seats left.

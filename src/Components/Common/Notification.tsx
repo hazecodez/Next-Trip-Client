@@ -24,19 +24,42 @@ export default function Notification({
         {!notification && <p>No New Messages</p>}
         {notification && (
           <>
-            <div
-              onClick={() => {
-                setNotification([]);
-                if (who === Who.Host) {
-                  navigate("/host/chat");
-                } else {
-                  navigate("/chat");
-                }
-              }}
-              className="w-full bg-gray-200 h-10 mt-5 rounded-lg p-2 pl-8"
-            >
-              New Message from {who === Who.Host ? "Traveler" : "Host"}
-            </div>
+            {notification.map((data, index) => (
+              // <div
+              //   key={index}
+              //   onClick={() => {
+              //     setNotification([]);
+              //     if (who === Who.Host) {
+              //       navigate("/host/chat");
+              //     } else {
+              //       navigate("/chat");
+              //     }
+              //   }}
+              //   className="w-full bg-gray-200 h-10 mt-5 rounded-lg p-2 pl-8"
+              // >
+              //   {data.senderName} send a message.
+              // </div>
+              <div
+                key={index}
+                onClick={() => {
+                  setNotification([]);
+                  if (who === Who.Host) {
+                    navigate("/host/chat");
+                  } else {
+                    navigate("/chat");
+                  }
+                }}
+                role="alert"
+                className={`alert shadow-lg mt-5 bg-gray-200 ${who === Who.Host ? "border-[#C63D2F]" : "border-[#092635]"}`}
+              >
+                <i className="fa-solid fa-user" />
+                <div>
+                  <h3 className="font-bold text-xs">{data.senderName}</h3>
+                  <div className="text-xs">Sends {data.text}</div>
+                </div>
+                
+              </div>
+            ))}
           </>
         )}
       </div>

@@ -4,11 +4,10 @@ import TravelersList from "../Pages/Admin/TravelersList";
 import HostsList from "../Pages/Admin/HostsList";
 import Blogs from "../Pages/Admin/Blogs";
 import PackagePage from "../Pages/Admin/PackagePage";
-import Dashboard from "../Pages/Admin/Dashboard";
+import DashboardPage from "../Pages/Admin/DashboardPage";
 import IsLoggedOut from "../Middlewares/Admin/IsLoggedOut";
 import IsLoggedIn from "../Middlewares/Admin/IsLoggedIn";
 import Error404 from "../Pages/Common/Error404";
-
 
 export default function AdminRoute() {
   return (
@@ -58,11 +57,11 @@ export default function AdminRoute() {
           path="/"
           element={
             <IsLoggedIn>
-              <Dashboard />{" "}
+              <DashboardPage />{" "}
             </IsLoggedIn>
           }
         />
-        <Route path="*" element={<Error404/>} />
+        <Route path="*" element={<Error404 />} />
       </Routes>
     </>
   );

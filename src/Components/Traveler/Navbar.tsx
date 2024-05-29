@@ -120,7 +120,7 @@ export default function Navbar() {
               </svg>
               {
                 notification && <span className="badge badge-xs badge-primary indicator-item">
-                1
+                {notification.length}
               </span>
               }
             </div>
