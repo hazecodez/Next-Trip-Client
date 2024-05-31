@@ -5,22 +5,21 @@ import {
   LoginType,
 } from "../Interfaces/Interfaces";
 import axiosInstance from "./AxiosInstance";
-// import Cookies from "js-cookie";
+import Cookies from "js-cookie";
 
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (
-      !error.response.data.status &&
       error.response &&
       error.response.data &&
+      error.response.data.role === "traveler" &&
       error.response.data.blocked === true
     ) {
-      // Cookies.remove("traveler");
-      // window.location.href = "/login";
-      console.log("Addaaa kittunnund");
-      
+      Cookies.remove("traveler");
+      window.location.href = "/login";
     }
+    return Promise.reject(error);
   }
 );
 

@@ -1,4 +1,5 @@
 import axiosInstance from "./AxiosInstance";
+import Cookies from "js-cookie";
 
 interface LoginType {
   email?: string;
@@ -6,6 +7,22 @@ interface LoginType {
   sub?: string;
   name?: string;
 }
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      error.response &&
+      error.response.data &&
+      error.response.data.role === "admin" &&
+      !error.response.data.status
+    ) {
+      Cookies.remove("adminToken");
+      window.location.href = "/admin/login";
+    }
+    return Promise.reject(error);
+  }
+);
 
 const AdminAPI = {
   login: async (formData: LoginType) => {

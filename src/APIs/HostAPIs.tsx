@@ -8,14 +8,15 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (
-      !error.response.data.status &&
       error.response &&
       error.response.data &&
+      error.response.data.role === "host" &&
       error.response.data.blocked === true
     ) {
       Cookies.remove("host");
       window.location.href = "/host/login";
     }
+    return Promise.reject(error);
   }
 );
 
