@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AdminAPI from "../../APIs/AdminAPIs";
+import AdminChart from "./AdminChart";
 
 export default function Dashboard() {
   const [travelersCount, setTravelersCount] = useState(0);
@@ -20,36 +21,38 @@ export default function Dashboard() {
   }, []);
   return (
     <>
-      <div className="p-4 sm:ml-64">
-        <div className="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700">
-          <div className="grid md:grid-cols-3 gap-4 mb-4">
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl font-bold text-black">
-                <i className="fa-regular fa-user"></i>
-                No. of Travelers : {travelersCount}
+      <div className=" bg-[#D2E0FB]">
+        <div className="p-4  dark:border-gray-700">
+          <div className="flex md:grid-cols-2 gap-2">
+            <div className="flex w-2/4 h-24 items-center justify-evenly rounded bg-gradient-to-r from-[#24263A] to-[#C8C4B7] dark:bg-gray-800">
+              <p className="text-2xl font-bold text-white">
+                {`No of Travel Hosts  : ${hostsCount}`}{" "}
               </p>
+              <i className="fa-solid fa-book-open-reader text-black text-5xl" />
             </div>
-            <div className="flex  items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl text-black font-bold">
-                <i className="fa-regular fa-id-card"></i>
-                No. of Hosts : {hostsCount}
+            <div className="flex  w-2/4 items-center justify-evenly rounded bg-gradient-to-r from-[#24263A] to-[#C8C4B7] dark:bg-gray-800">
+              <p className="text-2xl font-bold text-white">
+                {`No of Packages  : ${packagesCount}`}{" "}
               </p>
-            </div>
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl text-black font-bold">
-                <i className="fa-solid fa-clipboard-list"></i>
-                No. of Packages : {packagesCount}
-              </p>
-            </div>
-            <div className="flex items-center justify-center h-24 rounded bg-gray-50 dark:bg-gray-800">
-              <p className="text-2xl text-black font-bold">
-                <i className="fa-solid fa-hashtag"></i>
-                No. of Moments : {blogsCount}
-              </p>
+              <i className="fa-solid fa-clipboard-list text-black text-5xl" />
             </div>
           </div>
-          <div className="flex items-center justify-center  mb-4 rounded bg-gray-50 dark:bg-gray-800">
-            {/* <ApexChart/> */}
+          <div className="grid md:grid-cols gap-4 text-[#24263A]">
+            <AdminChart />
+          </div>
+          <div className="flex grid-cols-2 gap-2">
+            <div className="flex w-2/4 items-center justify-evenly rounded bg-gradient-to-r from-[#24263A] to-[#C8C4B7] dark:bg-gray-800">
+              <p className="text-2xl font-bold text-white">
+                {`No of Travelers  : ${travelersCount}`}{" "}
+              </p>
+              <img src="../Traveler/successLogo.png" className="w-24  " />
+            </div>
+            <div className="flex  w-2/4 items-center justify-evenly rounded bg-gradient-to-r from-[#24263A] to-[#C8C4B7] dark:bg-gray-800">
+              <p className="text-2xl font-bold text-white">
+                {`No of Moments  : ${blogsCount}`}{" "}
+              </p>
+              <i className="fa-solid fa-hashtag text-black text-5xl" />
+            </div>
           </div>
         </div>
       </div>

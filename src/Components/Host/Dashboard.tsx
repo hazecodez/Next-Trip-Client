@@ -12,8 +12,6 @@ export default function Dashboard() {
     async function fetchDash() {
       const response = await HostAPIs.dashboard();
       if (response?.data.status) {
-        console.log(response.data);
-
         setUser(response.data.Host);
         setCount(response.data.packageCount);
       }

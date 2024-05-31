@@ -138,7 +138,7 @@ export default function SelectedBlog({ onClose, blogId }: modalProp) {
             {blog?.caption}
           </a>
           <div
-            className="card-body"
+            className="blog-card-body"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",

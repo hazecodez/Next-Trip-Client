@@ -122,6 +122,14 @@ const AdminAPI = {
       console.log("Didn't get response from admin dashboard API", error);
     }
   },
+  sales_report: async () => {
+    try {
+      const response = await axiosInstance.get("/admin/sales");
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default AdminAPI;

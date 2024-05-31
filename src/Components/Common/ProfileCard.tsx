@@ -546,7 +546,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
           }`}
         >
           <div
-            className={`input ${
+            className={`input input-wallet ${
               who === Who.Host ? "bg-[#E25E3E]" : "bg-[#5C8374]"
             } rounded-full justify-around`}
           >

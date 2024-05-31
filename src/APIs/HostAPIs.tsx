@@ -8,6 +8,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     if (
+      !error.response.data.status &&
       error.response &&
       error.response.data &&
       error.response.data.blocked === true
@@ -22,7 +23,6 @@ const HostAPIs = {
   signup: async (formData: LoginType) => {
     try {
       const signUpResponse = await axiosInstance.post("/host/signup", formData);
-
       return signUpResponse;
     } catch (error) {
       console.log("Didn't get response from Host signup API", error);
@@ -30,8 +30,6 @@ const HostAPIs = {
   },
   verifyOTP: async (otp: string) => {
     try {
-      console.log("ethi");
-
       const otpResponse = await axiosInstance.post("/host/verify_otp", { otp });
       return otpResponse;
     } catch (error) {
@@ -63,10 +61,6 @@ const HostAPIs = {
         images,
         form,
       });
-      if (response.data.blocked) {
-        Cookies.remove("host");
-        window.location.href = "/host/login";
-      }
       return response;
     } catch (error) {
       console.log("Didn't get response from host create_package API", error);
@@ -78,10 +72,6 @@ const HostAPIs = {
         form,
         images,
       });
-      if (response.data.blocked) {
-        Cookies.remove("host");
-        window.location.href = "/host/login";
-      }
       return response;
     } catch (error) {
       console.log(error);
@@ -92,11 +82,6 @@ const HostAPIs = {
       const response = await axiosInstance.get(
         `/host/package_list?page=${currentPage}`
       );
-
-      if (response.data.blocked) {
-        Cookies.remove("host");
-        window.location.href = "/host/login";
-      }
       return response;
     } catch (error) {
       console.log("Didn't get response from host package_list API", error);
@@ -107,10 +92,6 @@ const HostAPIs = {
       const response = await axiosInstance.patch("/host/package_details", {
         id,
       });
-      if (response.data.blocked) {
-        Cookies.remove("host");
-        window.location.href = "/host/login";
-      }
       return response;
     } catch (error) {
       console.log("Didn't get response from host package_details API", error);
@@ -201,15 +182,22 @@ const HostAPIs = {
       console.log("Didn't get response from host dp_update API", error);
     }
   },
-  dashboard: async() =>{
+  dashboard: async () => {
     try {
       const response = await axiosInstance.get("/host/dashboard");
       return response;
     } catch (error) {
       console.log("Didn't get response from host dashboard API", error);
-      
     }
-  }
+  },
+  sales_report: async () => {
+    try {
+      const response = await axiosInstance.get("/host/sales");
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };
 
 export default HostAPIs;

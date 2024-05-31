@@ -5,19 +5,24 @@ import {
   LoginType,
 } from "../Interfaces/Interfaces";
 import axiosInstance from "./AxiosInstance";
-import Cookies from "js-cookie";
+// import Cookies from "js-cookie";
 
-// axiosInstance.interceptors.response.use(
-//   (response) => response,
-//   (error) => {
-//     const { status, data } = error.response;
-//     if (status === 401 && data.blocked) {
-//       // User is blocked, handle accordingly
-//       console.log("User is blocked:", data.message);
-//     }
-//     return Promise.reject(error);
-//   }
-// );
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (
+      !error.response.data.status &&
+      error.response &&
+      error.response.data &&
+      error.response.data.blocked === true
+    ) {
+      // Cookies.remove("traveler");
+      // window.location.href = "/login";
+      console.log("Addaaa kittunnund");
+      
+    }
+  }
+);
 
 const TravelerAPIs = {
   signup: async (formData: LoginType) => {
@@ -68,10 +73,6 @@ const TravelerAPIs = {
       const response = await axiosInstance.get(
         `/package_list?page=${currentPage}`
       );
-      if (response.data.blocked) {
-        Cookies.remove("traveler");
-        window.location.href = "/login";
-      }
       return response;
     } catch (error) {
       console.log("Didn't get response from traveler package_list API", error);
@@ -113,11 +114,6 @@ const TravelerAPIs = {
       const response = await axiosInstance.patch("/package_details", {
         id,
       });
-      if (response.data.blocked) {
-        Cookies.remove("traveler");
-        window.location.href = "/login";
-      }
-
       return response;
     } catch (error) {
       console.log(
@@ -131,10 +127,6 @@ const TravelerAPIs = {
       const response = await axiosInstance.post(
         `/new_conversation?hostId=${hostId}`
       );
-      if (response.data.blocked) {
-        Cookies.remove("traveler");
-        window.location.href = "/login";
-      }
       return response;
     } catch (error) {
       console.log(error);
@@ -145,10 +137,6 @@ const TravelerAPIs = {
       const response = await axiosInstance.get(
         `/get_conversations?userId=${userId}`
       );
-      if (response.data.blocked) {
-        Cookies.remove("traveler");
-        window.location.href = "/login";
-      }
       return response;
     } catch (error) {
       console.log(error);
@@ -159,10 +147,6 @@ const TravelerAPIs = {
       const response = await axiosInstance.patch(`/get_messages`, {
         conversationId,
       });
-      if (response.data.blocked) {
-        Cookies.remove("traveler");
-        window.location.href = "/login";
-      }
       return response;
     } catch (error) {
       console.log(error);
@@ -179,10 +163,6 @@ const TravelerAPIs = {
         conversationId,
         senderId,
       });
-      if (response.data.blocked) {
-        Cookies.remove("traveler");
-        window.location.href = "/login";
-      }
       return response;
     } catch (error) {
       console.log(error);
@@ -191,10 +171,6 @@ const TravelerAPIs = {
   user_name: async (userId: string, who: string) => {
     try {
       const response = await axiosInstance.patch(`/find_user`, { userId, who });
-      if (response.data.blocked) {
-        Cookies.remove("traveler");
-        window.location.href = "/login";
-      }
       return response;
     } catch (error) {
       console.log(error);

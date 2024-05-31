@@ -149,7 +149,7 @@
 
 
 /* Radio Buttons */
-.input {
+.input-wallet {
   display: flex;
   flex-direction: row;
   width: 800px;

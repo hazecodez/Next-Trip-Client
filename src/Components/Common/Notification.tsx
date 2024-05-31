@@ -25,20 +25,7 @@ export default function Notification({
         {notification && (
           <>
             {notification.map((data, index) => (
-              // <div
-              //   key={index}
-              //   onClick={() => {
-              //     setNotification([]);
-              //     if (who === Who.Host) {
-              //       navigate("/host/chat");
-              //     } else {
-              //       navigate("/chat");
-              //     }
-              //   }}
-              //   className="w-full bg-gray-200 h-10 mt-5 rounded-lg p-2 pl-8"
-              // >
-              //   {data.senderName} send a message.
-              // </div>
+              
               <div
                 key={index}
                 onClick={() => {
