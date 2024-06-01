@@ -5,7 +5,7 @@ import Home from "../Pages/Traveler/Home";
 import Otp from "../Components/Common/Otp";
 import ForgetPass from "../Components/Common/ForgetPass";
 import NewPass from "../Components/Common/NewPass";
-import IsLogged from "../Middlewares/Traveler/IsLogged";
+import IsLogged from "../Middlewares/Traveler/IsLoggedIn";
 import IsLoggedOut from "../Middlewares/Traveler/IsLoggedOut";
 import PackageDetails from "../Pages/Traveler/PackageDetails";
 import Packages from "../Pages/Traveler/Packages";
