@@ -23,26 +23,26 @@ interface WalletHistoryItem {
   date: string;
 }
 
-export interface Package {
+export interface PackageType {
   _id?: string | undefined;
-  name: string;
-  capacity: string;
-  destination: string;
-  dur_start: string;
-  dur_end: string;
-  stay: string;
-  room_type: string;
-  amenities: string;
-  food: string;
+  name?: string;
+  capacity?: number;
+  destination?: string;
+  dur_start?: string;
+  dur_end?: string;
+  stay?: string;
+  room_type?: string;
+  amenities?: string;
+  food?: string;
   depa_airport?: string;
   depa_time?: string;
   arrival_airport?: string;
   arrival_time?: string;
-  book_start: string;
-  book_end: string;
-  activities: string;
-  price: string;
-  itinerary: string;
+  book_start?: string;
+  book_end?: string;
+  activities?: string;
+  price?: number;
+  itinerary?: string;
   host?: string;
   is_verified?: boolean;
   images?: string[];
@@ -160,4 +160,54 @@ export interface UserData {
 export interface CallDetails {
   username: string;
   roomId: string;
+}
+interface Segment {
+  departure: {
+    at: string;
+    iataCode: string;
+  };
+  arrival: {
+    at: string;
+    iataCode: string;
+  };
+  duration: string;
+}
+
+interface Itinerary {
+  segments: Segment[];
+}
+
+interface Price {
+  grandTotal: string;
+}
+
+export interface FlightData {
+  price: Price;
+  itineraries: Itinerary[];
+  lastTicketingDate: string;
+}
+
+interface Address {
+  countryCode: string;
+  // Add other address-related properties if needed
+}
+
+interface Distance {
+  value: number;
+  unit: string;
+  // Add other distance-related properties if needed
+}
+
+interface GeoCode {
+  latitude: string;
+  longitude: string;
+  // Add other geoCode-related properties if needed
+}
+
+export interface Hotel {
+  name: string;
+  address: Address;
+  distance: Distance;
+  geoCode: GeoCode;
+  // Add other properties if needed
 }

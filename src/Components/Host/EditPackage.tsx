@@ -6,6 +6,7 @@ import HostAPIs from "../../APIs/HostAPIs";
 import { useFormik } from "formik";
 import PackageSchema from "../../Validations/Host/PackageSchema";
 import Package from "../../Interfaces/common/Package";
+import { PackageType } from "../../Interfaces/Interfaces";
 import { toast } from "sonner";
 import { HashLoader } from "react-spinners";
 import "./css/loader.css";
@@ -13,8 +14,8 @@ import "./css/loader.css";
 export default function EditPackage() {
   const navigate = useNavigate();
   const { id } = useParams();
-  const [details, setDetails] = useState({});
-  const [previewSources, setPreviewSources] = useState([]);
+  const [details, setDetails] = useState<PackageType>({});
+  const [previewSources, setPreviewSources] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,15 +24,18 @@ export default function EditPackage() {
   };
 
   const previewFiles = (files: FileList | null) => {
-    const newPreviewSources = [];
-    for (let i = 0; i < files.length; i++) {
+    if (!files) return;
+    const newPreviewSources: string[] = [];
+    for (let i = 0; i < files.length || 0; i++) {
       const reader = new FileReader();
-      const file = files[i];
-      reader.readAsDataURL(file);
+      const file = files?.[i];
+      reader.readAsDataURL(file as Blob);
       reader.onloadend = () => {
-        newPreviewSources.push(reader.result as string);
-        if (newPreviewSources.length === files.length) {
-          setPreviewSources(newPreviewSources);
+        if (reader.result) {
+          newPreviewSources.push(reader.result as string);
+          if (newPreviewSources.length === (files?.length || 0)) {
+            setPreviewSources(newPreviewSources);
+          }
         }
       };
     }
@@ -99,26 +103,26 @@ export default function EditPackage() {
     setFieldValue,
   } = useFormik({
     initialValues: {
-      _id: details._id | "",
-      name: details.name | "",
-      capacity: details.capacity | 0,
-      destination: details.destination | "",
-      dur_start: details.dur_start | "",
-      dur_end: details.dur_end | "",
-      stay: details.stay | "",
-      room_type: details.room_type | "",
-      amenities: details.amenities | "",
-      food: details.food | "",
-      depa_airport: details.depa_airport | "",
-      arrival_airport: details.arrival_airport | "",
-      book_start: details.book_start | "",
-      book_end: details.book_end | "",
-      activities: details.activities | "",
-      price: details.price | 0,
-      itinerary: details.itinerary | "",
-      arrival_time: details.arrival_time | "",
-      depa_time: details.depa_time | "",
-      images: details.images | [""],
+      _id: details?._id || "",
+      name: details.name || "",
+      capacity: details.capacity || 0,
+      destination: details.destination || "",
+      dur_start: details.dur_start || "",
+      dur_end: details.dur_end || "",
+      stay: details.stay || "",
+      room_type: details.room_type || "",
+      amenities: details.amenities || "",
+      food: details.food || "",
+      depa_airport: details.depa_airport || "",
+      arrival_airport: details.arrival_airport || "",
+      book_start: details.book_start || "",
+      book_end: details.book_end || "",
+      activities: details.activities || "",
+      price: details.price || 0,
+      itinerary: details.itinerary || "",
+      arrival_time: details.arrival_time || "",
+      depa_time: details.depa_time || "",
+      images: details.images || [""],
     },
     validationSchema: PackageSchema,
     onSubmit: Submission,

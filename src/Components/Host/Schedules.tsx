@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import HostAPIs from "../../APIs/HostAPIs";
-import { Package } from "../../Interfaces/Interfaces";
+import { PackageType } from "../../Interfaces/Interfaces";
 import { useNavigate } from "react-router-dom";
 import Pagination from "../Common/Pagination";
 
@@ -22,22 +22,30 @@ export default function Schedules() {
     async function fetchPackages() {
       try {
         const response = await HostAPIs.package_list(currentPage);
-        if (response?.data.packageList) {
-          const sortedPackages = response.data.packageList.packages.sort((a, b) => {
-            const dateA = new Date(a.dur_start);
-            const dateB = new Date(b.dur_start);
+        if (
+          response?.data.packageList &&
+          Array.isArray(response.data.packageList.packages)
+        ) {
+          const sortedPackages = response.data.packageList.packages.sort(
+            (a: { dur_start: string }, b: { dur_start: string }) => {
+              const dateA = new Date(a.dur_start);
+              const dateB = new Date(b.dur_start);
 
-            if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
-              throw new Error("Invalid date format in dur_start");
+              if (isNaN(dateA.getTime()) || isNaN(dateB.getTime())) {
+                throw new Error("Invalid date format in dur_start");
+              }
+
+              return dateA.getTime() - dateB.getTime();
             }
-
-            return dateA.getTime() - dateB.getTime();
-          });
+          );
           setPackages(sortedPackages);
           setTotalPages(response.data.packageList.totalPages);
+        } else {
+          throw new Error("Invalid response or missing packageList.packages");
         }
       } catch (error) {
-        console.log(error);
+        // Handle errors gracefully, e.g., show an error message to the user
+        console.error("Error fetching packages:", error);
       }
     }
 
@@ -58,14 +66,14 @@ export default function Schedules() {
             </tr>
           </thead>
 
-          {packages.map((data: Package, index) => (
+          {packages.map((data: PackageType, index) => (
             <tbody>
               <tr className="text-[#E25E3E]">
                 <th>{index + 1}</th>
                 <td>{data.name}</td>
                 <td>{data.destination}</td>
-                <td>{`${formatDate(data.dur_start)} - ${formatDate(
-                  data.dur_end
+                <td>{`${formatDate(data.dur_start as string)} - ${formatDate(
+                  data.dur_end as string
                 )}`}</td>
                 <td className="flex">
                   {" "}
@@ -82,14 +90,12 @@ export default function Schedules() {
             </tbody>
           ))}
         </table>
-        
-        
       </div>
       <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
-        />
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalPages={totalPages}
+      />
     </>
   );
 }

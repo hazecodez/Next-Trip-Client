@@ -1,6 +1,16 @@
 //---to get amadeus access token
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
+
+interface ApiResponse {
+  data: Location[];
+  // Add other properties as needed
+}
+interface Location {
+  subType: string;
+  iataCode: string;
+  // Add other properties as needed
+}
 
 const AmdeusAPI = {
   getToken: async () => {
@@ -31,7 +41,7 @@ const AmdeusAPI = {
   getIATACode: async (city: string, token: string) => {
     const url = "https://test.api.amadeus.com/v1/reference-data/locations";
     try {
-      const response = await axios.get(url, {
+      const response: AxiosResponse<ApiResponse> = await axios.get(url, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

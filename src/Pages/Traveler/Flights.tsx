@@ -4,6 +4,7 @@ import Navbar from "../../Components/Traveler/Navbar";
 import "./Css/Flights.css";
 import AmdeusAPI from "../../Utils/Traveler/AmdeusAPI";
 import { HashLoader } from "react-spinners";
+import { FlightData } from "../../Interfaces/Interfaces";
 
 export default function Flights() {
   const [dep, setDep] = useState("");
@@ -21,8 +22,8 @@ export default function Flights() {
       const destination = await AmdeusAPI.getIATACode(arrival, token);
       const response = await AmdeusAPI.getFlightOffers(
         token,
-        origin,
-        destination,
+        origin as string,
+        destination as string,
         date
       );
       if (response) {
@@ -30,7 +31,6 @@ export default function Flights() {
         setShowLists(true);
         setLoad(false);
         console.log(response);
-        
       } else {
         setLoad(false);
       }
@@ -95,20 +95,29 @@ export default function Flights() {
 
         <div className="flex flex-wrap gap-10 pt-10 justify-center">
           {showlists &&
-            flights?.map((data, index: number) => (
+            flights?.map((data: FlightData, index: number) => (
               <>
                 <div className="hotel_card" key={index}>
                   <div className="flex items-end">
-                  <h3 className="hotel_card__title ">₹{data.price.grandTotal}</h3>
+                    <h3 className="hotel_card__title ">
+                      ₹{data.price.grandTotal}
+                    </h3>
                   </div>
-                  <p className="hotel_card__content">{`Depart ${data.itineraries[0].segments[0].departure.at}  ${data.itineraries[0].segments[0].departure.iataCode}`} </p>
-                  <p className="hotel_card__content">{`Arrival ${data.itineraries[0].segments[0].arrival.at}  ${data.itineraries[0].segments[0].arrival.iataCode}`} </p>
-                  <p className="hotel_card__content">{`Duration  ${data.itineraries[0].segments[0].duration}`} </p>
-                  <p className="hotel_card__content">{`Last Ticketing Date  ${data.lastTicketingDate}`} </p>
+                  <p className="hotel_card__content">
+                    {`Depart ${data.itineraries[0].segments[0].departure.at}  ${data.itineraries[0].segments[0].departure.iataCode}`}{" "}
+                  </p>
+                  <p className="hotel_card__content">
+                    {`Arrival ${data.itineraries[0].segments[0].arrival.at}  ${data.itineraries[0].segments[0].arrival.iataCode}`}{" "}
+                  </p>
+                  <p className="hotel_card__content">
+                    {`Duration  ${data.itineraries[0].segments[0].duration}`}{" "}
+                  </p>
+                  <p className="hotel_card__content">
+                    {`Last Ticketing Date  ${data.lastTicketingDate}`}{" "}
+                  </p>
                   {/* <div className="hotel_card__date">
                     Click here see the location in map 👉
                   </div> */}
-                 
                 </div>
               </>
             ))}

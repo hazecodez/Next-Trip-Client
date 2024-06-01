@@ -65,7 +65,7 @@ export default function CreateBlog({ onClose }: modalProp) {
         caption: "",
         experience: "",
         location: "",
-        
+        isBlocked: false,
       },
       validationSchema: BlogSchema,
       onSubmit: submit,

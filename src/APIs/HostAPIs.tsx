@@ -56,7 +56,7 @@ const HostAPIs = {
       console.log("Didn't get response from host google-login API", error);
     }
   },
-  create_package: async (form: Package, images: never[]) => {
+  create_package: async (form: Package, images: string[]) => {
     try {
       const response = await axiosInstance.post("/host/create_package", {
         images,
@@ -67,7 +67,7 @@ const HostAPIs = {
       console.log("Didn't get response from host create_package API", error);
     }
   },
-  update_package: async (form: Package, images: never[]) => {
+  update_package: async (form: Package, images: string[]) => {
     try {
       const response = await axiosInstance.patch("/host/update_package", {
         form,

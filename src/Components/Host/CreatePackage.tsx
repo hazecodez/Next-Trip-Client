@@ -12,7 +12,7 @@ import "./css/loader.css";
 
 export default function CreatePackage() {
   const navigate = useNavigate();
-  const [previewSources, setPreviewSources] = useState([]);
+  const [previewSources, setPreviewSources] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
 
   const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,7 +21,10 @@ export default function CreatePackage() {
   };
 
   const previewFiles = (files: FileList | null) => {
-    const newPreviewSources = [];
+    if (!files) return;
+
+    const newPreviewSources: string[] = [];
+
     for (let i = 0; i < files.length; i++) {
       const reader = new FileReader();
       const file = files[i];
@@ -39,15 +42,17 @@ export default function CreatePackage() {
     try {
       setLoading(true);
       const response = await HostAPIs.create_package(formData, previewSources);
+      setLoading(false);
       if (response?.data.status) {
-        setLoading(false);
         toast.success(response.data.message);
         navigate("/host/my_packages");
       } else {
         toast.error(response?.data.message);
       }
     } catch (error) {
+      setLoading(false);
       console.log(error);
+      toast.error("An error occurred while submitting the package.");
     }
   };
 

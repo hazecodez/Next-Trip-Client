@@ -5,6 +5,7 @@ import axios from "axios";
 import "./Css/Stays.css";
 import { HashLoader } from "react-spinners";
 import AmdeusAPI from "../../Utils/Traveler/AmdeusAPI";
+import { Hotel } from "../../Interfaces/Interfaces";
 
 //--fetching hotels list based on specified city with accesstoken
 const fetchHotels = async (iataCode: string, token: string) => {
@@ -120,7 +121,7 @@ export default function Stays() {
 
         <div className="flex flex-wrap gap-10 pt-10 justify-center">
           {showlists &&
-            hotels?.map((data, index: number) => (
+            hotels?.map((data: Hotel, index: number) => (
               <>
                 <div className="hotel_card" key={index}>
                   <h3 className="hotel_card__title">{data?.name}</h3>
