@@ -1,5 +1,4 @@
 import axiosInstance from "./AxiosInstance";
-import Cookies from "js-cookie";
 
 interface LoginType {
   email?: string;
@@ -17,7 +16,7 @@ axiosInstance.interceptors.response.use(
       error.response.data.role === "admin" &&
       !error.response.data.status
     ) {
-      Cookies.remove("adminToken");
+      localStorage.removeItem("adminToken")
       window.location.href = "/admin/login";
     }
     return Promise.reject(error);
