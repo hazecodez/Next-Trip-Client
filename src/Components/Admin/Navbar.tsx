@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import LogoutCard from "../Common/LogoutCard";
 import NavLinks from "../Common/NavLinks";
 import { adminLogout } from "../../Redux/Slices/Admin";
-import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 
@@ -23,7 +22,7 @@ export default function Navbar() {
 
   function logout() {
     dispatch(adminLogout());
-    Cookies.remove("adminToken");
+    localStorage.removeItem("adminToken")
     toast.success("You have been logged out successfully.");
     navigate("/admin/login");
   }

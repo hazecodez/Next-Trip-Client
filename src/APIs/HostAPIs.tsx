@@ -1,8 +1,23 @@
 import axiosInstance from "./AxiosInstance";
 import Package from "../Interfaces/common/Package";
 import LoginType from "../Interfaces/common/LoginType";
-import Cookies from "js-cookie";
 import { changePass } from "../Interfaces/Interfaces";
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    if (config && config.url && config?.url.includes("host")) {
+      const hostToken = localStorage.getItem("host");      
+      if (hostToken) {
+        config.headers["Authorization"] = `${hostToken}`;
+        // console.log("host Token in each request: ", hostToken);
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -13,7 +28,8 @@ axiosInstance.interceptors.response.use(
       error.response.data.role === "host" &&
       error.response.data.blocked === true
     ) {
-      Cookies.remove("host");
+      // console.log("Remove Host token when response error");
+      localStorage.removeItem("host");
       window.location.href = "/host/login";
     }
     return Promise.reject(error);
@@ -29,9 +45,12 @@ const HostAPIs = {
       console.log("Didn't get response from Host signup API", error);
     }
   },
-  verifyOTP: async (otp: string) => {
+  verifyOTP: async (otp: string, token: string) => {
     try {
-      const otpResponse = await axiosInstance.post("/host/verify_otp", { otp });
+      const otpResponse = await axiosInstance.post("/host/verify_otp", {
+        otp,
+        token,
+      });
       return otpResponse;
     } catch (error) {
       console.log("Didn't get response from host verifyOTP API", error);
@@ -47,6 +66,8 @@ const HostAPIs = {
   },
   google_Auth: async (hostInfo: LoginType) => {
     try {
+      
+      
       const googleResponse = await axiosInstance.post(
         "/host/google_login",
         hostInfo
@@ -108,10 +129,11 @@ const HostAPIs = {
       console.log("Didn't get response from host forget_pass API", error);
     }
   },
-  confirm_forget_otp: async (otp: string) => {
+  confirm_forget_otp: async (otp: string, token: string) => {
     try {
       const response = await axiosInstance.post("/host/confirm_forget_otp", {
         otp,
+        token,
       });
       return response;
     } catch (error) {
@@ -121,10 +143,11 @@ const HostAPIs = {
       );
     }
   },
-  new_password: async (password: string) => {
+  new_password: async (password: string, token: string) => {
     try {
       const response = await axiosInstance.post("/host/new_password", {
         password,
+        token,
       });
       return response;
     } catch (error) {

@@ -5,7 +5,22 @@ import {
   LoginType,
 } from "../Interfaces/Interfaces";
 import axiosInstance from "./AxiosInstance";
-import Cookies from "js-cookie";
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    if (config && config.url && !config?.url.includes("host")) {
+      const travelerToken = localStorage.getItem("traveler");
+      if (travelerToken) {
+        config.headers["Authorization"] = `${travelerToken}`;
+        console.log("Traveler Token in each request: ", travelerToken);
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
 
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -16,7 +31,8 @@ axiosInstance.interceptors.response.use(
       error.response.data.role === "traveler" &&
       error.response.data.blocked === true
     ) {
-      Cookies.remove("traveler");
+      console.log("Remove Traveler token when response error");
+      localStorage.removeItem("traveler");
       window.location.href = "/login";
     }
     return Promise.reject(error);
@@ -32,17 +48,20 @@ const TravelerAPIs = {
       console.log("Didn't get response from traveler signup API", error);
     }
   },
-  confirmOTP: async (otp: string) => {
+  confirmOTP: async (otp: string, token: string) => {
     try {
-      const otpResponse = await axiosInstance.post("/verify_otp", { otp });
+      const otpResponse = await axiosInstance.post("/verify_otp", {
+        otp,
+        token,
+      });
       return otpResponse;
     } catch (error) {
       console.log("Didn't get response from travler confirmOTP API", error);
     }
   },
-  resendOtp: async () => {
+  resendOtp: async (token: string) => {
     try {
-      const response = await axiosInstance.get("/resend_otp");
+      const response = await axiosInstance.post("/resend_otp", { token });
       return response;
     } catch (error) {
       console.log("Didn't get response from resend otp API", error);
@@ -87,9 +106,12 @@ const TravelerAPIs = {
       console.log("Didn't get response from traveler forget_pass API", error);
     }
   },
-  confirm_forget_otp: async (otp: string) => {
+  confirm_forget_otp: async (otp: string, token: string) => {
     try {
-      const response = await axiosInstance.post("/confirm_forget_otp", { otp });
+      const response = await axiosInstance.post("/confirm_forget_otp", {
+        otp,
+        token,
+      });
       return response;
     } catch (error) {
       console.log(
@@ -98,10 +120,11 @@ const TravelerAPIs = {
       );
     }
   },
-  new_password: async (password: string) => {
+  new_password: async (password: string, token: string) => {
     try {
       const response = await axiosInstance.post("/new_password", {
         password,
+        token,
       });
       return response;
     } catch (error) {

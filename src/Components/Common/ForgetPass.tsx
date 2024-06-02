@@ -22,6 +22,7 @@ export default function ForgetPass({ who }: { who: "traveler" | "host" }) {
       if (who === "traveler") {
         const response = await TravelerAPIs.forget_pass(form.email as string);
         if (response?.data.status) {
+          localStorage.setItem("forget", response?.data.token);
           toast.success(response.data.message);
           navigate("/otp");
         } else {
@@ -30,6 +31,7 @@ export default function ForgetPass({ who }: { who: "traveler" | "host" }) {
       } else {
         const response = await HostAPIs.forget_pass(form.email as string);
         if (response?.data.status) {
+          localStorage.setItem("forget", response?.data.token);
           toast.success(response.data.message);
           navigate("/host/otp");
         } else {

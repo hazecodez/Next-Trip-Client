@@ -31,11 +31,9 @@ export default function Login() {
   async function Submission(loginData: formData) {
     try {
       const loginResponse = await HostAPIs.login(loginData);
-      console.log("njan: ", loginResponse?.data);
       if (loginResponse?.data.verifiedHost.status) {
-        
-        
         toast.success(loginResponse.data.verifiedHost.message);
+        localStorage.setItem("host",loginResponse.data.verifiedHost.token)
         dispatch(
           hostLogin({
             host: loginResponse.data.verifiedHost.host,

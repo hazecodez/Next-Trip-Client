@@ -1,5 +1,4 @@
 import React from "react";
-import Cookies from "js-cookie";
 import { Navigate } from "react-router-dom";
 
 interface MiddlewareProps {
@@ -7,7 +6,7 @@ interface MiddlewareProps {
 }
 
 const IsLoggedIn: React.FC<MiddlewareProps> = ({ children }) => {
-  const logged = Cookies.get("adminToken");
+  const logged = localStorage.getItem("adminToken")
 
   if (logged) {
     return <>{children}</>;

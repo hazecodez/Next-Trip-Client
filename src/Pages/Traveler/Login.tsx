@@ -33,6 +33,7 @@ export default function Login() {
 
       if (loginResponse?.data.verifiedTraveler.status) {
         toast.success(loginResponse.data.verifiedTraveler.message);
+        localStorage.setItem("traveler", loginResponse?.data.verifiedTraveler.token);
         dispatch(
           TravelerLogin({
             traveler: loginResponse.data.verifiedTraveler.traveler,

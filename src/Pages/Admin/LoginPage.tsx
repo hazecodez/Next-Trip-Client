@@ -31,6 +31,7 @@ export default function LoginPage() {
       const loginResponse = await AdminAPI.login(LoginData);
 
       if (loginResponse?.data.status) {
+        localStorage.setItem("adminToken",loginResponse.data.token)
         toast.success(loginResponse.data.message);
         dispatch(
           adminLogin({

@@ -4,7 +4,6 @@ import NewPassSchema from "../../Validations/Traveler/NewPassSchema";
 import HostAPIs from "../../APIs/HostAPIs";
 import { toast } from "sonner";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
-import Cookies from "js-cookie";
 
 interface newPassType {
   password: string;
@@ -27,20 +26,22 @@ export default function NewPass({ who }: { who: "host" | "traveler" }) {
     try {
       const password = newPass.password;
       if (who === "host") {
-        const response = await HostAPIs.new_password(password);
-
+        const cookies = localStorage.getItem("forget")
+        const response = await HostAPIs.new_password(password,cookies as string);
+        
         if (response?.data.status) {
           toast.success(response.data.message);
-          Cookies.remove("forget");
+          localStorage.removeItem("forget")
           navigate("/host/login");
         } else {
           toast.error(response?.data.message);
         }
       } else if (who === "traveler") {
-        const response = await TravelerAPIs.new_password(password);
+        const cookies = localStorage.getItem("forget")
+        const response = await TravelerAPIs.new_password(password,cookies as string);
         if (response?.data.status) {
           toast.success(response.data.message);
-          Cookies.remove("forget");
+          localStorage.removeItem("forget")
           navigate("/login");
         } else {
           toast.error(response?.data.message);

@@ -1,9 +1,8 @@
 import React from "react";
-import Cookies from "js-cookie";
 import { Navigate } from "react-router-dom";
 
 const IsLoggedOut: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const signed = Cookies.get("host");
+  const signed = localStorage.getItem("host");
 
   if (!signed) {
     return <>{children}</>;

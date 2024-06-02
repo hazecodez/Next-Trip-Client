@@ -3,7 +3,6 @@ import LogoutCard from "../Common/LogoutCard";
 import NavLinks from "../Common/NavLinks";
 import { useNavigate } from "react-router-dom";
 import { hostLogout } from "../../Redux/Slices/Host";
-import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useContext, useState } from "react";
 import { Who } from "../../Interfaces/Interfaces";
@@ -24,8 +23,8 @@ export default function Navbar() {
   };
   function logout() {
     dispatch(hostLogout());
-    Cookies.remove("hostToken");
-    Cookies.remove("host");
+    localStorage.removeItem("hostToken");
+    localStorage.removeItem("host");
     toast.success("You have been logged out successfully.");
     navigate("/host/login");
   }
@@ -35,7 +34,7 @@ export default function Navbar() {
     setIsNotificationOpen(!isNotificationOpen);
   };
 
-  const {notification } = useContext(AuthContext);
+  const { notification } = useContext(AuthContext);
   return (
     <>
       <div className={`navbar bg-[#C63D2F] sticky top-0 z-20`}>
@@ -112,7 +111,10 @@ export default function Navbar() {
               />
             </svg>
           </button> */}
-          <button  onClick={toggleNotification} className="btn btn-ghost btn-circle">
+          <button
+            onClick={toggleNotification}
+            className="btn btn-ghost btn-circle"
+          >
             <div className="indicator">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -128,10 +130,11 @@ export default function Navbar() {
                   d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"
                 />
               </svg>
-              {
-                notification &&  <span className="badge badge-xs badge-warning indicator-item">{notification.length}</span>
-              }
-             
+              {notification && (
+                <span className="badge badge-xs badge-warning indicator-item">
+                  {notification.length}
+                </span>
+              )}
             </div>
           </button>
           <div className="dropdown dropdown-end">

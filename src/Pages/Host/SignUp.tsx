@@ -31,6 +31,7 @@ export default function SignUp() {
     try {
       const signUpResponse = await HostAPIs.signup(FormData);
       if (signUpResponse?.data.status) {
+        localStorage.setItem("hostOtp", signUpResponse?.data.Token);
         toast.success(`otp send to ${FormData.email}`);
         navigate("/host/otp");
       }

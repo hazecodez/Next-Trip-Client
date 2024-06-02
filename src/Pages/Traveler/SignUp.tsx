@@ -31,7 +31,8 @@ export default function SignUp() {
 
   async function Submission(formdata: FormValues) {
     try {
-      await TravelerAPIs.signup(formdata);
+      const res = await TravelerAPIs.signup(formdata);
+      localStorage.setItem("travelerOtp", res?.data.Token);
       toast.success(`otp sent to ${formdata.email}`);
       navigate("/otp");
     } catch (error) {

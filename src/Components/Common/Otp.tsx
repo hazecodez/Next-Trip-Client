@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
-import Cookies from "js-cookie";
 import { TravelerLogin } from "../../Redux/Slices/Traveler";
 
 import HostAPIs from "../../APIs/HostAPIs";
@@ -83,23 +82,26 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
     event.preventDefault();
     try {
       if (who === "traveler") {
-        const cookies = Cookies.get("forget");
+        const cookies = localStorage.getItem("forget")
+        
         if (cookies) {
-          const response = await TravelerAPIs.confirm_forget_otp(fullOTP);
+          const response = await TravelerAPIs.confirm_forget_otp(fullOTP,cookies as string);
           if (response?.data.status) {
             navigate("/new_pass");
             toast.success(response.data.message);
             
           }
         } else {
-          const OtpResponse = await TravelerAPIs.confirmOTP(fullOTP);
+          const token = localStorage.getItem("travelerOtp");
+          const OtpResponse = await TravelerAPIs.confirmOTP(fullOTP,token as string);
           if (OtpResponse?.data.status) {
             dispatch(
               TravelerLogin({
                 traveler: OtpResponse.data.travelerData,
               })
             );
-            Cookies.remove("travelerOtp");
+            localStorage.setItem("traveler", OtpResponse?.data.token);
+            localStorage.removeItem("travelerOtp")
             toast.success(`Your account is verified.`);
             navigate("/");
           } else {
@@ -107,19 +109,19 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
           }
         }
       } else if (who === "host") {
-        const cookie = Cookies.get("forget");
-
+        const cookie = localStorage.getItem("forget")
         if (cookie) {
-          const response = await HostAPIs.confirm_forget_otp(fullOTP);
+          const response = await HostAPIs.confirm_forget_otp(fullOTP,cookie as string);
           if (response?.data.status) {
             navigate("/host/new_pass");
             toast.success(response.data.message);
             
           }
         } else {
-          const otpResponse = await HostAPIs.verifyOTP(fullOTP);
+          const token = localStorage.getItem("hostOtp");
+          const otpResponse = await HostAPIs.verifyOTP(fullOTP,token as string);
           if (otpResponse?.data.status) {
-            Cookies.remove("hostOtp");
+            localStorage.removeItem("hostOtp")
             toast.success(otpResponse?.data.message);
             navigate("/host/login");
           } else {
@@ -135,7 +137,8 @@ export default function Otp({ who }: { who: "host" | "traveler" }) {
   async function resendOtp() {
     try {
       if (who === "traveler") {
-        const response = await TravelerAPIs.resendOtp();
+        const token = localStorage.getItem("travelerOtp");
+        const response = await TravelerAPIs.resendOtp(token as string);
         if (response?.data.status) {
           toast.success(response.data.message);
           navigate("/otp");

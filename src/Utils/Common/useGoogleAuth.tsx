@@ -27,9 +27,12 @@ const useGoogleLoginHook = ({
         .then((res) => res.data);
       try {
         if (who === "traveler") {
+          
           const googleResponse = await TravelerAPIs.google_Auth(userInfo);
           if (googleResponse?.data.status) {
+            localStorage.setItem("traveler", googleResponse?.data.token);
             toast.success(googleResponse.data.message);
+            
             dispatch(
               TravelerLogin({ traveler: googleResponse.data.travelerData })
             );
@@ -37,9 +40,10 @@ const useGoogleLoginHook = ({
           } else {
             toast.error(googleResponse?.data.message);
           }
-        } else if (who === "host") {
+        } else if (who === "host") { 
           const googleResponse = await HostAPIs.google_Auth(userInfo);
           if (googleResponse?.data.status) {
+            localStorage.setItem("host",googleResponse.data.token)
             toast.success(googleResponse.data.message);
             if (googleResponse.data.token) {
               dispatch(hostLogin({ host: googleResponse.data.hostData }));
@@ -51,6 +55,7 @@ const useGoogleLoginHook = ({
         } else if (who === "admin") {
           const googleResponse = await AdminAPI.google_Auth(userInfo);
           if (googleResponse?.data.status) {
+            localStorage.setItem("adminToken",googleResponse.data.token);
             toast.success(googleResponse.data.message);
             dispatch(adminLogin({ admin: googleResponse.data.adminData }));
             navigate("/admin/");

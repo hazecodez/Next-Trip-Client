@@ -3,7 +3,6 @@ import LogoutCard from "../Common/LogoutCard";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { TravelerLogout } from "../../Redux/Slices/Traveler";
-import Cookies from "js-cookie";
 import { toast } from "sonner";
 import { useContext, useState } from "react";
 import Notification from "../Common/Notification";
@@ -24,7 +23,7 @@ export default function Navbar() {
 
   function logout() {
     dispatch(TravelerLogout());
-    Cookies.remove("traveler");
+    localStorage.removeItem("traveler")
     toast.success("You have been logged out successfully.");
     navigate("/login");
   }
