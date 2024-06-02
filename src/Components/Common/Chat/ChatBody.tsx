@@ -1,12 +1,9 @@
-// import ChatHeader from "./ChatHeader";
-// import ChatInput from "./ChatInput";
 import ChatBar from "./ChatBar";
 import { CallDetails, Who } from "../../../Interfaces/Interfaces";
 import { useSelector } from "react-redux";
 import { User } from "../../../Interfaces/Interfaces";
 import { io, Socket } from "socket.io-client";
 import { useState, useEffect, useRef, useContext } from "react";
-// import HostAPIs from "../../../APIs/HostAPIs";
 import { format } from "timeago.js";
 import { MessageType } from "../../../Interfaces/Interfaces";
 import TravelerAPIs from "../../../APIs/TravelerAPIs";
@@ -58,6 +55,7 @@ export default function ChatBody({ who }: WhoseChat) {
 
   useEffect(() => {
     socket.current = io("ws://localhost:5050");
+    // socket.current = io("ws://www.server.furnicube.shop");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
