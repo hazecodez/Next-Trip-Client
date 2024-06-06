@@ -22,21 +22,7 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-axiosInstance.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (
-      error.response &&
-      error.response.data &&
-      error.response.data.role === "admin" &&
-      !error.response.data.status
-    ) {
-      localStorage.removeItem("adminToken");
-      window.location.href = "/admin/login";
-    }
-    return Promise.reject(error);
-  }
-);
+
 
 const AdminAPI = {
   login: async (formData: LoginType) => {
