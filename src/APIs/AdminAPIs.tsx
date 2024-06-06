@@ -1,11 +1,6 @@
 import axiosInstance from "./AxiosInstance";
+import LoginType from "../Interfaces/common/LoginType";
 
-interface LoginType {
-  email?: string;
-  password?: string;
-  sub?: string;
-  name?: string;
-}
 
 axiosInstance.interceptors.request.use(
   (config) => {
@@ -18,6 +13,8 @@ axiosInstance.interceptors.request.use(
         console.log("config update aakki");
       }
     }
+    console.log("illallo");
+    
     return config;
   },
   (error) => {
