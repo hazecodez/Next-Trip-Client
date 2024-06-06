@@ -33,6 +33,7 @@
     "sonner": "^1.4.41",
     "timeago.js": "^4.0.0-beta.3",
     "uuid": "^9.0.1",
+    "vercel": "^34.2.5",
     "yup": "^1.4.0"
   },
   "devDependencies": {
