@@ -11,8 +11,11 @@ axiosInstance.interceptors.request.use(
   (config) => {
     if (config && config.url && config?.url.includes("admin")) {
       const adminToken = localStorage.getItem("adminToken");
+      console.log("admin token:", adminToken);
+      
       if (adminToken) {
         config.headers["Authorization"] = `${adminToken}`;
+        console.log("config update aakki");
       }
     }
     return config;
