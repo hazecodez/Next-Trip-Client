@@ -69,9 +69,6 @@ const TravelerAPIs = {
   },
   login: async (formData: LoginType) => {
     try {
-      
-      console.log("Login ethii");
-      
       const loginResponse = await axiosInstance.post("/login", formData);
       console.log("ivdeyo login api", loginResponse);
       
