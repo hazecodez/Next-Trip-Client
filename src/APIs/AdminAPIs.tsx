@@ -16,7 +16,7 @@ axiosInstance.interceptors.response.use(
       error.response.data.role === "admin" &&
       !error.response.data.status
     ) {
-      localStorage.removeItem("adminToken")
+      localStorage.removeItem("adminToken");
       window.location.href = "/admin/login";
     }
     return Promise.reject(error);

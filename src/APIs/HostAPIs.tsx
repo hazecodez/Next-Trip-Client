@@ -6,7 +6,7 @@ import { changePass } from "../Interfaces/Interfaces";
 axiosInstance.interceptors.request.use(
   (config) => {
     if (config && config.url && config?.url.includes("host")) {
-      const hostToken = localStorage.getItem("host");      
+      const hostToken = localStorage.getItem("host");
       if (hostToken) {
         config.headers["Authorization"] = `${hostToken}`;
         // console.log("host Token in each request: ", hostToken);
@@ -66,8 +66,6 @@ const HostAPIs = {
   },
   google_Auth: async (hostInfo: LoginType) => {
     try {
-      
-      
       const googleResponse = await axiosInstance.post(
         "/host/google_login",
         hostInfo

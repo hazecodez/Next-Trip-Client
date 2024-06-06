@@ -29,9 +29,8 @@ export default function LoginPage() {
   async function Submission(LoginData: LoginType) {
     try {
       const loginResponse = await AdminAPI.login(LoginData);
-
       if (loginResponse?.data.status) {
-        localStorage.setItem("adminToken",loginResponse.data.token)
+        localStorage.setItem("adminToken", loginResponse.data.token);
         toast.success(loginResponse.data.message);
         dispatch(
           adminLogin({
@@ -64,7 +63,7 @@ export default function LoginPage() {
               excepturi
             </p>
           </div>
-          
+
           <div className="card glass shrink-0 w-full max-w-sm shadow-2xl ">
             <form className="card-body " onSubmit={handleSubmit}>
               <div className="form-control">
@@ -132,7 +131,6 @@ export default function LoginPage() {
               </button>
             </form>
           </div>
-
         </div>
       </div>
     </>

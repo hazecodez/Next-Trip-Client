@@ -8,8 +8,8 @@ import axiosInstance from "./AxiosInstance";
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (config && config.url && !config?.url.includes("host")) {
-      const travelerToken = localStorage.getItem("traveler");
+    if (config && config.url && !config?.url.includes("host") && !config?.url.includes("admin")) {
+      const travelerToken = localStorage.getItem("traveler");  
       if (travelerToken) {
         config.headers["Authorization"] = `${travelerToken}`;
         console.log("Traveler Token in each request: ", travelerToken);
@@ -69,7 +69,11 @@ const TravelerAPIs = {
   },
   login: async (formData: LoginType) => {
     try {
+      
+      
       const loginResponse = await axiosInstance.post("/login", formData);
+      console.log("ivdeyo login api", loginResponse);
+      
       return loginResponse;
     } catch (error) {
       console.log("Didn't get response from traveler login API", error);
