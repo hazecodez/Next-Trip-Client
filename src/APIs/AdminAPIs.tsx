@@ -7,6 +7,21 @@ interface LoginType {
   name?: string;
 }
 
+axiosInstance.interceptors.request.use(
+  (config) => {
+    if (config && config.url && config?.url.includes("admin")) {
+      const adminToken = localStorage.getItem("adminToken");
+      if (adminToken) {
+        config.headers["Authorization"] = `${adminToken}`;
+      }
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
