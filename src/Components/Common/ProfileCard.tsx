@@ -703,7 +703,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                       />
                     </svg>
 
-                    <p className="number">₹ {user?.wallet}.00</p>
+                    <p className="number">$ {user?.wallet}.00</p>
                     <p className="valid_thru">VALID THRU</p>
                     <p className="date_8264">1 2 / 2 8</p>
                     <p className="name">{user?.name}</p>
@@ -904,7 +904,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
                             <p className="text-black">{data.itinerary}</p>
                             <p className="text-black font-bold text-end">
                               {" "}
-                              ₹ {data.price}
+                              $ {data.price}
                             </p>
                             <div className="card-actions items-center"></div>
                             {who === "host" ? (

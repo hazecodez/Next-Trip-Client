@@ -90,7 +90,7 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
                   {formatDate(data.dur_start)} to {formatDate(data.dur_end)}
                 </p>
                 <p className="text-black">{data.itinerary}</p>
-                <p className="text-black font-bold text-end"> ₹ {data.price}</p>
+                <p className="text-black font-bold text-end"> $ {data.price}</p>
                 <div className="card-actions items-center"></div>
                 {who === "host" ? (
                   <button

@@ -189,7 +189,7 @@ export default function BookedPackages() {
 
               <div>
                 <p className="text-3xl font-bold">
-                  ₹ {data.totalPrice}.00 &nbsp;
+                $ {data.totalPrice}.00 &nbsp;
                   <span className="text-green-500 font-semibold text-xl">
                     Paid <i className="fa-regular fa-circle-check" />
                   </span>{" "}

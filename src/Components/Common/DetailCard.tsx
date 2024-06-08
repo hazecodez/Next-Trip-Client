@@ -238,7 +238,7 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
               <p className="px-5 py-5">
                 <span className="font-bold text-black text-2xl">
                   {" "}
-                  ₹ {details?.price}
+                  $ {details?.price}
                 </span>{" "}
                 per person*
               </p>

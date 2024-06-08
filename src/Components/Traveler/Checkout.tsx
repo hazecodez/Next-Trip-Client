@@ -147,12 +147,12 @@ export default function Checkout() {
               <p>
                 <span className="font-bold text-black text-md">
                   {" "}
-                  ₹ {packDetails?.price} *
+                  $ {packDetails?.price} *
                 </span>{" "}
                 {travelers.length} Travelers
               </p>
               <p className="text-3xl font-bold">
-                ₹ {totalPrice * travelers.length}.00{" "}
+              $ {totalPrice * travelers.length}.00{" "}
               </p>
               <br />
 
@@ -164,7 +164,7 @@ export default function Checkout() {
                 >
                   <option disabled>Payment Method</option>
 
-                  <option>Wallet Payment ₹{user?.wallet}</option>
+                  <option>Wallet Payment ${user?.wallet}</option>
                   <option>Online Payment</option>
                 </select>
               </div>

@@ -121,7 +121,7 @@ export default function Dashboard() {
                         />
                       </svg>
 
-                      <p className="number">₹ {user?.wallet}.00</p>
+                      <p className="number">$ {user?.wallet}.00</p>
                       <p className="valid_thru">VALID THRU</p>
                       <p className="date_8264">1 2 / 2 8</p>
                       <p className="name">{user?.name}</p>
