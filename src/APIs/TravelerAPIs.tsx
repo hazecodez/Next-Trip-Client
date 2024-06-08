@@ -70,8 +70,6 @@ const TravelerAPIs = {
   login: async (formData: LoginType) => {
     try {
       const loginResponse = await axiosInstance.post("/login", formData);
-      console.log("ivdeyo login api", loginResponse);
-      
       return loginResponse;
     } catch (error) {
       console.log("Didn't get response from traveler login API", error);
@@ -147,9 +145,9 @@ const TravelerAPIs = {
     }
   },
   new_conversation: async (hostId: string) => {
-    try {
-      const response = await axiosInstance.post(
-        `/new_conversation?hostId=${hostId}`
+    try { 
+      const response = await axiosInstance.patch(
+        `/new_conversation`,{hostId}
       );
       return response;
     } catch (error) {

@@ -25,7 +25,6 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
     const response = await TravelerAPIs.new_conversation(
       details?.host as string
     );
-    // console.log(response);
     if (response) {
       localStorage.setItem("conversationId", response?.data.data._id);
       navigate("/chat");

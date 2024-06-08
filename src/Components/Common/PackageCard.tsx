@@ -76,7 +76,12 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
                       ? navigate(`/package_details/${data._id}`)
                       : navigate(`/host/package_details/${data._id}`);
                   }}
-                  className="card-title text-black text-ellipsis whitespace-nowrap"
+                  className="card-title text-black"
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
                 >
                   {data.name}
                 </h2>

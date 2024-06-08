@@ -5,16 +5,11 @@ import LoginType from "../Interfaces/common/LoginType";
 axiosInstance.interceptors.request.use(
   (config) => {
     if (config && config.url && config?.url.includes("admin")) {
-      const adminToken = localStorage.getItem("adminToken");
-      console.log("admin token:", adminToken);
-      
+      const adminToken = localStorage.getItem("adminToken");      
       if (adminToken) {
         config.headers["Authorization"] = `${adminToken}`;
-        console.log("config update aakki");
       }
     }
-    console.log("illallo");
-    
     return config;
   },
   (error) => {
