@@ -8,10 +8,11 @@ interface DataType {
 
 interface Props {
   action: (id: string) => void;
+  verify?: (id: string) => void;
   data: DataType[];
 }
 
-const Table: React.FC<Props> = ({ action, data }) => {
+const Table: React.FC<Props> = ({ action, data, verify }) => {
   return (
     <>
       <div className="overflow-x-auto glass bg-base-content">
@@ -37,7 +38,28 @@ const Table: React.FC<Props> = ({ action, data }) => {
                   </div>
                 </td>
                 <td>{data.email}</td>
-                <td> {data.isVerified ? "Verified" : "Not-Verified"} </td>
+                {verify ? (
+                  data.isVerified ? (
+                    <>
+                      <td>Verified</td>
+                    </>
+                  ) : (
+                    <>
+                      <th>
+                        <button
+                          onClick={() => verify(data._id)}
+                          className={`btn btn-ghost btn-xs bg-yellow-500`}
+                        >
+                          verify
+                        </button>
+                      </th>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <td> {data.isVerified ? "Verified" : "Not-Verified"} </td>
+                  </>
+                )}
                 <th>
                   <button className="btn btn-ghost btn-xs">Packages</button>
                 </th>

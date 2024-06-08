@@ -65,7 +65,7 @@ export default function Travelers() {
         </div>
       </div>
 
-      <Table action={travelerAction} data={travelers} />
+      <Table  action={travelerAction} data={travelers} />
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

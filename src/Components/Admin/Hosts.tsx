@@ -40,6 +40,18 @@ export default function Hosts() {
       console.log(error);
     }
   }
+  async function hostVerify(id: string) {
+    try {
+      const response = await AdminAPI.hostVerify(id);
+      if (response) {
+        setAction(!action);
+      } else {
+        toast.error("Something went wrong.");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
   return (
     <>
       <div className="bg-[#D2E0FB] flex justify-between">
@@ -63,7 +75,7 @@ export default function Hosts() {
           </button>
         </div>
       </div>
-      <Table action={hostAction} data={hosts} />
+      <Table verify={hostVerify} action={hostAction} data={hosts} />
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

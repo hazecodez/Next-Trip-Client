@@ -1,11 +1,10 @@
 import axiosInstance from "./AxiosInstance";
 import LoginType from "../Interfaces/common/LoginType";
 
-
 axiosInstance.interceptors.request.use(
   (config) => {
     if (config && config.url && config?.url.includes("admin")) {
-      const adminToken = localStorage.getItem("adminToken");      
+      const adminToken = localStorage.getItem("adminToken");
       if (adminToken) {
         config.headers["Authorization"] = `${adminToken}`;
       }
@@ -16,8 +15,6 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
-
 
 const AdminAPI = {
   login: async (formData: LoginType) => {
@@ -78,6 +75,14 @@ const AdminAPI = {
       return response;
     } catch (error) {
       console.log("Didn't get response from admin host action  API", error);
+    }
+  },
+  hostVerify: async (id: string) => {
+    try {
+      const response = await axiosInstance.patch("/admin/host_verify", { id });
+      return response;
+    } catch (error) {
+      console.log("Didn't get response from admin host Verify  API", error);
     }
   },
   packages: async (searchTerm: string, currentPage: number) => {
