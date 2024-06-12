@@ -46,74 +46,91 @@ export default function PackageCard({ who }: { who: "traveler" | "host" }) {
   }, [currentPage]);
   return (
     <>
-      <div className="flex flex-wrap items-center justify-evenly bg-[#F2F2F2] py-10 px-12 ">
-        {packages.map((data: Package, index) => (
-          <div className="card-wrapper mb-4 text-end " key={index}>
-            <div
-              className={`card h-fit  glass w-96  ${
-                who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
-              }  `}
-            >
-              <figure className="w-full h-52">
-                <img
-                  className=" object-cover"
-                  key={index}
-                  src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images?.[0]}`}
-                  alt="car!"
-                />
-              </figure>
-              <div
-                className="card-body"
-                key={index}
-                style={{
-                  scrollbarWidth: "none",
-                  msOverflowStyle: "none",
-                }}
-              >
-                <h2
-                  onClick={() => {
-                    who === "traveler"
-                      ? navigate(`/package_details/${data._id}`)
-                      : navigate(`/host/package_details/${data._id}`);
-                  }}
-                  className="card-title text-black"
-                  style={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                  }}
+      {packages.length > 0 && (
+        <>
+          <div className="flex flex-wrap items-center justify-evenly bg-[#F2F2F2] py-10 px-12 ">
+            {packages.map((data: Package, index) => (
+              <div className="card-wrapper mb-4 text-end " key={index}>
+                <div
+                  className={`card h-fit  glass w-96  ${
+                    who === "host" ? "bg-[#f2ceb3]" : "bg-[#D9D9D9]"
+                  }  `}
                 >
-                  {data.name}
-                </h2>
-                <p className="text-black">{data.destination}</p>
-                <p className="text-black">
-                  {formatDate(data.dur_start)} to {formatDate(data.dur_end)}
-                </p>
-                <p className="text-black">{data.itinerary}</p>
-                <p className="text-black font-bold text-end"> $ {data.price}</p>
-                <div className="card-actions items-center"></div>
-                {who === "host" ? (
-                  <button
-                    onClick={() => navigate(`/host/edit_package/${data._id}`)}
-                    className="btn bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F]"
+                  <figure className="w-full h-52">
+                    <img
+                      className=" object-cover"
+                      key={index}
+                      src={`https://res.cloudinary.com/doac4pi2c/image/upload/${data?.images?.[0]}`}
+                      alt="car!"
+                    />
+                  </figure>
+                  <div
+                    className="card-body"
+                    key={index}
+                    style={{
+                      scrollbarWidth: "none",
+                      msOverflowStyle: "none",
+                    }}
                   >
-                    Edit Package
-                  </button>
-                ) : (
-                  ""
-                )}
+                    <h2
+                      onClick={() => {
+                        who === "traveler"
+                          ? navigate(`/package_details/${data._id}`)
+                          : navigate(`/host/package_details/${data._id}`);
+                      }}
+                      className="card-title text-black"
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {data.name}
+                    </h2>
+                    <p className="text-black">{data.destination}</p>
+                    <p className="text-black">
+                      {formatDate(data.dur_start)} to {formatDate(data.dur_end)}
+                    </p>
+                    <p className="text-black">{data.itinerary}</p>
+                    <p className="text-black font-bold text-end">
+                      {" "}
+                      $ {data.price}
+                    </p>
+                    <div className="card-actions items-center"></div>
+                    {who === "host" ? (
+                      <button
+                        onClick={() =>
+                          navigate(`/host/edit_package/${data._id}`)
+                        }
+                        className="btn bg-[#C63D2F] border-none text-[#FFBB5C] hover:bg-[#FFBB5C] hover:text-[#C63D2F]"
+                      >
+                        Edit Package
+                      </button>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="bg-[#5C8374] pb-5">
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalPages={totalPages}
-        />
-      </div>
+          <div className="bg-[#5C8374] pb-5">
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              totalPages={totalPages}
+            />
+          </div>
+        </>
+      )}
+
+      {!packages.length && (
+        <>
+          <div className="h-96 bg-[#F2F2F2] flex justify-center items-center">
+          <h1>No Packages</h1>
+          </div>
+        </>
+      )}
     </>
   );
 }

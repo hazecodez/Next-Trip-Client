@@ -13,7 +13,10 @@ const formatDate = (dateString: string): string => {
   };
   return date.toLocaleDateString("en-US", options);
 };
-export default function Schedules() {
+interface prop {
+  profile?: string;
+}
+export default function Schedules({ profile }: prop) {
   const [packages, setPackages] = useState([]);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -91,11 +94,13 @@ export default function Schedules() {
           ))}
         </table>
       </div>
-      <Pagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalPages={totalPages}
-      />
+      {!profile && (
+        <Pagination
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+          totalPages={totalPages}
+        />
+      )}
     </>
   );
 }

@@ -608,7 +608,7 @@ export default function ProfileCard({ who }: ProfileCardProps) {
           >
             {who === Who.Host ? (
               <>
-                <Schedules />
+                <Schedules profile="profile" />
               </>
             ) : (
               <>
