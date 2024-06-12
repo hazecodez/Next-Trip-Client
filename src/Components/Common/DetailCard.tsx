@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import TravelerAPIs from "../../APIs/TravelerAPIs";
 import Package from "../../Interfaces/common/Package";
 import { bookingData } from "../../Interfaces/Interfaces";
+import { GridLoader } from "react-spinners";
 
 const formatDate = (dateString: string): string => {
   const options: Intl.DateTimeFormatOptions = {
@@ -20,6 +21,7 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
   const { id } = useParams();
   const [details, setDetails] = useState<Package>();
   const [bookings, setBookings] = useState<bookingData[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const handleConversation = async () => {
     const response = await TravelerAPIs.new_conversation(
@@ -35,8 +37,12 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
     async function fetchDetails() {
       try {
         if (who === "Traveler") {
+          setLoading(true);
           const response = await TravelerAPIs.package_details(id as string);
-          setDetails(response?.data);
+          if (response?.data) {
+            setDetails(response?.data);
+            setLoading(false);
+          }
         } else {
           const response = await HostAPIs.package_details(id as string);
           setDetails(response?.data);
@@ -54,6 +60,12 @@ export default function DetailCard({ who }: { who: "Traveler" | "Host" }) {
 
   return (
     <>
+      {loading && (
+        <div className="loader-container">
+          <GridLoader color="#1B4242" size={30} />
+        </div>
+      )}
+
       <div
         className={`text-sm breadcrumbs sticky top-16 z-10 ${
           who === "Host" ? "bg-[#E25E3E] text-[#FF9B50]" : "bg-[#1B4242]"
