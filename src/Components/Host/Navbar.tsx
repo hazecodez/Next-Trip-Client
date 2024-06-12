@@ -1,17 +1,23 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LogoutCard from "../Common/LogoutCard";
 import NavLinks from "../Common/NavLinks";
 import { useNavigate } from "react-router-dom";
 import { hostLogout } from "../../Redux/Slices/Host";
 import { toast } from "sonner";
 import { useContext, useState } from "react";
-import { Who } from "../../Interfaces/Interfaces";
+import { User, Who } from "../../Interfaces/Interfaces";
 import Notification from "../Common/Notification";
 import { AuthContext } from "../../Context/ContextProvider";
 
+interface UserData {
+  host?: {
+    host: User;
+  };
+}
 export default function Navbar() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const host = useSelector((state: UserData) => state.host);
 
   const logoutModal = () => {
     const modal = document.getElementById(
@@ -144,10 +150,21 @@ export default function Navbar() {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-7 rounded-full">
-                <img
-                  alt="Tailwind CSS Navbar component"
-                  src="https://thumbs.dreamstime.com/b/businessman-icon-vector-male-avatar-profile-image-profile-businessman-icon-vector-male-avatar-profile-image-182095609.jpg"
-                />
+                {host?.host.image ? (
+                  <>
+                    <img
+                      src={`https://res.cloudinary.com/doac4pi2c/image/upload/${host.host.image}`}
+                      alt=""
+                    />
+                  </>
+                ) : (
+                  <>
+                    <img
+                      alt="Tailwind CSS Navbar component"
+                      src="https://img.freepik.com/premium-photo/bearded-man-illustration_665280-67047.jpg"
+                    />
+                  </>
+                )}
               </div>
             </div>
             <ul
