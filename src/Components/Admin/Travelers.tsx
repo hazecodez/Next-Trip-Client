@@ -10,6 +10,7 @@ export default function Travelers() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [confirmModal, setConfirmModal] = useState(false);
 
   useEffect(() => {
     async function getTravelers() {
@@ -65,7 +66,12 @@ export default function Travelers() {
         </div>
       </div>
 
-      <Table  action={travelerAction} data={travelers} />
+      <Table
+        action={travelerAction}
+        confirmModal={confirmModal}
+        setConfirmModal={setConfirmModal}
+        data={travelers}
+      />
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

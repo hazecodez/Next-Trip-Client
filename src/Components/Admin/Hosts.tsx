@@ -10,6 +10,7 @@ export default function Hosts() {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
+  const [confirmModal, setConfirmModal] = useState(false);
 
   useEffect(() => {
     async function getHosts() {
@@ -75,7 +76,13 @@ export default function Hosts() {
           </button>
         </div>
       </div>
-      <Table verify={hostVerify} action={hostAction} data={hosts} />
+      <Table
+        verify={hostVerify}
+        action={hostAction}
+        confirmModal={confirmModal}
+        setConfirmModal={setConfirmModal}
+        data={hosts}
+      />
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
