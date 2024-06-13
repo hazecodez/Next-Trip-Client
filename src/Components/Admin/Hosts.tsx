@@ -3,6 +3,7 @@ import AdminAPI from "../../APIs/AdminAPIs";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Pagination from "./Pagination";
+import { PropagateLoader } from "react-spinners";
 
 export default function Hosts() {
   const [action, setAction] = useState(false);
@@ -11,6 +12,7 @@ export default function Hosts() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [confirmModal, setConfirmModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getHosts() {
@@ -19,6 +21,7 @@ export default function Hosts() {
         if (response?.data.status) {
           setHost(response.data.hosts.hosts);
           setTotalPages(response.data.hosts.totalPages);
+          setLoading(false);
         } else {
           toast.error(response?.data.message);
         }
@@ -31,9 +34,11 @@ export default function Hosts() {
 
   async function hostAction(id: string) {
     try {
+      setLoading(true)
       const response = await AdminAPI.hostAction(id);
       if (response) {
         setAction(!action);
+        setLoading(false)
       } else {
         toast.error("Something went wrong.");
       }
@@ -43,9 +48,11 @@ export default function Hosts() {
   }
   async function hostVerify(id: string) {
     try {
+      setLoading(true)
       const response = await AdminAPI.hostVerify(id);
       if (response) {
         setAction(!action);
+        setLoading(false)
       } else {
         toast.error("Something went wrong.");
       }
@@ -55,6 +62,11 @@ export default function Hosts() {
   }
   return (
     <>
+    {loading && (
+        <div className="loader-container">
+          <PropagateLoader color="#D2E0FB" size={30} />
+        </div>
+      )}
       <div className="bg-[#D2E0FB] flex justify-between">
         <div className="lg:pl-10 my-3 text-black font-bold text-2xl">
           <h1>Travel Hosts</h1>

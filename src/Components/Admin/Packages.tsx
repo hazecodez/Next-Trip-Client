@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Package from "../../Interfaces/common/Package";
 import Pagination from "./Pagination";
+import { PropagateLoader } from "react-spinners";
 
 export default function Packages() {
   const [packages, setPackages] = useState([]);
@@ -12,6 +13,7 @@ export default function Packages() {
   const [totalPages, setTotalPages] = useState(0);
   const [confirmModal, setConfirmModal] = useState(false);
   const [dataId, setDataId] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchPackages() {
@@ -20,6 +22,7 @@ export default function Packages() {
         if (response?.data.status) {
           setPackages(response.data.packages.packages);
           setTotalPages(response.data.packages.totalPages);
+          setLoading(false);
         } else {
           toast.error(response?.data.message);
         }
@@ -35,6 +38,7 @@ export default function Packages() {
   }
   async function packageAction(id: string | undefined) {
     try {
+      setLoading(true)
       const response = await AdminAPI.package_Actions(id);
       setConfirmModal(false);
       if (response?.data.status) {
@@ -47,6 +51,11 @@ export default function Packages() {
 
   return (
     <>
+    {loading && (
+        <div className="loader-container">
+          <PropagateLoader color="#D2E0FB" size={30} />
+        </div>
+      )}
       <div className="bg-[#D2E0FB] flex justify-between">
         {confirmModal && (
           <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">

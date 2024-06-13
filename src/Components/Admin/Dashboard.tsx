@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import AdminAPI from "../../APIs/AdminAPIs";
 import AdminChart from "./AdminChart";
+import { PropagateLoader } from "react-spinners";
 
 export default function Dashboard() {
   const [travelersCount, setTravelersCount] = useState(0);
   const [hostsCount, setHostsCount] = useState(0);
   const [packagesCount, setPackagesCount] = useState(0);
   const [blogsCount, setBlogsCount] = useState(0);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     async function fetchDashboard() {
       const response = await AdminAPI.dashboard();
@@ -15,12 +17,18 @@ export default function Dashboard() {
         setHostsCount(response.data.hosts);
         setPackagesCount(response.data.packages);
         setBlogsCount(response.data.blog);
+        setLoading(false);
       }
     }
     fetchDashboard();
   }, []);
   return (
     <>
+    {loading && (
+        <div className="loader-container">
+          <PropagateLoader color="#24263A" size={30} />
+        </div>
+      )}
       <div className=" bg-[#D2E0FB]">
         <div className="p-4  dark:border-gray-700">
           <div className="flex md:grid-cols-2 gap-2">

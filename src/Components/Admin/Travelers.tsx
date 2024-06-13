@@ -3,6 +3,7 @@ import AdminAPI from "../../APIs/AdminAPIs";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import Pagination from "./Pagination";
+import { PropagateLoader } from "react-spinners";
 
 export default function Travelers() {
   const [action, setAction] = useState(false);
@@ -11,6 +12,7 @@ export default function Travelers() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [confirmModal, setConfirmModal] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getTravelers() {
@@ -19,6 +21,7 @@ export default function Travelers() {
         if (response?.data.status) {
           setTraveler(response.data.travelers.travelers);
           setTotalPages(response.data.travelers.totalPages);
+          setLoading(false);
         } else {
           toast.error(response?.data.message);
         }
@@ -31,6 +34,7 @@ export default function Travelers() {
 
   async function travelerAction(id: string) {
     try {
+      setLoading(true)
       const response = await AdminAPI.travelerAction(id);
       if (response) {
         setAction(!action);
@@ -44,6 +48,11 @@ export default function Travelers() {
 
   return (
     <>
+    {loading && (
+        <div className="loader-container">
+          <PropagateLoader color="#D2E0FB" size={30} />
+        </div>
+      )}
       <div className="bg-[#D2E0FB] flex justify-between">
         <div className="lg:pl-10 my-3 text-black font-bold text-2xl">
           <h1>Travelers</h1>

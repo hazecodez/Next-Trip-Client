@@ -3,6 +3,7 @@ import AdminAPI from "../../APIs/AdminAPIs";
 import { toast } from "sonner";
 import { Blog } from "../../Interfaces/Interfaces";
 import Pagination from "./Pagination";
+import { PropagateLoader } from "react-spinners";
 
 export default function BlogsAdmin() {
   const [action, setAction] = useState(false);
@@ -12,6 +13,7 @@ export default function BlogsAdmin() {
   const [totalPages, setTotalPages] = useState(0);
   const [confirmModal, setConfirmModal] = useState(false);
   const [dataId, setDataId] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function getBlogs() {
@@ -22,6 +24,7 @@ export default function BlogsAdmin() {
         if (response?.data.status) {
           setBlogs(response.data.blogs.blogs);
           setTotalPages(response.data.blogs.totalPages);
+          setLoading(false);
         } else {
           toast.error(response?.data.message);
         }
@@ -39,6 +42,7 @@ export default function BlogsAdmin() {
 
   async function blogsAction(id: string) {
     try {
+      setLoading(true)
       const response = await AdminAPI.blogAction(id);
       setConfirmModal(false);
       if (response) {
@@ -52,6 +56,11 @@ export default function BlogsAdmin() {
   }
   return (
     <>
+    {loading && (
+        <div className="loader-container">
+          <PropagateLoader color="#D2E0FB" size={30} />
+        </div>
+      )}
       <div className="bg-[#D2E0FB] flex justify-between">
         {confirmModal && (
           <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
