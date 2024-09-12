@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_BACKEND_URL;
+const baseURL = "https://next-trip-server.onrender.com";
 // const baseURL = "https://furnicube.shop";
 
 const axiosInstance = axios.create({
