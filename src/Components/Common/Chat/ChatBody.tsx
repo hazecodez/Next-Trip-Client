@@ -55,7 +55,7 @@ export default function ChatBody({ who }: WhoseChat) {
 
   useEffect(() => {
     //socket.current = io("ws://localhost:5050");
-    socket.current = io("https://furnicube.shop");
+    socket.current = io("https://next-trip-server.onrender.com");
     socket.current.on("getMessage", (data) => {
       setArrivalMessage({
         sender: data.senderId,
